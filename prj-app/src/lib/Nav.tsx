@@ -16,19 +16,19 @@ const Nav: Component = () => {
 					group: "dropdown",
 					label: "Overview",
 					icon: overviewIcon,
-					path: "/",
+					path: "/Overview",
 				},
 				{
 					group: "dropdown",
 					label: "Entries",
 					icon: entriesIcon,
-					path: "/entries",
+					path: "/Entries",
 				},
 				{
 					group: "dropdown",
 					label: "Archive",
 					icon: archiveIcon,
-					path: "/archive",
+					path: "/Archive",
 				},
 				{
 					group: "profile",
