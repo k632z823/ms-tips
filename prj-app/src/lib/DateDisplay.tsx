@@ -38,9 +38,13 @@ const DateDisplay = () => {
     }
   }
 
+  const formatMinutes = (date: Date) => {
+    return date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+  }
+
   return (
     <div>
-      <p>{formatHour(currentDate())}:{currentDate().getMinutes()}</p>
+      <p>{formatHour(currentDate())}:{formatMinutes(currentDate())}</p>
       <p>{getDayOfWeek(currentDate())}</p>
       <p>{getMonthName(currentDate())} {currentDate().getDate()}</p>
       <p>{currentDate().getFullYear()}</p>
