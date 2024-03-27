@@ -1,12 +1,14 @@
 import type { Component } from "solid-js";
 import Nav from "../lib/Nav";
+import EntryTable from "../lib/TipEntries";
 
 const Entries: Component = () => {
 	return (
 		<>
 			<br></br>
 			<br></br>
-			<h1>Entries page</h1>
+
+			<EntryTable></EntryTable>
 		</>
 	);
 };
