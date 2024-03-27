@@ -1,5 +1,5 @@
 import { For, type Component, Show, createSignal, onCleanup } from "solid-js";
-import { AiOutlineMenu } from "solid-icons/ai";
+
 import pfp from "../logos/cat_profile_pic.png";
 
 function clickOutside(

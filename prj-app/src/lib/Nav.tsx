@@ -16,7 +16,7 @@ const Nav: Component = () => {
 					group: "dropdown",
 					label: "Overview",
 					icon: overviewIcon,
-					path: "/Overview",
+					path: "/",
 				},
 				{
 					group: "dropdown",
@@ -34,7 +34,7 @@ const Nav: Component = () => {
 					group: "profile",
 					label: "Settings",
 					icon: settingsIcon,
-					path: "/settings",
+					path: "/Settings",
 				},
 				{
 					group: "profile",
