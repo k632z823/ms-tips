@@ -1,5 +1,4 @@
 import type { Component } from "solid-js";
-import { Router, Route, A } from "@solidjs/router";
 
 import Nav from "./lib/Nav";
 
@@ -7,7 +6,7 @@ import Overview from "./pages/Overview";
 import Entries from "./pages/Entries";
 import Archive from "./pages/Archive";
 
-const App: Component = () => {
+const App: Component = (props: any) => {
 	return (
 		<>
 			<Nav></Nav>
@@ -15,9 +14,7 @@ const App: Component = () => {
 			<br></br>
 			<br></br>
 
-			<header>
-				<a href='/Entries'> Click Me</a>
-			</header>
+			{props.children}
 		</>
 	);
 };

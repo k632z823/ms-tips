@@ -1,4 +1,5 @@
 import { For, type Component, Show, createSignal, onCleanup } from "solid-js";
+import { A } from "@solidjs/router";
 
 import pfp from "../logos/cat_profile_pic.png";
 
@@ -29,7 +30,6 @@ interface NavbarMobileProps {
 		path: string;
 		icon: string;
 	}[];
-	onClickNav: (path: string) => void;
 }
 
 const NavbarMobile: Component<NavbarMobileProps> = (
@@ -71,12 +71,9 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "profile"}>
-									<div
-										class='flex items-center gap-2 hover:bg-gray-200 p-2 rounded-md transition-all'
-										onClick={() => props.onClickNav(item.path)}
-									>
+									<div class='flex items-center gap-2 hover:bg-gray-200 p-2 rounded-md transition-all'>
 										<img src={item.icon} />
-										{item.label}
+										<A href={item.path}>{item.label}</A>
 									</div>
 								</Show>
 							)}
@@ -117,12 +114,9 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
-									<div
-										class='flex items-center gap-2 hover:bg-gray-200 p-2 rounded-md transition-all'
-										onClick={() => props.onClickNav(item.path)}
-									>
+									<div class='flex items-center gap-2 hover:bg-gray-200 p-2 rounded-md transition-all'>
 										<img src={item.icon} />
-										{item.label}
+										<a href={item.path}>{item.label}</a>
 									</div>
 								</Show>
 							)}
@@ -142,7 +136,6 @@ interface NavbarProps {
 		path: string;
 		icon: string;
 	}[];
-	onClickNav: (path: string) => void;
 }
 
 const Navbar: Component<NavbarProps> = (props: NavbarProps) => {
@@ -150,10 +143,7 @@ const Navbar: Component<NavbarProps> = (props: NavbarProps) => {
 	return (
 		<nav>
 			<div class='fixed sm:hidden flex w-full items-center justify-between px-4 py-2'>
-				<NavbarMobile
-					items={props.items}
-					onClickNav={props.onClickNav}
-				/>
+				<NavbarMobile items={props.items} />
 			</div>
 		</nav>
 	);

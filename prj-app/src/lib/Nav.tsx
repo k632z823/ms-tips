@@ -43,7 +43,6 @@ const Nav: Component = () => {
 					path: "/logout",
 				},
 			]}
-			onClickNav={(path: string) => {}}
 		/>
 	);
 };
