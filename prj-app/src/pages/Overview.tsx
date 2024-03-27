@@ -5,6 +5,7 @@ import DateDisplay from "../lib/DateDisplay";
 const Overview: Component = () => {
 	return (
 		<>
+		<div class=''>
 			<br></br>
 			<br></br>
 			<br></br>
@@ -12,6 +13,7 @@ const Overview: Component = () => {
 			<br></br>
 			<br></br>
 			<DateDisplay></DateDisplay>
+		</div>
 		</>
 	);
 };
