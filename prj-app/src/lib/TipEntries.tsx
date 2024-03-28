@@ -132,11 +132,11 @@ const EntryTable: Component = () => {
 						<tbody>
 							<For each={entry[entryType()]}>
 								{(item) => (
-									<tr class=' border-t-2 border-orange-500'>
-										<td>{labels[item.id].bill_label}</td>
-										<td>
+									<tr class='text-center text-sm border-2 border-border-gray'>
+										<td class ='border-2 border-border-gray bg-input-gray'>{labels[item.id].bill_label}</td>
+										<td class ='p-1.5'>
 											<input
-												class='text-black w-20'
+												class='p-1 rounded border-2 border-border-gray bg-input-gray text-center text-content-gray w-20'
 												value={item.bill_amount}
 												onChange={(e) => {
 													setEntry(entryType(), item.id, (entry) => ({
@@ -146,10 +146,10 @@ const EntryTable: Component = () => {
 												}}
 											></input>
 										</td>
-										<td>{labels[item.id].change_label}</td>
-										<td>
+										<td class='border-2 border-border-gray bg-input-gray'>{labels[item.id].change_label}</td>
+										<td class ='p-1.5'>
 											<input
-												class='text-black w-20'
+												class='p-1 rounded border-2 border-border-gray bg-input-gray text-center text-content-gray w-20'
 												value={item.change_amount}
 												onChange={(e) => {
 													setEntry(
@@ -164,20 +164,20 @@ const EntryTable: Component = () => {
 									</tr>
 								)}
 							</For>
-							<tr class=' border-t-2 border-orange-500'>
-								<td>Bill Amount</td>
-								<td>{billTotal()}</td>
-								<td>Change Amount</td>
-								<td>{changeTotal()}</td>
+							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
+								<td class='border-2 border-border-gray text-sm bg-input-gray'>Bill Amount</td>
+								<td class='text-sm text-content-gray'>{billTotal()}</td>
+								<td class ='border-2 border-border-gray text-sm bg-input-gray'>Change Amount</td>
+								<td class='text-sm text-content-gray'>{changeTotal()}</td>
 							</tr>
-							<tr class=' border-t-2 border-orange-500'>
-								<td>Total</td>
-								<td colspan={3}>{total()}</td>
+							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
+								<td class='border-2 border-border-gray text-sm bg-input-gray'>Total</td>
+								<td class= 'text-sm text-content-gray' colspan={3}>{total()}</td>
 							</tr>
 						</tbody>
 					</table>
 					<button
-						class='m-5 border-2 border-border-white'
+						class='m-5 border-2 border border-border-gray'
 						onClick={() => {
 							setEntryType("tips");
 
@@ -187,7 +187,7 @@ const EntryTable: Component = () => {
 						Tips
 					</button>
 					<button
-						class='m-5 border-2 border-border-white'
+						class='m-5 border-2 border border-border-gray'
 						onClick={() => {
 							setEntryType("drawer");
 
@@ -197,7 +197,7 @@ const EntryTable: Component = () => {
 						Drawer
 					</button>
 					<button
-						class='m-5 border-2 border-border-white'
+						class='m-5 border-2 border border-border-gray'
 						onClick={() => {
 							calcTotals(entry[entryType()]);
 						}}

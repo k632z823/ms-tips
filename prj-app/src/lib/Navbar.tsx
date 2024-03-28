@@ -50,7 +50,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 			>
 				<img
 					id='avatarButton'
-					class='w-4 h-4 rounded-full cursor-pointer'
+					class='w-5 h-5 rounded-full cursor-pointer'
 					data-dropdown-toggle='userDropdown'
 					data-dropdown-placement='bottom-start'
 					src={pfp}
@@ -64,14 +64,14 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					class='absolute left-0 top-10 w-full p-2'
 				>
 					<div
-						class={`bg-menu-gray flex flex-col mt-1 gap-2 rounded-md min-w-max w-full overflow-hidden transition all ${
+						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${
 							isSelected() ? "border border-border-gray max-h-96 p-2" : "max-h-0 p-0"
 						}`}
 					>
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "profile"}>
-									<div class='flex items-center gap-3 hover:bg-input-gray p-2 rounded-md transition-all'>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2 rounded-md transition-all'>
 										<img src={item.icon} />
 										<A href={item.path}>{item.label}</A>
 									</div>
@@ -93,7 +93,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					onClick={() => {
 						setIsOpen(!isOpen());
 					}}
-					class='cursor-pointer h-6 w-6 text-gray-700  p-1 rounded-lg tranistion-all'
+					class='cursor-pointer h-8 w-8 p-1 rounded-md hover:bg-input-gray'
 					fill='white'
 					stroke-width='0'
 					xmlns='http://www.w3.org/2000/svg'
@@ -107,14 +107,14 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					class='absolute left-0 top-10 w-full p-2'
 				>
 					<div
-						class={`bg-menu-gray flex flex-col mt-0.5 gap-2 rounded-md min-w-max w-full overflow-hidden transition all ${
+						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${
 							isOpen() ? "border border-border-gray max-h-96 p-2" : "max-h-0 p-0"
 						}`}
 					>
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
-									<div class='font-thin flex items-center gap-3 hover:bg-input-gray p-2 rounded-md transition-all'>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2 rounded-md transition-all'>
 										<img src={item.icon} />
 										<a href={item.path}>{item.label}</a>
 									</div>

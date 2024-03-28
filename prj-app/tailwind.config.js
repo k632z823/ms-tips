@@ -11,6 +11,7 @@ module.exports = {
 			'menu-gray': '#070707',
 			'border-gray': '#151515',
 			'content-gray': '#606060',
+			'icon-gray': '#505050',
 			'input-gray': '#0A0A0A',
 		},
 		extend: {
