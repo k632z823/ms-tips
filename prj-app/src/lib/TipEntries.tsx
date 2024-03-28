@@ -125,59 +125,63 @@ const EntryTable: Component = () => {
 				<div id='entry-info'></div>
 				<div id='entry-input'>
 					<h1>{entryType()}</h1>
-					<table
-						class='table-auto'
-						id='bills'
-					>
-						<tbody>
-							<For each={entry[entryType()]}>
-								{(item) => (
-									<tr class='text-center text-sm border-2 border-border-gray'>
-										<td class ='border-2 border-border-gray bg-input-gray'>{labels[item.id].bill_label}</td>
-										<td class ='p-2'>
-											<input
-												class='rounded border-2 border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
-												value={item.bill_amount}
-												onChange={(e) => {
-													setEntry(entryType(), item.id, (entry) => ({
-														...entry,
-														bill_amount: parseInt(e.target.value),
-													}));
-												}}
-											></input>
-										</td>
-										<td class='border-2 border-border-gray bg-input-gray'>{labels[item.id].change_label}</td>
-										<td class ='p-2'>
-											<input
-												class='rounded border-2 border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
-												value={item.change_amount}
-												onChange={(e) => {
-													setEntry(
-														entryType(),
-														item.id,
-														"change_amount",
-														parseInt(e.target.value),
-													);
-												}}
-											></input>
-										</td>
+					<div class='flex justify-center'>
+						<div class='border border-border-gray grid rounded-lg max-w-md'>
+							<table
+								class='w-full table-auto'
+								id='bills'
+							>
+								<tbody>
+									<For each={entry[entryType()]}>
+										{(item) => (
+											<tr class='text-center text-sm'>
+												<td class ='border-r border-b border-border-gray bg-input-gray px-8'>{labels[item.id].bill_label}</td>
+												<td class ='border-b border-border-gray p-2'>
+													<input
+														class='rounded border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
+														value={item.bill_amount}
+														onChange={(e) => {
+															setEntry(entryType(), item.id, (entry) => ({
+																...entry,
+																bill_amount: parseInt(e.target.value),
+															}));
+														}}
+													></input>
+												</td>
+												<td class='border-l border-r border-b border-border-gray bg-input-gray px-8'>{labels[item.id].change_label}</td>
+												<td class ='border-b border-border-gray p-2'>
+													<input
+														class='rounded border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
+														value={item.change_amount}
+														onChange={(e) => {
+															setEntry(
+																entryType(),
+																item.id,
+																"change_amount",
+																parseInt(e.target.value),
+															);
+														}}
+													></input>
+												</td>
+											</tr>
+										)}
+									</For>
+									<tr class='text-center'>
+										<td class='border-r border-b border-border-gray text-sm p-4 bg-input-gray'>Bill Total</td>
+										<td class='border-b border-border-gray text-sm text-content-gray'>{billTotal()}</td>
+										<td class='border-t border-l border-r border-b border-border-gray text-sm bg-input-gray'>Coin Total</td>
+										<td class='border-b border-border-gray text-sm text-content-gray'>{changeTotal()}</td>
 									</tr>
-								)}
-							</For>
-							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
-								<td class='border-2 border-border-gray text-sm p-4 bg-input-gray'>Bill Total</td>
-								<td class='text-sm text-content-gray'>{billTotal()}</td>
-								<td class ='border-2 border-border-gray text-sm bg-input-gray'>Coin Total</td>
-								<td class='text-sm text-content-gray'>{changeTotal()}</td>
-							</tr>
-							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
-								<td class='border-2 border-border-gray text-sm p-4 bg-input-gray'>Total</td>
-								<td class= 'text-sm text-content-gray' colspan={3}>{total()}</td>
-							</tr>
-						</tbody>
-					</table>
+									<tr class='text-center'>
+										<td class='border-r border-border-gray rounded-bl-lg text-sm p-4 bg-input-gray'>Total</td>
+										<td class= 'text-sm text-content-gray' colspan={3}>{total()}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 					<button
-						class='m-5 border-2 border border-border-gray'
+						class='m-5 border border border-border-gray'
 						onClick={() => {
 							setEntryType("tips");
 
@@ -187,7 +191,7 @@ const EntryTable: Component = () => {
 						Tips
 					</button>
 					<button
-						class='m-5 border-2 border border-border-gray'
+						class='m-5 border border border-border-gray'
 						onClick={() => {
 							setEntryType("drawer");
 
@@ -197,7 +201,7 @@ const EntryTable: Component = () => {
 						Drawer
 					</button>
 					<button
-						class='m-5 border-2 border border-border-gray'
+						class='m-5 border border border-border-gray'
 						onClick={() => {
 							calcTotals(entry[entryType()]);
 						}}
