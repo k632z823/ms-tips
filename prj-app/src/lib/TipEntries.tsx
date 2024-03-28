@@ -15,8 +15,8 @@ interface Entry {
 	change_amount: number;
 }
 interface Label {
-	bill_label: number;
-	change_label: number;
+	bill_label: string;
+	change_label: string;
 }
 
 interface EntryProps {
@@ -27,28 +27,28 @@ interface EntryProps {
 
 const labels: Label[] = [
 	{
-		bill_label: 1,
-		change_label: 0.01,
+		bill_label: '1',
+		change_label: '0.01',
 	},
 	{
-		bill_label: 5,
-		change_label: 0.05,
+		bill_label: '5',
+		change_label: '0.05',
 	},
 	{
-		bill_label: 10,
-		change_label: 0.1,
+		bill_label: '10',
+		change_label: '0.10',
 	},
 	{
-		bill_label: 20,
-		change_label: 0.25,
+		bill_label: '20',
+		change_label: '0.25',
 	},
 	{
-		bill_label: 50,
-		change_label: 0.5,
+		bill_label: '50',
+		change_label: '0.50',
 	},
 	{
-		bill_label: 100,
-		change_label: 1,
+		bill_label: '100',
+		change_label: '1',
 	},
 ];
 
@@ -134,9 +134,9 @@ const EntryTable: Component = () => {
 								{(item) => (
 									<tr class='text-center text-sm border-2 border-border-gray'>
 										<td class ='border-2 border-border-gray bg-input-gray'>{labels[item.id].bill_label}</td>
-										<td class ='p-1.5'>
+										<td class ='p-2'>
 											<input
-												class='p-1 rounded border-2 border-border-gray bg-input-gray text-center text-content-gray w-20'
+												class='rounded border-2 border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
 												value={item.bill_amount}
 												onChange={(e) => {
 													setEntry(entryType(), item.id, (entry) => ({
@@ -147,9 +147,9 @@ const EntryTable: Component = () => {
 											></input>
 										</td>
 										<td class='border-2 border-border-gray bg-input-gray'>{labels[item.id].change_label}</td>
-										<td class ='p-1.5'>
+										<td class ='p-2'>
 											<input
-												class='p-1 rounded border-2 border-border-gray bg-input-gray text-center text-content-gray w-20'
+												class='rounded border-2 border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
 												value={item.change_amount}
 												onChange={(e) => {
 													setEntry(
@@ -165,13 +165,13 @@ const EntryTable: Component = () => {
 								)}
 							</For>
 							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
-								<td class='border-2 border-border-gray text-sm bg-input-gray'>Bill Amount</td>
+								<td class='border-2 border-border-gray text-sm p-4 bg-input-gray'>Bill Total</td>
 								<td class='text-sm text-content-gray'>{billTotal()}</td>
-								<td class ='border-2 border-border-gray text-sm bg-input-gray'>Change Amount</td>
+								<td class ='border-2 border-border-gray text-sm bg-input-gray'>Coin Total</td>
 								<td class='text-sm text-content-gray'>{changeTotal()}</td>
 							</tr>
 							<tr class='border-2 border-border-gray text-center border-t-2 border-orange-500'>
-								<td class='border-2 border-border-gray text-sm bg-input-gray'>Total</td>
+								<td class='border-2 border-border-gray text-sm p-4 bg-input-gray'>Total</td>
 								<td class= 'text-sm text-content-gray' colspan={3}>{total()}</td>
 							</tr>
 						</tbody>
