@@ -21,16 +21,20 @@ const OverviewEntries = (props: OverviewEntriesProps) => {
             <table style={{ border: '1px solid grey' }}>
                 <tbody>
                     <tr>
-                        <td>Drawer ${getDrawer()}</td>
+                        <td>Drawer</td>
+                        <td>${getDrawer()}</td>
                     </tr>
                     <tr>
-                        <td>Tips ${getTips()}</td>
+                        <td>Tips</td>
+                        <td>${getTips()}</td>
                     </tr>
                     <tr>
-                        <td>Final ${getFinal()}</td>
+                        <td>Final</td>
+                        <td>${getFinal()}</td>
                     </tr>
                     <tr>
-                        <td>Tip Rate ${getTipRate()}</td>
+                        <td>Tip Rate</td>
+                        <td>${getTipRate()}</td>
                     </tr>
                 </tbody>
             </table>
