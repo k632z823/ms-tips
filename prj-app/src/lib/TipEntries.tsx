@@ -126,9 +126,9 @@ const EntryTable: Component = () => {
 				<div id='entry-input'>
 					<h1>{entryType()}</h1>
 					<div class='flex justify-center'>
-						<div class='border border-border-gray grid rounded-lg max-w-md'>
+						<div class='border border-border-gray rounded-md w-11/12'>
 							<table
-								class='w-full table-auto'
+								class='table-auto w-full'
 								id='bills'
 							>
 								<tbody>
@@ -138,7 +138,7 @@ const EntryTable: Component = () => {
 												<td class ='border-r border-b border-border-gray bg-input-gray px-8'>{labels[item.id].bill_label}</td>
 												<td class ='border-b border-border-gray p-2'>
 													<input
-														class='rounded border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
+														class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
 														value={item.bill_amount}
 														onChange={(e) => {
 															setEntry(entryType(), item.id, (entry) => ({
@@ -151,7 +151,7 @@ const EntryTable: Component = () => {
 												<td class='border-l border-r border-b border-border-gray bg-input-gray px-8'>{labels[item.id].change_label}</td>
 												<td class ='border-b border-border-gray p-2'>
 													<input
-														class='rounded border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
+														class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-20'
 														value={item.change_amount}
 														onChange={(e) => {
 															setEntry(
@@ -173,7 +173,7 @@ const EntryTable: Component = () => {
 										<td class='border-b border-border-gray text-sm text-content-gray'>{changeTotal()}</td>
 									</tr>
 									<tr class='text-center'>
-										<td class='border-r border-border-gray rounded-bl-lg text-sm p-4 bg-input-gray'>Total</td>
+										<td class='border-r border-border-gray rounded-bl-md text-sm p-4 bg-input-gray'>Total</td>
 										<td class= 'text-sm text-content-gray' colspan={3}>{total()}</td>
 									</tr>
 								</tbody>

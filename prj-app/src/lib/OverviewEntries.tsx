@@ -17,29 +17,30 @@ const OverviewEntries = (props: OverviewEntriesProps) => {
     const [getTipRate, setTipRate] = createSignal(tipRate);
 
     return (
-        <div>
-            <table style={{ border: '1px solid grey' }}>
-                <tbody>
-                    <tr>
-                        <td>Drawer</td>
-                        <td>${getDrawer()}</td>
-                    </tr>
-                    <tr>
-                        <td>Tips</td>
-                        <td>${getTips()}</td>
-                    </tr>
-                    <tr>
-                        <td>Final</td>
-                        <td>${getFinal()}</td>
-                    </tr>
-                    <tr>
-                        <td>Tip Rate</td>
-                        <td>${getTipRate()}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class='flex justify-center'>
+            <div class='border border-border-gray rounded-md w-11/12'>
+                <table class='table-auto w-full'>
+                    <tbody class='bg-input-gray'>
+                        <tr>
+                            <td class='text-sm text-mini-gray'>Drawer</td>
+                            <td class=''>${getDrawer()}</td>
+                        </tr>
+                        <tr>
+                            <td class='text-sm text-mini-gray'>Tips</td>
+                            <td>${getTips()}</td>
+                        </tr>
+                        <tr>
+                            <td class='text-sm text-mini-gray'>Final</td>
+                            <td>${getFinal()}</td>
+                        </tr>
+                        <tr>
+                            <td class='text-sm text-mini-gray'>Tip Rate</td>
+                            <td>${getTipRate()}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     );
 }
 

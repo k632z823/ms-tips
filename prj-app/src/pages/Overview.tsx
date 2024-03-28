@@ -12,10 +12,10 @@ const Overview: Component = () => {
 			<h1>Overview page</h1>
 			<br></br>
 			<br></br>
-			<div class="flex gap-10">
+			<div class=''>
 				<DateDisplay/>
-				<OverviewEntries drawer={50} tips={30} final={80} tipRate={25}/>
 			</div>
+			<OverviewEntries drawer={50} tips={30} final={80} tipRate={25}/>
 			<br></br>
 			<br></br>
 		</>
