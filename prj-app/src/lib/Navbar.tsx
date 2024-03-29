@@ -42,7 +42,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 		<>
 			<div
 				id='profile'
-				class='text-white text-md font-semibold flex items-center gap-2'
+				class='text-white text-md font-semibold flex items-center gap-1.5'
 				//@ts-ignore
 				// use:clickOutside={() => {
 				// 	setIsSelected(false);
@@ -92,21 +92,21 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					onClick={() => {
 						setIsOpen(!isOpen());
 					}}
-					class='cursor-pointer h-8 w-8 p-1 rounded-md hover:bg-input-gray'
+					class='cursor-pointer h-9 w-9 p-1.5 border border-border-gray rounded-md hover:bg-input-gray'
 					fill='white'
 					stroke-width='0'
 					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 1024 1024'
+					viewBox='0 0 512 512'
 					style='overflow: visible; color: white;'
 				>
-					<path d='M904 160H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0 624H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0-312H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8z'></path>
+					<path d='M64 384h384v-42.67H64Zm0-106.67h384v-42.66H64ZM64 128v42.67h384V128Z'></path>
 				</svg>
 				<div
 					id='dropdown-items'
 					class='absolute left-0 top-10 w-full p-2'
 				>
 					<div
-						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
+						class={`bg-black flex flex-col mt-3.5 gap-2 rounded-md min-w-max w-full overflow-hidden ${isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
 							}`}
 					>
 						<For each={props.items}>
