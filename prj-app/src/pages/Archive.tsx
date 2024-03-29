@@ -9,11 +9,6 @@ const meow = [{number: 1, date: new Date("01-01-2003"), drawer: 4, tips: 5,
 const Archive: Component = () => {
 	return (
 		<>
-			<br></br>
-			<br></br>
-			<h1>Archive page</h1>
-			<br></br>
-			<br></br>
 			<ArchiveTable></ArchiveTable>
 		</>
 	);

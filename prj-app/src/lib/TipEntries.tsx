@@ -131,19 +131,19 @@ const EntryTable: Component = () => {
 							<label>Drawer</label>
 						</div>
 						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-							{allTotals.Drawer}
+							${allTotals.Drawer}
 						</div>
 						<div class='p-2 border border-border-gray bg-input-gray text-center'>
 							<label>Tips</label>
 						</div>
 						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-							{allTotals.Tips}
+							${allTotals.Tips}
 						</div>
 						<div class='p-2 border border-border-gray bg-input-gray text-center'>
 							<label>Final</label>
 						</div>
 						<div class='p-2 border-y border-r rounded-r-md border-border-gray bg-black text-content-gray'>
-							{allTotals.Final}
+							${allTotals.Final}
 						</div>
 					</div>
 				</div>
@@ -152,7 +152,7 @@ const EntryTable: Component = () => {
 				<div class='border border-border-gray rounded-md w-11/12'>
 					<div id='entry-select'>
 						<div class='flex justify-center'>
-							<div class='py-5 text-sm font-light w-11/12'>
+							<div class='py-5 text-sm font-normal w-11/12'>
 								<button
 									id='dropdownDefaultButton'
 									data-dropdown-toggle='dropdown'
@@ -285,13 +285,13 @@ const EntryTable: Component = () => {
 												Bill Total
 											</td>
 											<td class='border-b border-border-gray text-content-gray'>
-												{billTotal()}
+												${billTotal()}
 											</td>
 											<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
 												Coin Total
 											</td>
 											<td class='border-b border-border-gray text-content-gray'>
-												{changeTotal()}
+												${changeTotal()}
 											</td>
 										</tr>
 										<tr class='text-center'>
@@ -302,7 +302,7 @@ const EntryTable: Component = () => {
 												class='text-content-gray'
 												colspan={3}
 											>
-												{total()}
+												${total()}
 											</td>
 										</tr>
 									</tbody>
@@ -312,7 +312,7 @@ const EntryTable: Component = () => {
 						<div class='py-5 flex justify-center'>
 							<div class='grid grid-cols-2 gap-5 text-sm font-light w-11/12'>
 								<button
-									class='p-1.5 border border-border-gray rounded-md hover:bg-border-gray order-last'
+									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
 									onClick={() => {
 										calcTotals(entry[entryType()]);
 									}}
