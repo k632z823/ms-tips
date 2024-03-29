@@ -152,7 +152,7 @@ const EntryTable: Component = () => {
 						</div>
 					</div>
 					<div class='flex justify-center'>
-						<div class='py-5 grid grid-cols-2 text-sm font-light w-11/12'>
+						<div class='py-5 text-sm font-light w-11/12'>
 							<button
 								id='dropdownDefaultButton'
 								data-dropdown-toggle='dropdown'
