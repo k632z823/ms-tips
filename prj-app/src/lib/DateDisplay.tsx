@@ -37,7 +37,7 @@ const DateDisplay: Component = () => {
 
   return (
     <div class='flex justify-center'>
-      <div class='border border-border-gray  rounded-md w-11/12 p-2.5'>
+      <div class='border border-border-gray rounded-md bg-menu-gray w-11/12 p-2.5'>
         <div class='flex justify-between items-center'>
           <div>{formatHour(currentDate())}:{formatMinutes(currentDate())}</div>
           {/* <div>{getDayOfWeek(currentDate())}</div> */}
