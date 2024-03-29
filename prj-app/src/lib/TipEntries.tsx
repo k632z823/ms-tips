@@ -127,203 +127,210 @@ const EntryTable: Component = () => {
 
 	return (
 		<>
-			<div id='entry-table'>
-				<div id='entry-info'>
-					<div class='flex justify-center'>
-						<div class='grid grid-cols-6 text-sm font-light w-11/12'>
-							<div class='p-2 border border-border-gray rounded-l-md bg-input-gray text-center'>
-								<label>Drawer</label>
-							</div>
-							<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-								{allTotals.Drawer}
-							</div>
-							<div class='p-2 border border-border-gray bg-input-gray text-center'>
-								<label>Tips</label>
-							</div>
-							<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-								{allTotals.Tips}
-							</div>
-							<div class='p-2 border border-border-gray bg-input-gray text-center'>
-								<label>Final</label>
-							</div>
-							<div class='p-2 border-y border-r rounded-r-md border-border-gray bg-black text-content-gray'>
-								{allTotals.Final}
-							</div>
+			<div id='entry-info'>
+				<div class='flex justify-center'>
+					<div class='grid grid-cols-6 text-sm font-light w-11/12'>
+						<div class='p-2 border border-border-gray rounded-l-md bg-input-gray text-center'>
+							<label>Drawer</label>
 						</div>
-					</div>
-					<div class='flex justify-center'>
-						<div class='py-5 text-sm font-light w-11/12'>
-							<button
-								id='dropdownDefaultButton'
-								data-dropdown-toggle='dropdown'
-								class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
-								type='button'
-								onClick={() => setDropDown(!dropDown())}
-							>
-								{entryType()}
-								<svg
-									class='w-1.5 h-1.5'
-									aria-hidden='true'
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 10 6'
-								>
-									<path
-										stroke='currentColor'
-										stroke-linecap='round'
-										stroke-linejoin='round'
-										stroke-width='2'
-										d='m1 1 4 4 4-4'
-									/>
-								</svg>
-							</button>
-							<Show when={dropDown()}>
-								<div class='py-1.5'>
-									<div
-										id='dropdown'
-										class='border border-border-gray bg-menu-gray rounded-md text-content-gray w-full'
-									>
-										<ul
-											class='py-2'
-											aria-labelledby='dropdownDefaultButton'
-										>
-											<li>
-												<a
-													onClick={() => {
-														setEntryType("Drawer");
-														calcTotals(entry[entryType()]);
-													}}
-													class='block px-4 py-1 hover:bg-input-gray'
-												>
-													Drawer
-												</a>
-											</li>
-											<li>
-												<a
-													onClick={() => {
-														setEntryType("Tips");
-														calcTotals(entry[entryType()]);
-													}}
-													class='block px-4 py-1 hover:bg-input-gray'
-												>
-													Tips
-												</a>
-											</li>
-											<li>
-												<a
-													onClick={() => {
-														setEntryType("Final");
-														calcTotals(entry[entryType()]);
-													}}
-													class='block px-4 py-1 hover:bg-input-gray'
-												>
-													Final
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</Show>
+						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
+							{allTotals.Drawer}
+						</div>
+						<div class='p-2 border border-border-gray bg-input-gray text-center'>
+							<label>Tips</label>
+						</div>
+						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
+							{allTotals.Tips}
+						</div>
+						<div class='p-2 border border-border-gray bg-input-gray text-center'>
+							<label>Final</label>
+						</div>
+						<div class='p-2 border-y border-r rounded-r-md border-border-gray bg-black text-content-gray'>
+							{allTotals.Final}
 						</div>
 					</div>
 				</div>
-				<div id='entry-input'>
-					<div class='flex justify-center'>
-						<div class='border border-border-gray rounded-md w-11/12'>
-							<table
-								class='table-auto w-full text-sm font-light'
-								id='bills'
-							>
-								<tbody>
-									<For each={entry[entryType()]}>
-										{(item) => (
-											<tr class='text-center'>
-												<td class='border-r border-b border-border-gray bg-input-gray px-12'>
-													{labels[item.id].bill_label}
-												</td>
-												<td class='border-b border-border-gray p-2'>
-													<input
-														class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
-														value={item.bill_amount}
-														onChange={(e) => {
-															setEntry(entryType(), item.id, (entry) => ({
-																...entry,
-																bill_amount: parseInt(e.target.value),
-															}));
-															calcTotals(entry[entryType()]);
-															setAllTotals(entryType(), total());
-														}}
-													></input>
-												</td>
-												<td class='border-l border-r border-b border-border-gray bg-input-gray px-12'>
-													{labels[item.id].change_label}
-												</td>
-												<td class='border-b border-border-gray p-2'>
-													<input
-														class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
-														value={item.change_amount}
-														onChange={(e) => {
-															setEntry(
-																entryType(),
-																item.id,
-																"change_amount",
-																parseInt(e.target.value),
-															);
-															calcTotals(entry[entryType()]);
-															setAllTotals(entryType(), total());
-														}}
-													></input>
-												</td>
-											</tr>
-										)}
-									</For>
-									<tr class='text-center'>
-										<td class='border-r border-b border-border-gray p-4 bg-input-gray'>
-											Bill Total
-										</td>
-										<td class='border-b border-border-gray text-content-gray'>
-											{billTotal()}
-										</td>
-										<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
-											Coin Total
-										</td>
-										<td class='border-b border-border-gray text-content-gray'>
-											{changeTotal()}
-										</td>
-									</tr>
-									<tr class='text-center'>
-										<td class='border-r border-border-gray rounded-bl-lg p-4 bg-input-gray'>
-											Total
-										</td>
-										<td
-											class='text-content-gray'
-											colspan={3}
+			</div>
+			<div class='flex justify-center py-5'>
+				<div class='border border-border-gray rounded-md w-11/12'>
+					<div id='entry-select'>
+						<div class='flex justify-center'>
+							<div class='py-5 text-sm font-light w-11/12'>
+								<button
+									id='dropdownDefaultButton'
+									data-dropdown-toggle='dropdown'
+									class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+									type='button'
+									onClick={() => setDropDown(!dropDown())}
+								>
+									{entryType()}
+									<svg
+										class='w-1.5 h-1.5'
+										aria-hidden='true'
+										xmlns='http://www.w3.org/2000/svg'
+										fill='none'
+										viewBox='0 0 10 6'
+									>
+										<path
+											stroke='currentColor'
+											stroke-linecap='round'
+											stroke-linejoin='round'
+											stroke-width='2'
+											d='m1 1 4 4 4-4'
+										/>
+									</svg>
+								</button>
+								<Show when={dropDown()}>
+									<div class='py-1.5'>
+										<div
+											id='dropdown'
+											class='border border-border-gray bg-menu-gray rounded-md text-content-gray w-full'
 										>
-											{total()}
-										</td>
-									</tr>
-								</tbody>
-							</table>
+											<ul
+												class='py-2'
+												aria-labelledby='dropdownDefaultButton'
+											>
+												<li>
+													<a
+														onClick={() => {
+															setEntryType("Drawer");
+															calcTotals(entry[entryType()]);
+														}}
+														class='block px-4 py-1 hover:bg-input-gray'
+													>
+														Drawer
+													</a>
+												</li>
+												<li>
+													<a
+														onClick={() => {
+															setEntryType("Tips");
+															calcTotals(entry[entryType()]);
+														}}
+														class='block px-4 py-1 hover:bg-input-gray'
+													>
+														Tips
+													</a>
+												</li>
+												<li>
+													<a
+														onClick={() => {
+															setEntryType("Final");
+															calcTotals(entry[entryType()]);
+														}}
+														class='block px-4 py-1 hover:bg-input-gray'
+													>
+														Final
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</Show>
+							</div>
 						</div>
 					</div>
-					<div class='py-5 flex justify-center'>
-						<div class='grid grid-cols-2 gap-5 text-sm font-light w-11/12'>
-							<button
-								class='p-1.5 border border-border-gray rounded-md hover:bg-border-gray order-last'
-								onClick={() => {
-									calcTotals(entry[entryType()]);
-								}}
-							>
-								Submit
-							</button>
-							<button
-								class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
-								onClick={() => {
-									calcTotals(entry[entryType()]);
-								}}
-							>
-								Clear All
-							</button>
+					<div class="pb-5 px-5 relative flex items-center">
+						<div class="flex-grow border-t border-border-gray"></div>
+					</div>
+					<div id='entry-input'>
+						<div class='flex justify-center'>
+							<div class='border border-border-gray rounded-md w-11/12'>
+								<table
+									class='table-auto w-full text-sm font-light'
+									id='bills'
+								>
+									<tbody>
+										<For each={entry[entryType()]}>
+											{(item) => (
+												<tr class='text-center'>
+													<td class='border-r border-b border-border-gray bg-input-gray px-10'>
+														{labels[item.id].bill_label}
+													</td>
+													<td class='border-b border-border-gray p-2'>
+														<input
+															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+															value={item.bill_amount}
+															onChange={(e) => {
+																setEntry(entryType(), item.id, (entry) => ({
+																	...entry,
+																	bill_amount: parseInt(e.target.value),
+																}));
+																calcTotals(entry[entryType()]);
+																setAllTotals(entryType(), total());
+															}}
+														></input>
+													</td>
+													<td class='border-l border-r border-b border-border-gray bg-input-gray px-10'>
+														{labels[item.id].change_label}
+													</td>
+													<td class='border-b border-border-gray p-2'>
+														<input
+															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+															value={item.change_amount}
+															onChange={(e) => {
+																setEntry(
+																	entryType(),
+																	item.id,
+																	"change_amount",
+																	parseInt(e.target.value),
+																);
+																calcTotals(entry[entryType()]);
+																setAllTotals(entryType(), total());
+															}}
+														></input>
+													</td>
+												</tr>
+											)}
+										</For>
+										<tr class='text-center'>
+											<td class='border-r border-b border-border-gray p-4 bg-input-gray'>
+												Bill Total
+											</td>
+											<td class='border-b border-border-gray text-content-gray'>
+												{billTotal()}
+											</td>
+											<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
+												Coin Total
+											</td>
+											<td class='border-b border-border-gray text-content-gray'>
+												{changeTotal()}
+											</td>
+										</tr>
+										<tr class='text-center'>
+											<td class='border-r border-border-gray rounded-bl-lg p-4 bg-input-gray'>
+												Total
+											</td>
+											<td
+												class='text-content-gray'
+												colspan={3}
+											>
+												{total()}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class='py-5 flex justify-center'>
+							<div class='grid grid-cols-2 gap-5 text-sm font-light w-11/12'>
+								<button
+									class='p-1.5 border border-border-gray rounded-md hover:bg-border-gray order-last'
+									onClick={() => {
+										calcTotals(entry[entryType()]);
+									}}
+								>
+									Submit
+								</button>
+								<button
+									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
+									onClick={() => {
+										calcTotals(entry[entryType()]);
+									}}
+								>
+									Clear All
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
