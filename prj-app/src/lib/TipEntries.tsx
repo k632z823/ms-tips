@@ -130,101 +130,114 @@ const EntryTable: Component = () => {
 			<div id='entry-table'>
 				<div id='entry-info'>
 					<div class='flex justify-center'>
-						<div class='flex'>
-							<label>Drawer: </label> <p>{allTotals.Drawer}</p>
-						</div>
-						<div class='flex'>
-							<label>Tips: </label> <p>{allTotals.Tips}</p>
-						</div>
-						<div class='flex'>
-							<label>Final: </label> <p>{allTotals.Final}</p>
+						<div class='grid grid-cols-6 text-sm font-light w-11/12'>
+							<div class='p-2 border border-border-gray rounded-l-md bg-input-gray text-center'>
+								<label>Drawer</label>
+							</div>
+							<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
+								{allTotals.Drawer}
+							</div>
+							<div class='p-2 border border-border-gray bg-input-gray text-center'>
+								<label>Tips</label>
+							</div>
+							<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
+								{allTotals.Tips}
+							</div>
+							<div class='p-2 border border-border-gray bg-input-gray text-center'>
+								<label>Final</label>
+							</div>
+							<div class='p-2 border-y border-r rounded-r-md border-border-gray bg-black text-content-gray'>
+								{allTotals.Final}
+							</div>
 						</div>
 					</div>
-					<div class='w-2/6'>
-						<button
-							id='dropdownDefaultButton'
-							data-dropdown-toggle='dropdown'
-							class='border border-border-gray rounded-md text-sm text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
-							type='button'
-							onClick={() => setDropDown(!dropDown())}
-						>
-							{entryType()}
-							<svg
-								class='w-1.5 h-1.5'
-								aria-hidden='true'
-								xmlns='http://www.w3.org/2000/svg'
-								fill='none'
-								viewBox='0 0 10 6'
+					<div class='flex justify-center'>
+						<div class='py-5 grid grid-cols-2 text-sm font-light w-11/12'>
+							<button
+								id='dropdownDefaultButton'
+								data-dropdown-toggle='dropdown'
+								class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+								type='button'
+								onClick={() => setDropDown(!dropDown())}
 							>
-								<path
-									stroke='currentColor'
-									stroke-linecap='round'
-									stroke-linejoin='round'
-									stroke-width='2'
-									d='m1 1 4 4 4-4'
-								/>
-							</svg>
-						</button>
-						<Show when={dropDown()}>
-							<div class='py-1.5'>
-								<div
-									id='dropdown'
-									class='border border-border-gray bg-menu-gray rounded-md text-content-gray w-full'
+								{entryType()}
+								<svg
+									class='w-1.5 h-1.5'
+									aria-hidden='true'
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 10 6'
 								>
-									<ul
-										class='py-2 text-sm text-gray-700'
-										aria-labelledby='dropdownDefaultButton'
+									<path
+										stroke='currentColor'
+										stroke-linecap='round'
+										stroke-linejoin='round'
+										stroke-width='2'
+										d='m1 1 4 4 4-4'
+									/>
+								</svg>
+							</button>
+							<Show when={dropDown()}>
+								<div class='py-1.5'>
+									<div
+										id='dropdown'
+										class='border border-border-gray bg-menu-gray rounded-md text-content-gray w-full'
 									>
-										<li>
-											<a
-												onClick={() => {
-													setEntryType("Drawer");
-													calcTotals(entry[entryType()]);
-												}}
-												class='block px-4 py-1 hover:bg-input-gray'
-											>
-												Drawer
-											</a>
-										</li>
-										<li>
-											<a
-												onClick={() => {
-													setEntryType("Tips");
-													calcTotals(entry[entryType()]);
-												}}
-												class='block px-4 py-1 hover:bg-input-gray'
-											>
-												Tips
-											</a>
-										</li>
-										<li>
-											<a
-												onClick={() => {
-													setEntryType("Final");
-													calcTotals(entry[entryType()]);
-												}}
-												class='block px-4 py-1 hover:bg-input-gray'
-											>
-												Final
-											</a>
-										</li>
-									</ul>
+										<ul
+											class='py-2'
+											aria-labelledby='dropdownDefaultButton'
+										>
+											<li>
+												<a
+													onClick={() => {
+														setEntryType("Drawer");
+														calcTotals(entry[entryType()]);
+													}}
+													class='block px-4 py-1 hover:bg-input-gray'
+												>
+													Drawer
+												</a>
+											</li>
+											<li>
+												<a
+													onClick={() => {
+														setEntryType("Tips");
+														calcTotals(entry[entryType()]);
+													}}
+													class='block px-4 py-1 hover:bg-input-gray'
+												>
+													Tips
+												</a>
+											</li>
+											<li>
+												<a
+													onClick={() => {
+														setEntryType("Final");
+														calcTotals(entry[entryType()]);
+													}}
+													class='block px-4 py-1 hover:bg-input-gray'
+												>
+													Final
+												</a>
+											</li>
+										</ul>
+									</div>
 								</div>
-							</div>
-						</Show>
+							</Show>
+						</div>
 					</div>
 				</div>
 				<div id='entry-input'>
-					<div class='flex justify-center py-5'>
+					<div class='flex justify-center'>
 						<div class='border border-border-gray rounded-md w-11/12'>
 							<table
-								class='table-auto w-full'
+								class='table-auto w-full text-sm font-light'
 								id='bills'
 							>
 								<tbody>
 									<For each={entry[entryType()]}>
 										{(item) => (
-											<tr class='text-center text-sm'>
+											<tr class='text-center'>
 												<td class='border-r border-b border-border-gray bg-input-gray px-12'>
 													{labels[item.id].bill_label}
 												</td>
@@ -265,25 +278,25 @@ const EntryTable: Component = () => {
 										)}
 									</For>
 									<tr class='text-center'>
-										<td class='border-r border-b border-border-gray text-sm p-4 bg-input-gray'>
+										<td class='border-r border-b border-border-gray p-4 bg-input-gray'>
 											Bill Total
 										</td>
-										<td class='border-b border-border-gray text-sm text-content-gray'>
+										<td class='border-b border-border-gray text-content-gray'>
 											{billTotal()}
 										</td>
-										<td class='border-t border-l border-r border-b border-border-gray text-sm bg-input-gray'>
+										<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
 											Coin Total
 										</td>
-										<td class='border-b border-border-gray text-sm text-content-gray'>
+										<td class='border-b border-border-gray text-content-gray'>
 											{changeTotal()}
 										</td>
 									</tr>
 									<tr class='text-center'>
-										<td class='border-r border-border-gray rounded-bl-lg text-sm p-4 bg-input-gray'>
+										<td class='border-r border-border-gray rounded-bl-lg p-4 bg-input-gray'>
 											Total
 										</td>
 										<td
-											class='text-sm text-content-gray'
+											class='text-content-gray'
 											colspan={3}
 										>
 											{total()}
@@ -293,14 +306,26 @@ const EntryTable: Component = () => {
 							</table>
 						</div>
 					</div>
-					<button
-						class='m-5 border border-border-gray'
-						onClick={() => {
-							calcTotals(entry[entryType()]);
-						}}
-					>
-						Submit
-					</button>
+					<div class='py-5 flex justify-center'>
+						<div class='grid grid-cols-2 gap-5 text-sm font-light w-11/12'>
+							<button
+								class='p-1.5 border border-border-gray rounded-md hover:bg-border-gray order-last'
+								onClick={() => {
+									calcTotals(entry[entryType()]);
+								}}
+							>
+								Submit
+							</button>
+							<button
+								class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
+								onClick={() => {
+									calcTotals(entry[entryType()]);
+								}}
+							>
+								Clear All
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>

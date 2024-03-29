@@ -5,9 +5,6 @@ import EntryTable from "../lib/TipEntries";
 const Entries: Component = () => {
 	return (
 		<>
-			<br></br>
-			<br></br>
-
 			<EntryTable></EntryTable>
 		</>
 	);
