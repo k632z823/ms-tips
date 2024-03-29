@@ -36,11 +36,14 @@ const DateDisplay: Component = () => {
   });
 
   return (
-    <div>
-      <p>{formatHour(currentDate())}:{formatMinutes(currentDate())}</p>
-      <p>{getDayOfWeek(currentDate())}</p>
-      <p>{getMonthName(currentDate())} {currentDate().getDate()}</p>
-      <p>{currentDate().getFullYear()}</p>
+    <div class='flex justify-center'>
+      <div class='border border-border-gray  rounded-md w-11/12 p-2.5'>
+        <div class='flex justify-between items-center'>
+          <div>{formatHour(currentDate())}:{formatMinutes(currentDate())}</div>
+          {/* <div>{getDayOfWeek(currentDate())}</div> */}
+          <div>{getMonthName(currentDate())} {currentDate().getDate()}, {currentDate().getFullYear()}</div>
+        </div>
+      </div>
     </div>
   );
 };

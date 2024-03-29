@@ -6,18 +6,12 @@ import OverviewEntries from "../lib/OverviewEntries";
 const Overview: Component = () => {
 	return (
 		<>
-			<br></br>
-			<br></br>
-			<br></br>
-			<h1>Overview page</h1>
-			<br></br>
-			<br></br>
-			<div class=''>
+			<div class='pb-5 text-sm font-light'>
 				<DateDisplay/>
 			</div>
-			<OverviewEntries drawer={50} tips={30} final={80} tipRate={25}/>
-			<br></br>
-			<br></br>
+			<div class='text-sm font-light'>
+				<OverviewEntries drawer={0} tips={0} final={0} tipRate={0}/>
+			</div>
 		</>
 	);
 };
