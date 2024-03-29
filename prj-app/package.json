@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.13.1",
+    "moment": "^2.30.1",
     "solid-app-router": "^0.4.2",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11"
