@@ -43,7 +43,7 @@ const ArchiveTable: Component = () => {
                     <tbody>
                         <For each={entries}>
                             {(entry) => (
-                                <tr class='border-b border-border-gray text-content-gray hover:bg-input-gray'>
+                                <tr class='border-b border-border-gray text-content-gray hover:bg-menu-gray'>
                                     <td class='p-3 border-r border-border-gray text-center'>{entry.number}</td>
                                     <td class='p-3 border-r border-border-gray'>{moment(entry.date).format("L")}</td>
                                     {/* <td>{entry.drawer}</td> */}

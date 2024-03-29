@@ -227,7 +227,7 @@ const EntryTable: Component = () => {
 							</div>
 						</div>
 					</div>
-					<div class="pb-5 px-5 relative flex items-center">
+					<div class="pb-5 px-5 flex items-center">
 						<div class="flex-grow border-t border-border-gray"></div>
 					</div>
 					<div id='entry-input'>

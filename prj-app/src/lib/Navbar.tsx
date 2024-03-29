@@ -1,7 +1,7 @@
 import { For, type Component, Show, createSignal, onCleanup } from "solid-js";
 import { A } from "@solidjs/router";
 
-import pfp from "../logos/cat_profile_pic.png";
+import logo from "../logos/junimo-tippy.png";
 
 function clickOutside(
 	el: {
@@ -9,7 +9,7 @@ function clickOutside(
 	},
 	accessor: () => {
 		(): any;
-		new (): any;
+		new(): any;
 	},
 ) {
 	const onClick = (e: { target: any }) =>
@@ -42,31 +42,30 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 		<>
 			<div
 				id='profile'
-				class='text-white text-sm flex items-center gap-2'
+				class='text-white text-md font-semibold flex items-center gap-2'
 				//@ts-ignore
-				use:clickOutside={() => {
-					setIsSelected(false);
-				}}
+				// use:clickOutside={() => {
+				// 	setIsSelected(false);
+				// }}
 			>
 				<img
 					id='avatarButton'
-					class='w-5 h-5 rounded-full cursor-pointer'
-					data-dropdown-toggle='userDropdown'
-					data-dropdown-placement='bottom-start'
-					src={pfp}
-					onClick={() => {
-						setIsSelected(!isSelected());
-					}}
+					class='w-5 h-5'
+					// data-dropdown-toggle='userDropdown'
+					// data-dropdown-placement='bottom-start'
+					src={logo}
+					// onClick={() => {
+					// 	setIsSelected(!isSelected());
+					// }}
 				></img>
-				Mustard Seed
-				<div
+				tippy
+				{/* <div
 					id='profile-dropdown'
 					class='absolute left-0 top-10 w-full p-2'
 				>
 					<div
-						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${
-							isSelected() ? "border border-border-gray max-h-96 p-2" : "max-h-0 p-0"
-						}`}
+						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${isSelected() ? "border border-border-gray max-h-96 p-2" : "max-h-0 p-0"
+							}`}
 					>
 						<For each={props.items}>
 							{(item) => (
@@ -79,7 +78,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 							)}
 						</For>
 					</div>
-				</div>
+				</div> */}
 			</div>
 			<div
 				id='dropdown'
@@ -107,16 +106,29 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					class='absolute left-0 top-10 w-full p-2'
 				>
 					<div
-						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${
-							isOpen() ? "border border-border-gray max-h-96 p-2" : "max-h-0 p-0"
-						}`}
+						class={`bg-black flex flex-col mt-2 gap-2 rounded-md min-w-max w-full overflow-hidden ${isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
+							}`}
 					>
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2 rounded-md transition-all'>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
 										<img src={item.icon} />
 										<a href={item.path}>{item.label}</a>
+									</div>
+								</Show>
+
+							)}
+						</For>
+						<div class="px-0.5 flex items-center">
+							<div class="flex-grow border-t border-border-gray"></div>
+						</div>
+						<For each={props.items}>
+							{(item) => (
+								<Show when={item.group == "profile"}>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
+										<img src={item.icon} />
+										<A href={item.path}>{item.label}</A>
 									</div>
 								</Show>
 							)}
