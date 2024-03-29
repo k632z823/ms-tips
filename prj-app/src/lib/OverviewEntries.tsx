@@ -7,7 +7,7 @@ interface OverviewEntriesProps {
     tipRate: number;
 }
 
-const OverviewEntries = (props: OverviewEntriesProps) => {
+const OverviewEntries: Component<OverviewEntriesProps> = (props) => {
 
     const { drawer, tips, final, tipRate } = props;
 
@@ -23,7 +23,7 @@ const OverviewEntries = (props: OverviewEntriesProps) => {
                     <tbody class='bg-input-gray'>
                         <tr>
                             <td class='text-sm text-mini-gray'>Drawer</td>
-                            <td class=''>${getDrawer()}</td>
+                            <td>${getDrawer()}</td>
                         </tr>
                         <tr>
                             <td class='text-sm text-mini-gray'>Tips</td>

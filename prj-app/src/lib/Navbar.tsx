@@ -142,7 +142,7 @@ const Navbar: Component<NavbarProps> = (props: NavbarProps) => {
 	//pulls one of each group names
 	return (
 		<nav>
-			<div class='border-b border-border-gray bg-black fixed sm:hidden flex w-full items-center justify-between px-4 py-2'>
+			<div class='border-b border-border-gray bg-black fixed md:hidden flex w-full items-center justify-between px-4 py-2'>
 				<NavbarMobile items={props.items} />
 			</div>
 		</nav>

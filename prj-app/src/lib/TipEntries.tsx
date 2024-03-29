@@ -121,9 +121,6 @@ const EntryTable: Component = () => {
 	});
 	const [dropDown, setDropDown] = createSignal<boolean>(false);
 
-	createEffect(() => {
-		setEntry(entry[entryType()]);
-	});
 
 	return (
 		<>
