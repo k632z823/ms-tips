@@ -1,11 +1,13 @@
-import type { Component } from "solid-js";
+import { Component, Show, onMount } from "solid-js";
 import Nav from "../lib/Nav";
-import EntryTable from "../lib/TipEntries";
+import EntryDisplay from "../lib/TipEntries";
 
 const Entries: Component = () => {
+	let showConfigValue;
+
 	return (
 		<>
-			<EntryTable></EntryTable>
+			<EntryDisplay></EntryDisplay>
 		</>
 	);
 };

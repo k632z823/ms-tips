@@ -8,6 +8,7 @@ import {
 	type Setter,
 } from "solid-js";
 import { createStore } from "solid-js/store";
+import TipConfig from "./TipConfig";
 
 interface Entry {
 	id: number;
@@ -19,7 +20,7 @@ interface Label {
 	change_label: string;
 }
 
-interface EntryProps {
+export interface EntryProps {
 	Drawer: Entry[];
 	Tips: Entry[];
 	Final: Entry[];
@@ -54,7 +55,7 @@ const labels: Label[] = [
 
 const starter = [
 	{
-		id: 0,
+		id: 0, 
 		bill_amount: 0,
 		change_amount: 0,
 	},
@@ -90,6 +91,7 @@ type entryTypes = keyof EntryProps;
 const [billTotal, setBillTotal] = createSignal<number>(0);
 const [changeTotal, setChangeTotal] = createSignal<number>(0);
 const [total, setTotal] = createSignal<number>(0);
+const [showConfig, setShowConfig] = createSignal<boolean>(false);
 
 function calcTotals(entry: Entry[]) {
 	setBillTotal(() => {
@@ -107,8 +109,9 @@ function calcTotals(entry: Entry[]) {
 	setTotal(billTotal() + changeTotal());
 }
 
-const EntryTable: Component = () => {
+const EntryDisplay: Component = () => {
 	const [entryType, setEntryType] = createSignal<entryTypes>("Drawer");
+
 	const [entry, setEntry] = createStore({
 		Drawer: JSON.parse(JSON.stringify(starter)),
 		Tips: JSON.parse(JSON.stringify(starter)),
@@ -123,16 +126,21 @@ const EntryTable: Component = () => {
 
 	createEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			const dropdownDefaultButton = document.getElementById('dropdownDefaultButton');
-			if (dropdownDefaultButton && !dropdownDefaultButton.contains(event.target as Node)) {
+			const dropdownDefaultButton = document.getElementById(
+				"dropdownDefaultButton",
+			);
+			if (
+				dropdownDefaultButton &&
+				!dropdownDefaultButton.contains(event.target as Node)
+			) {
 				setDropDown(false);
 			}
 		};
 
-		document.addEventListener('click', handleClickOutside);
+		document.addEventListener("click", handleClickOutside);
 
 		return () => {
-			document.removeEventListener('click', handleClickOutside);
+			document.removeEventListener("click", handleClickOutside);
 		};
 	});
 
@@ -237,8 +245,8 @@ const EntryTable: Component = () => {
 							</div>
 						</div>
 					</div>
-					<div class="pb-5 px-5 flex items-center">
-						<div class="flex-grow border-t border-border-gray"></div>
+					<div class='pb-5 px-5 flex items-center'>
+						<div class='flex-grow border-t border-border-gray'></div>
 					</div>
 					<div id='entry-input'>
 						<div class='flex justify-center px-5'>
@@ -324,26 +332,39 @@ const EntryTable: Component = () => {
 								<button
 									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
 									onClick={() => {
-										calcTotals(entry[entryType()]);
+										setShowConfig(!showConfig());
 									}}
 								>
-									Submit
+									Calculate Tip Rate
 								</button>
 								<button
 									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
 									onClick={() => {
+										entry[entryType()].forEach((entry: Entry) => {
+											setEntry(entryType(), entry.id, {
+												...entry,
+												bill_amount: 0,
+												change_amount: 0,
+											});
+										});
 										calcTotals(entry[entryType()]);
+										setAllTotals(entryType(), total());
 									}}
 								>
-									Clear All
+									Clear Entry
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			<Show when={showConfig()}>
+				<br></br>
+				<TipConfig tipTotal={400}></TipConfig>
+			</Show>
 		</>
 	);
 };
 
-export default EntryTable;
+export default EntryDisplay;
