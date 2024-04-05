@@ -29,7 +29,7 @@ const OverviewEntries: Component<OverviewEntriesProps> = (props) => {
                         </tr>
                         <tr class='border-b border-border-gray'>
                             <td class='p-2 align-top text-sm text-mini-gray'>Drawer</td>
-                            <td class='p-4 flex justify-end text-4xl font-light'>${getDrawer()}</td>
+                            <td class='p-4 flex justify-end text-4xl'>${getDrawer()}</td>
                         </tr>
                         <tr class='border-b border-border-gray'>
                             <td class='p-2 align-top text-sm text-mini-gray'>Tips</td>

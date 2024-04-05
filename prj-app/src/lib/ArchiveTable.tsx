@@ -66,7 +66,7 @@ const ArchiveTable: Component = () => {
                                     <td class='p-3 border-r border-border-gray'>${entryRow.entry.final}</td>
                                     {/* <td class='p-3 border-r border-border-gray'>{entry.tipRate}</td> */}
                                     {/* <td>{entry.base}</td> */}
-                                    <td class='p-3 border-r border-border-gray'>{entryRow.entry.tags}</td>
+                                    <td class='p-3 border-r border-border-gray overflow-x-auto max-w-1'>{entryRow.entry.tags}</td>
                                     <td class='p-3'>
                                         <button
                                             class='inline-flex items-center justify-between w-full'

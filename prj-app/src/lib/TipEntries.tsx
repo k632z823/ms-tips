@@ -125,41 +125,35 @@ const EntryTable: Component = () => {
 		const handleClickOutside = (event: MouseEvent) => {
 			const dropdownDefaultButton = document.getElementById('dropdownDefaultButton');
 			if (dropdownDefaultButton && !dropdownDefaultButton.contains(event.target as Node)) {
-			  setDropDown(false);
+				setDropDown(false);
 			}
 		};
-	
+
 		document.addEventListener('click', handleClickOutside);
-	
+
 		return () => {
-		  document.removeEventListener('click', handleClickOutside);
+			document.removeEventListener('click', handleClickOutside);
 		};
-	});	
+	});
 
 	return (
 		<>
-			<div id='entry-info'>
-				<div class='flex justify-center px-5'>
-					<div class='grid grid-cols-6 text-sm font-light w-full'>
-						<div class='p-2 border border-border-gray rounded-l-md bg-input-gray text-center'>
-							<label>Drawer</label>
-						</div>
-						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-							${allTotals.Drawer}
-						</div>
-						<div class='p-2 border border-border-gray bg-input-gray text-center'>
-							<label>Tips</label>
-						</div>
-						<div class='p-2 border-y border-border-gray bg-black text-content-gray'>
-							${allTotals.Tips}
-						</div>
-						<div class='p-2 border border-border-gray bg-input-gray text-center'>
-							<label>Final</label>
-						</div>
-						<div class='p-2 border-y border-r rounded-r-md border-border-gray bg-black text-content-gray'>
-							${allTotals.Final}
-						</div>
-					</div>
+			<div class='flex justify-center px-5' id='entry-info'>
+				<div class='border border-border-gray rounded-md w-full'>
+					<table class='table-auto w-full'>
+						<tbody>
+							<tr class='border-border-gray'>
+								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>Drawer</td>
+								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>Tips</td>
+								<td class='p-2 align-top text-xs text-mini-gray'>Final</td>
+							</tr>
+							<tr class='border-border-gray'>
+								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>${allTotals.Drawer}</td>
+								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>${allTotals.Tips}</td>
+								<td class='px-2 pb-2 w-1/3 text-l text-right'>${allTotals.Final}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class='flex justify-center px-5 py-5'>
