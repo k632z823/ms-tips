@@ -1,10 +1,15 @@
 import { Component } from "solid-js";
-import { type TipConfigProps } from "./TipConfig";
+
+interface TipConfigProps {
+	tip_total: number;
+	tip_rate: number;
+}
 
 const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 	return (
 		<>
-			<div>tip total = {props.tipTotal}</div>
+			<div>tip total = {props.tip_total}</div>
+			<div>tip rate = {props.tip_rate}</div>
 		</>
 	);
 };

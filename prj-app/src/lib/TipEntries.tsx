@@ -361,7 +361,7 @@ const EntryDisplay: Component = () => {
 
 			<Show when={showConfig()}>
 				<br></br>
-				<TipConfig tipTotal={400}></TipConfig>
+				<TipConfig tip_total={400}></TipConfig>
 			</Show>
 		</>
 	);
