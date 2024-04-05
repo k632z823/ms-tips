@@ -121,6 +121,20 @@ const EntryTable: Component = () => {
 	});
 	const [dropDown, setDropDown] = createSignal<boolean>(false);
 
+	createEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			const dropdownDefaultButton = document.getElementById('dropdownDefaultButton');
+			if (dropdownDefaultButton && !dropdownDefaultButton.contains(event.target as Node)) {
+			  setDropDown(false);
+			}
+		};
+	
+		document.addEventListener('click', handleClickOutside);
+	
+		return () => {
+		  document.removeEventListener('click', handleClickOutside);
+		};
+	});	
 
 	return (
 		<>
