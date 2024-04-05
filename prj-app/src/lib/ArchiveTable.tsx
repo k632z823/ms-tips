@@ -3,7 +3,6 @@ import { createStore } from "solid-js/store";
 import moment from 'moment';
 
 interface Entry {
-    number: number;
     date: string;
     drawer: number;
     tips: number;
@@ -13,14 +12,30 @@ interface Entry {
     tags: string[];
 }
 
-const meow = [{number: 1, date: "03-28-2024", drawer: 40, tips: 50, 
+interface entryRow {
+    entry: Entry;
+    dropDownShown: boolean;
+    number: number;
+}
+
+const meow = [{date: "03-28-2024", drawer: 40, tips: 50, 
 				final: 586.23, tipRate: 10, base: 8, tags: ["Evening Event"]},
-                {number: 2, date: "03-29-2024", drawer: 90, tips: 30, 
+                {date: "03-29-2024", drawer: 90, tips: 30, 
 				final: 490.15, tipRate: 13, base: 10, tags: []}];
 
+let entryRows: entryRow[] = [];
+
+for (let item of meow) {
+    entryRows.push({
+        entry: item, dropDownShown: false, number: meow.indexOf(item) + 1
+    });
+}
+
+    
 const ArchiveTable: Component = () => {
 
-    const[entries, setEntries] = createStore<Entry[]>(meow);
+    const[entry, setEntry] = createStore<entryRow[]>(entryRows);
+    const[selectedEntry, setSelectedEntry] = createSignal<number>(0);
     const [dropDown, setDropDown] = createSignal<boolean>(false);
 
     return (
@@ -41,21 +56,28 @@ const ArchiveTable: Component = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <For each={entries}>
-                            {(entry) => (
+                        <For each={entryRows}>
+                            {(entryRow) => (
                                 <tr class='border-b border-border-gray text-content-gray hover:bg-menu-gray'>
-                                    <td class='p-3 border-r border-border-gray text-center'>{entry.number}</td>
-                                    <td class='p-3 border-r border-border-gray'>{moment(entry.date).format("L")}</td>
+                                    <td class='p-3 border-r border-border-gray text-center'>{entryRow.number}</td>
+                                    <td class='p-3 border-r border-border-gray'>{moment(entryRow.entry.date).format("L")}</td>
                                     {/* <td>{entry.drawer}</td> */}
                                     {/* <td>{entry.tips}</td> */}
-                                    <td class='p-3 border-r border-border-gray'>${entry.final}</td>
+                                    <td class='p-3 border-r border-border-gray'>${entryRow.entry.final}</td>
                                     {/* <td class='p-3 border-r border-border-gray'>{entry.tipRate}</td> */}
                                     {/* <td>{entry.base}</td> */}
-                                    <td class='p-3 border-r border-border-gray'>{entry.tags}</td>
+                                    <td class='p-3 border-r border-border-gray'>{entryRow.entry.tags}</td>
                                     <td class='p-3'>
                                         <button
                                             class='inline-flex items-center justify-between w-full'
-                                            onClick={() => setDropDown(!dropDown())}
+                                            onClick={
+                                                () => {
+                                                    setSelectedEntry(entryRow.number);
+                                                    setEntry(selectedEntry(), (row) => ({
+                                                        ...row, dropDownShown: !row.dropDownShown
+                                                        })
+                                                    )
+                                                }}
                                         >
                                             Select
                                             <svg
@@ -74,7 +96,7 @@ const ArchiveTable: Component = () => {
                                             />
                                             </svg>
                                         </button>
-                                        <Show when={dropDown()}>
+                                        <Show when={entryRow.dropDownShown}>
                                             <div>
                                                 <div>
                                                     <ul>
