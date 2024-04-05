@@ -54,11 +54,46 @@ const ArchiveTable: Component = () => {
                                     <td class='p-3 border-r border-border-gray'>{entry.tags}</td>
                                     <td class='p-3'>
                                         <button
-                                            class='inline-flex items-center'
+                                            class='inline-flex items-center justify-between w-full'
                                             onClick={() => setDropDown(!dropDown())}
                                         >
-                                            Edit
+                                            Select
+                                            <svg
+                                                class='w-1.5 h-1.5'
+                                                aria-hidden='true'
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                fill='none'
+                                                viewBox='0 0 10 6'
+                                            >   
+                                            <path
+                                                stroke='currentColor'
+                                                stroke-linecap='round'
+                                                stroke-linejoin='round'
+                                                stroke-width='2'
+                                                d='m1 1 4 4 4-4'
+                                            />
+                                            </svg>
                                         </button>
+                                        <Show when={dropDown()}>
+                                            <div>
+                                                <div>
+                                                    <ul>
+                                                        <li>
+                                                            View
+                                                        </li>
+                                                        <li>
+                                                            Export
+                                                        </li>
+                                                        <li>
+                                                            Edit
+                                                        </li>
+                                                        <li>
+                                                            Delete
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </Show>
                                     </td>
                                 </tr>
                             )}
