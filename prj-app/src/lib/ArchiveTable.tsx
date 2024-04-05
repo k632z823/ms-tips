@@ -1,4 +1,4 @@
-import { For, Component, createSignal, createEffect, Show } from 'solid-js';
+import { For, Component, createSignal, onCleanup, createEffect, Show } from 'solid-js';
 import { createStore } from "solid-js/store";
 import moment from 'moment';
 
@@ -16,6 +16,7 @@ interface entryRow {
     entry: Entry;
     dropDownShown: boolean;
     number: number;
+    momentDate: any;
 }
 
 const meow = [{date: "03-29-2024", drawer: 40, tips: 50, 
@@ -29,16 +30,31 @@ let entryRows: entryRow[] = [];
 
 for (let item of meow) {
     entryRows.push({
-        entry: item, dropDownShown: false, number: meow.indexOf(item)
+        entry: item, dropDownShown: false, number: meow.indexOf(item), momentDate: moment(item.date)
     });
 }
 
-    
+const sortDate = (entryRowsToSort: entryRow[], sortByDesc: boolean) => {
+    let copyEntryRowsToSort: entryRow[] = [...entryRowsToSort];
+    if (sortByDesc) {
+        copyEntryRowsToSort.sort((a, b) => b.momentDate.valueOf() - a.momentDate.valueOf())
+    } else {
+        copyEntryRowsToSort.sort((a, b) => a.momentDate.valueOf() - b.momentDate.valueOf())
+    }
+    console.log(copyEntryRowsToSort)
+    setSortedEntryRows((rows) => rows = [...copyEntryRowsToSort])
+    console.log(copyEntryRowsToSort)
+}
+
+const[sortedEntryRows, setSortedEntryRows] = createStore<entryRow[]>(entryRows);
+
 const ArchiveTable: Component = () => {
 
     const[entry, setEntry] = createStore<entryRow[]>(entryRows);
     const[selectedEntry, setSelectedEntry] = createSignal<number>(0);
-    const[dateSortOrder, setDateSortOrder] = createSignal<string>("desc");
+    const[descDateSortOrder, setDescDateSortOrder] = createSignal<boolean>(true);
+    
+   // let sortedEntryRows: entryRow[] = [...entryRows];
 
     return (
         <div class='flex justify-center px-5'>
@@ -48,7 +64,15 @@ const ArchiveTable: Component = () => {
                         <tr class='text-start'>
                             <td class='p-3 w-[44.5px] border-r border-border-gray text-center'>#</td>
                             <td class='p-3 w-[6.5rem] border-r border-border-gray'>
-                                <button class='inline-flex items-center justify-between w-full'>
+                                <button 
+                                    class='inline-flex items-center justify-between w-full'
+                                    onClick={
+                                        () => {
+                                            setDescDateSortOrder(!descDateSortOrder());
+                                            sortDate(sortedEntryRows, descDateSortOrder());
+                                        }
+                                    }
+                                >
                                     Date
                                     <svg 
                                         fill="#505050" 
@@ -73,11 +97,11 @@ const ArchiveTable: Component = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <For each={entryRows}>
+                        <For each={sortedEntryRows}>
                             {(entryRow) => (
                                 <tr class='border-t border-border-gray text-content-gray hover:bg-menu-gray'>
-                                    <td class='p-3 border-r border-border-gray text-center'>{entryRow.number + 1}</td>
-                                    <td class='p-3 border-r border-border-gray'>{moment(entryRow.entry.date).format("L")}</td>
+                                    <td class='p-3 border-r border-border-gray text-center'>{sortedEntryRows.indexOf(entryRow) + 1}</td>
+                                    <td class='p-3 border-r border-border-gray'>{moment(entryRow.momentDate).format("L")}</td>
                                     {/* <td>{entry.drawer}</td> */}
                                     {/* <td>{entry.tips}</td> */}
                                     {/* <td class='p-3 border-r border-border-gray'>${entryRow.entry.final}</td> */}
