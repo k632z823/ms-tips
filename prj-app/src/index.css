@@ -15,6 +15,27 @@
   z-index: 9999;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #151515;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #202020;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
