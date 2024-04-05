@@ -5,11 +5,10 @@ import Nav from "./lib/Nav";
 const App: Component = (props: any) => {
 	return (
 		<>
-			<Nav></Nav>
-			<br></br>
-			<br></br>
-			<br></br>
-			{props.children}
+			<Nav />
+			<div class='py-[4.5rem]'>
+				{props.children}
+			</div>
 		</>
 	);
 };
