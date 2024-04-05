@@ -152,36 +152,38 @@ const EntryTable: Component = () => {
 				<div class='border border-border-gray rounded-md w-11/12'>
 					<div id='entry-select'>
 						<div class='flex justify-center'>
-							<div class='py-5 text-sm font-normal w-11/12'>
-								<button
-									id='dropdownDefaultButton'
-									data-dropdown-toggle='dropdown'
-									class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
-									type='button'
-									onClick={() => setDropDown(!dropDown())}
-								>
-									{entryType()}
-									<svg
-										class='w-1.5 h-1.5'
-										aria-hidden='true'
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 10 6'
+							<div class='py-5 w-full relative grow text-sm font-normal'>
+								<div class='px-5'>
+									<button
+										id='dropdownDefaultButton'
+										data-dropdown-toggle='dropdown'
+										class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+										type='button'
+										onClick={() => setDropDown(!dropDown())}
 									>
-										<path
-											stroke='currentColor'
-											stroke-linecap='round'
-											stroke-linejoin='round'
-											stroke-width='2'
-											d='m1 1 4 4 4-4'
-										/>
-									</svg>
-								</button>
+										{entryType()}
+										<svg
+											class='w-1.5 h-1.5'
+											aria-hidden='true'
+											xmlns='http://www.w3.org/2000/svg'
+											fill='none'
+											viewBox='0 0 10 6'
+										>
+											<path
+												stroke='currentColor'
+												stroke-linecap='round'
+												stroke-linejoin='round'
+												stroke-width='2'
+												d='m1 1 4 4 4-4'
+											/>
+										</svg>
+									</button>
+								</div>
 								<Show when={dropDown()}>
-									<div class='py-1.5'>
+									<div class='absolute px-5 py-1.5 w-full'>
 										<div
 											id='dropdown'
-											class='border border-border-gray bg-menu-gray rounded-md text-content-gray w-full'
+											class='border border-border-gray bg-menu-gray rounded-md text-content-gray'
 										>
 											<ul
 												class='py-2'
@@ -231,8 +233,8 @@ const EntryTable: Component = () => {
 						<div class="flex-grow border-t border-border-gray"></div>
 					</div>
 					<div id='entry-input'>
-						<div class='flex justify-center'>
-							<div class='border border-border-gray rounded-md w-11/12'>
+						<div class='flex justify-center px-5'>
+							<div class='border border-border-gray rounded-md grow'>
 								<table
 									class='table-auto w-full text-sm font-light'
 									id='bills'
@@ -310,7 +312,7 @@ const EntryTable: Component = () => {
 							</div>
 						</div>
 						<div class='py-5 flex justify-center'>
-							<div class='grid grid-cols-2 gap-5 text-sm font-light w-11/12'>
+							<div class='px-5 grid grid-cols-2 gap-5 text-sm font-light w-full'>
 								<button
 									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
 									onClick={() => {

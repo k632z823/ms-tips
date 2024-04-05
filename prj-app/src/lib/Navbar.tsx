@@ -42,7 +42,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 		<>
 			<div
 				id='profile'
-				class='text-white text-md font-semibold flex items-center gap-1.5'
+				class='text-white text-md font-semibold flex items-center gap-1.5 cursor-default'
 				//@ts-ignore
 				// use:clickOutside={() => {
 				// 	setIsSelected(false);
@@ -153,7 +153,7 @@ interface NavbarProps {
 const Navbar: Component<NavbarProps> = (props: NavbarProps) => {
 	//pulls one of each group names
 	return (
-		<nav>
+		<nav class="navbar-container">
 			<div class='border-b border-border-gray bg-black fixed md:hidden flex w-full items-center justify-between px-4 py-2'>
 				<NavbarMobile items={props.items} />
 			</div>

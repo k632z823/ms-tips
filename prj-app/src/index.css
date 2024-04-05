@@ -10,6 +10,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.navbar-container {
+  position: relative;
+  z-index: 9999;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
