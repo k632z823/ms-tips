@@ -51,6 +51,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 				<img
 					id='avatarButton'
 					class='w-5 h-5'
+					draggable='false'
 					// data-dropdown-toggle='userDropdown'
 					// data-dropdown-placement='bottom-start'
 					src={logo}
@@ -103,7 +104,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 				</svg>
 				<div
 					id='dropdown-items'
-					class='absolute left-0 top-10 w-full p-2'
+					class='absolute right-0 top-10 w-full p-2'
 				>
 					<div
 						class={`bg-black flex flex-col mt-3.5 gap-2 rounded-md min-w-max w-full overflow-hidden ${isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
@@ -113,7 +114,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
 									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
-										<img src={item.icon} />
+										<img src={item.icon} draggable='false'/>
 										<a href={item.path}>{item.label}</a>
 									</div>
 								</Show>
@@ -127,7 +128,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 							{(item) => (
 								<Show when={item.group == "profile"}>
 									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
-										<img src={item.icon} />
+										<img src={item.icon} draggable='false'/>
 										<A href={item.path}>{item.label}</A>
 									</div>
 								</Show>

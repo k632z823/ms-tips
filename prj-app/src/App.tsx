@@ -5,7 +5,9 @@ import Nav from "./lib/Nav";
 const App: Component = (props: any) => {
 	return (
 		<>
-			<Nav />
+			<div class='select-none'>
+				<Nav />
+			</div>
 			<div class='py-[4.5rem]'>
 				{props.children}
 			</div>
