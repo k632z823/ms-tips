@@ -17,8 +17,8 @@ const OverviewEntries: Component<OverviewEntriesProps> = (props) => {
     const [getTipRate, setTipRate] = createSignal(tipRate);
 
     return (
-        <div class='flex justify-center'>
-            <div class='border border-border-gray rounded-md w-11/12'>
+        <div class='flex justify-center px-5'>
+            <div class='border border-border-gray rounded-md w-full'>
                 <table class='table-auto w-full'>
                     <tbody>
                         <tr class='border-b border-border-gray bg-menu-gray'>

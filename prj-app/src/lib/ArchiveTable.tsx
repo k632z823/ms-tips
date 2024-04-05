@@ -39,8 +39,8 @@ const ArchiveTable: Component = () => {
     const [dropDown, setDropDown] = createSignal<boolean>(false);
 
     return (
-        <div class='flex justify-center'>
-            <div class='border border-border-gray rounded-md w-11/12'>
+        <div class='flex justify-center px-5'>
+            <div class='border border-border-gray rounded-md w-full'>
                 <table class='table-auto text-sm font-light w-full'>
                     <thead class='border-b border-border-gray bg-input-gray'>
                         <tr class='text-start'>

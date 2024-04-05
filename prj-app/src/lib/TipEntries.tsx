@@ -139,8 +139,8 @@ const EntryTable: Component = () => {
 	return (
 		<>
 			<div id='entry-info'>
-				<div class='flex justify-center'>
-					<div class='grid grid-cols-6 text-sm font-light w-11/12'>
+				<div class='flex justify-center px-5'>
+					<div class='grid grid-cols-6 text-sm font-light w-full'>
 						<div class='p-2 border border-border-gray rounded-l-md bg-input-gray text-center'>
 							<label>Drawer</label>
 						</div>
@@ -162,8 +162,8 @@ const EntryTable: Component = () => {
 					</div>
 				</div>
 			</div>
-			<div class='flex justify-center py-5'>
-				<div class='border border-border-gray rounded-md w-11/12'>
+			<div class='flex justify-center px-5 py-5'>
+				<div class='border border-border-gray rounded-md w-full'>
 					<div id='entry-select'>
 						<div class='flex justify-center'>
 							<div class='py-5 w-full relative grow text-sm font-normal'>
@@ -257,7 +257,7 @@ const EntryTable: Component = () => {
 										<For each={entry[entryType()]}>
 											{(item) => (
 												<tr class='text-center'>
-													<td class='border-r border-b border-border-gray bg-input-gray px-10'>
+													<td class='border-r border-b border-border-gray bg-input-gray px-8'>
 														{labels[item.id].bill_label}
 													</td>
 													<td class='border-b border-border-gray p-2'>
@@ -274,7 +274,7 @@ const EntryTable: Component = () => {
 															}}
 														></input>
 													</td>
-													<td class='border-l border-r border-b border-border-gray bg-input-gray px-10'>
+													<td class='border-l border-r border-b border-border-gray bg-input-gray px-8'>
 														{labels[item.id].change_label}
 													</td>
 													<td class='border-b border-border-gray p-2'>
@@ -300,13 +300,13 @@ const EntryTable: Component = () => {
 											<td class='border-r border-b border-border-gray p-4 bg-input-gray'>
 												Bill Total
 											</td>
-											<td class='border-b border-border-gray text-content-gray'>
+											<td class='border-b border-border-gray text-content-gray w-1/4'>
 												${billTotal()}
 											</td>
 											<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
 												Coin Total
 											</td>
-											<td class='border-b border-border-gray text-content-gray'>
+											<td class='border-b border-border-gray text-content-gray w-1/4'>
 												${changeTotal()}
 											</td>
 										</tr>
