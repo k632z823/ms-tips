@@ -27,7 +27,7 @@ let entryRows: entryRow[] = [];
 
 for (let item of meow) {
     entryRows.push({
-        entry: item, dropDownShown: false, number: meow.indexOf(item) + 1
+        entry: item, dropDownShown: false, number: meow.indexOf(item)
     });
 }
 
@@ -59,7 +59,7 @@ const ArchiveTable: Component = () => {
                         <For each={entryRows}>
                             {(entryRow) => (
                                 <tr class='border-b border-border-gray text-content-gray hover:bg-menu-gray'>
-                                    <td class='p-3 border-r border-border-gray text-center'>{entryRow.number}</td>
+                                    <td class='p-3 border-r border-border-gray text-center'>{entryRow.number + 1}</td>
                                     <td class='p-3 border-r border-border-gray'>{moment(entryRow.entry.date).format("L")}</td>
                                     {/* <td>{entry.drawer}</td> */}
                                     {/* <td>{entry.tips}</td> */}
@@ -72,11 +72,18 @@ const ArchiveTable: Component = () => {
                                             class='inline-flex items-center justify-between w-full'
                                             onClick={
                                                 () => {
-                                                    setSelectedEntry(entryRow.number);
+                                                    if (selectedEntry() != entryRow.number) {
+                                                        setEntry(selectedEntry(), (row) => ({
+                                                            ...row,
+                                                            dropDownShown: false,
+                                                        }));
+                                                        setSelectedEntry(entryRow.number);
+                                                    }
+    
                                                     setEntry(selectedEntry(), (row) => ({
-                                                        ...row, dropDownShown: !row.dropDownShown
-                                                        })
-                                                    )
+                                                        ...row,
+                                                        dropDownShown: !row.dropDownShown,
+                                                    }));
                                                 }}
                                         >
                                             Select
@@ -96,7 +103,8 @@ const ArchiveTable: Component = () => {
                                             />
                                             </svg>
                                         </button>
-                                        <Show when={entryRow.dropDownShown}>
+                                        <Show when={selectedEntry() == entryRow.number &&
+                                                    entry[selectedEntry()].dropDownShown}>
                                             <div>
                                                 <div>
                                                     <ul>
