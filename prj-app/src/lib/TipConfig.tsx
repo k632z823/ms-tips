@@ -1,6 +1,6 @@
 import TipConfigBar from "./TipConfigBar";
 import { EmployeeData, pullSlingEmployeeData } from "./GetWorkers";
-import { Component, createSignal } from "solid-js";
+import { Component, createSignal, createEffect } from "solid-js";
 
 export interface TipConfigProps {
 	tip_total: number;
@@ -33,7 +33,10 @@ function calculateTipRate(tipTotal: number, employees: EmployeeData[]) {
 
 const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 	let employees: EmployeeData[] = pullSlingEmployeeData();
-	calculateTipRate(props.tip_total, employees);
+	createEffect(() => {
+		calculateTipRate(props.tip_total, employees);
+	});
+
 	return (
 		<>
 			<TipConfigBar
