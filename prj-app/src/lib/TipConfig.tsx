@@ -29,7 +29,6 @@ function calculateTipRate(tipTotal: number, employeeData: EmployeeData[]) {
 		totalHours += entry.hours_worked;
 
 		if (entry.position == "Server") {
-			console.log(empData[index].initial_tip);
 			editEmployees(index, (entry) => ({
 				...entry,
 				initial_tip: entry.hours_worked * 3,
@@ -129,7 +128,28 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 											{entry.total}
 										</td>
 										<td class='p-3 border-r border-border-gray'>
-											{entry.offset}
+											<input
+												class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+												value={entry.offset}
+												onChange={(e) => {
+													if (Number.isNaN(parseInt(e.target.value))) {
+														e.target.value =
+															employees[
+																employees.indexOf(entry)
+															].offset.toString();
+													}
+												}}
+												onFocus={(e) => {
+													if (e.target.value == "0") {
+														e.target.value = "";
+													}
+												}}
+												onBlur={(e) => {
+													if (e.target.value == "") {
+														e.target.value = "0";
+													}
+												}}
+											></input>
 										</td>
 									</tr>
 								)}
