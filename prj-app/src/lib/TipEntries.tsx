@@ -92,6 +92,7 @@ const [billTotal, setBillTotal] = createSignal<number>(0);
 const [changeTotal, setChangeTotal] = createSignal<number>(0);
 const [total, setTotal] = createSignal<number>(0);
 const [showConfig, setShowConfig] = createSignal<boolean>(false);
+const [tipTotal, setTipTotal] = createSignal<number>(0);
 
 function calcTotals(entry: Entry[]) {
 	setBillTotal(() => {
@@ -146,19 +147,32 @@ const EntryDisplay: Component = () => {
 
 	return (
 		<>
-			<div class='flex justify-center px-5' id='entry-info'>
+			<div
+				class='flex justify-center px-5'
+				id='entry-info'
+			>
 				<div class='border border-border-gray rounded-md w-full'>
 					<table class='table-auto w-full'>
 						<tbody>
 							<tr class='border-border-gray'>
-								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>Drawer</td>
-								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>Tips</td>
+								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
+									Drawer
+								</td>
+								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
+									Tips
+								</td>
 								<td class='p-2 align-top text-xs text-mini-gray'>Final</td>
 							</tr>
 							<tr class='border-border-gray'>
-								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>${allTotals.Drawer}</td>
-								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>${allTotals.Tips}</td>
-								<td class='px-2 pb-2 w-1/3 text-l text-right'>${allTotals.Final}</td>
+								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
+									${allTotals.Drawer}
+								</td>
+								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
+									${allTotals.Tips}
+								</td>
+								<td class='px-2 pb-2 w-1/3 text-l text-right'>
+									${allTotals.Final}
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -267,12 +281,28 @@ const EntryDisplay: Component = () => {
 															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
 															value={item.bill_amount}
 															onChange={(e) => {
+																if (Number.isNaN(parseInt(e.target.value))) {
+																	e.target.value =
+																		entry[entryType()][item.id].bill_amount;
+																	return;
+																}
 																setEntry(entryType(), item.id, (entry) => ({
 																	...entry,
 																	bill_amount: parseInt(e.target.value),
 																}));
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
+																setTipTotal(allTotals.Tips);
+															}}
+															onFocus={(e) => {
+																if (e.target.value == "0") {
+																	e.target.value = "";
+																}
+															}}
+															onBlur={(e) => {
+																if (e.target.value == "") {
+																	e.target.value = "0";
+																}
 															}}
 														></input>
 													</td>
@@ -284,6 +314,11 @@ const EntryDisplay: Component = () => {
 															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
 															value={item.change_amount}
 															onChange={(e) => {
+																if (Number.isNaN(parseInt(e.target.value))) {
+																	e.target.value =
+																		entry[entryType()][item.id].change_amount;
+																	return;
+																}
 																setEntry(
 																	entryType(),
 																	item.id,
@@ -292,6 +327,17 @@ const EntryDisplay: Component = () => {
 																);
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
+																setTipTotal(allTotals.Tips);
+															}}
+															onFocus={(e) => {
+																if (e.target.value == "0") {
+																	e.target.value = "";
+																}
+															}}
+															onBlur={(e) => {
+																if (e.target.value == "") {
+																	e.target.value = "0";
+																}
 															}}
 														></input>
 													</td>
@@ -349,6 +395,7 @@ const EntryDisplay: Component = () => {
 										});
 										calcTotals(entry[entryType()]);
 										setAllTotals(entryType(), total());
+										setTipTotal(allTotals.Tips);
 									}}
 								>
 									Clear Entry
@@ -361,7 +408,7 @@ const EntryDisplay: Component = () => {
 
 			<Show when={showConfig()}>
 				<br></br>
-				<TipConfig tip_total={400}></TipConfig>
+				<TipConfig tip_total={tipTotal()}></TipConfig>
 			</Show>
 		</>
 	);
