@@ -1,4 +1,4 @@
-import { For, Component, createSignal, onCleanup, createEffect, Show } from 'solid-js';
+import { For, Component, createSignal, onMount, onCleanup, createEffect, Show } from 'solid-js';
 import { createStore } from "solid-js/store";
 import moment from 'moment';
 
@@ -8,7 +8,6 @@ interface Entry {
     tips: number;
     final: number;
     tipRate: number;
-    base: number;
     tags: string[];
 }
 
@@ -20,11 +19,11 @@ interface entryRow {
 }
 
 const meow = [{date: "03-29-2024", drawer: 40, tips: 50, 
-			    final: 586.23, tipRate: 10, base: 8, tags: ["Evening Event, Bingo Night"]},
+			    final: 586, tipRate: 10, tags: ["Evening Event, Bingo Night"]},
                 {date: "03-28-2024", drawer: 90, tips: 30, 
-				final: 490.15, tipRate: 13, base: 10, tags: []},
+				final: 490, tipRate: 13, tags: []},
                 {date: "03-27-2024", drawer: 70, tips: 40, 
-				final: 540.15, tipRate: 15, base: 12, tags: []}];
+				final: 540, tipRate: 15, tags: []}];
 
 let entryRows: entryRow[] = [];
 
@@ -41,14 +40,18 @@ const sortDate = (entryRowsToSort: entryRow[], sortByDesc: boolean) => {
     } else {
         copyEntryRowsToSort.sort((a, b) => a.momentDate.valueOf() - b.momentDate.valueOf())
     }
-    console.log(copyEntryRowsToSort)
     setSortedEntryRows((rows) => rows = [...copyEntryRowsToSort])
-    console.log(copyEntryRowsToSort)
 }
 
 const[sortedEntryRows, setSortedEntryRows] = createStore<entryRow[]>(entryRows);
 
 const ArchiveTable: Component = () => {
+
+    onMount(() => {
+        setDescDateSortOrder(true);
+        sortDate(sortedEntryRows, descDateSortOrder());
+
+    })
 
     const[entry, setEntry] = createStore<entryRow[]>(entryRows);
     const[selectedEntry, setSelectedEntry] = createSignal<number>(0);
