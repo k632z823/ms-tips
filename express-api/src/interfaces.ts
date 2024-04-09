@@ -7,3 +7,46 @@ export interface Entry {
     tipRate: number;
     tags: string[];
 }
+
+export interface Auth {
+    created_at: string;
+    auth_key: string;
+}
+
+//simplified body of a response from https://api.getsling.com/v1/reports/timesheets
+export interface Timesheet_Entry {
+    id: string;
+    status: string;
+    type: string;
+    user: {
+        id: number;
+    }
+    position: {
+        id: number;
+    }
+    timesheetProjections: TimeSheet_Projection[];
+}
+
+interface TimeSheet_Projection {
+    clockIn: string;
+    clockOut: string;
+    paidMinutes: number;
+
+}
+
+//simplified response body from https://api.getsling.com/v1/groups
+//will show the available positions
+export interface Group {
+    id: number;
+    type: string;
+    name: string;
+}
+
+//simplified response body from https://api.getsling.com/v1/users
+//shows all users/employees
+export interface User {
+    id: number;
+    type: string;
+    name: string;
+    lastname: string;
+}

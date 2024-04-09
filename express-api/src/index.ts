@@ -3,8 +3,13 @@ import Knex from "knex";
 import express, { response } from "express"
 import bodyParser from "body-parser";
 import { request } from "http";
-import { Entry } from "./interfaces" 
+
 import cors from "cors";
+import axios from "axios";
+import moment from "moment";
+
+import { Entry } from "./interfaces" 
+import {Sling} from "./sling";
 
 const db = Knex({
     client: "pg",
@@ -23,11 +28,14 @@ const corsOptions = {
   optionSuccessStatus: 200
 }
 
+let sling_api = new Sling();
+
   const app = express();
 
   app.use(bodyParser.json());
   app.use(cors(corsOptions));
 
+  //gets all rows from archive_entries db table
   app.get("/get-entries", async function(request, response) {
     let body = request.body;
     let entries = await getEntries();
@@ -45,8 +53,20 @@ const corsOptions = {
     response.json({success: true, entries: formattedEntries})
   })
 
+  //gets all the employees that worked for the day
+  app.get("/get-shift-summary", async function (request, response) {
+    let body = request.body;
+
+    await sling_api.getUsers(); 
+  })
+
   app.listen(process.env.HOST_PORT);
 
   async function getEntries() {
     return await db.withSchema("public").from("archive_entries").select("*");
+  }
+
+  //gets the current sling api key 
+  async function getAuthKey() {
+    let key = await db("auth").withSchema("public").select("auth_key").where("id", 1);
   }
