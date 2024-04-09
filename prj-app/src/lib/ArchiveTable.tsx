@@ -12,7 +12,7 @@ interface Entry {
     tags: string[];
 }
 
-interface entryRow {
+interface EntryRow {
     entry: Entry;
     dropDownShown: boolean;
     number: number;
@@ -20,27 +20,20 @@ interface entryRow {
 }
 
 async function getEntries() {
-    let data = await axios.get("http://localhost:3001/get-entries");
-    console.log(data)
+    let response = await axios.get("http://localhost:3001/get-entries");
+    let responseData = response.data.entries; 
+    let archiveEntries: EntryRow[] = [];
+    for (let item of responseData) {
+        archiveEntries.push({
+            entry: item, dropDownShown: false, number: responseData.indexOf(item), momentDate: moment(item.date)
+        });
+    }
+    return archiveEntries;
 }
 
-const meow = [{date: "03-29-2024", drawer: 40, tips: 50, 
-			    final: 586, tipRate: 10, tags: ["Evening Event, Bingo Night"]},
-                {date: "03-28-2024", drawer: 90, tips: 30, 
-				final: 490, tipRate: 13, tags: []},
-                {date: "03-27-2024", drawer: 70, tips: 40, 
-				final: 540, tipRate: 15, tags: []}];
 
-let entryRows: entryRow[] = [];
-
-for (let item of meow) {
-    entryRows.push({
-        entry: item, dropDownShown: false, number: meow.indexOf(item), momentDate: moment(item.date)
-    });
-}
-
-const sortDate = (entryRowsToSort: entryRow[], sortByDesc: boolean) => {
-    let copyEntryRowsToSort: entryRow[] = [...entryRowsToSort];
+const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
+    let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
     if (sortByDesc) {
         copyEntryRowsToSort.sort((a, b) => b.momentDate.valueOf() - a.momentDate.valueOf())
     } else {
@@ -49,17 +42,19 @@ const sortDate = (entryRowsToSort: entryRow[], sortByDesc: boolean) => {
     setSortedEntryRows((rows) => rows = [...copyEntryRowsToSort])
 }
 
-const[sortedEntryRows, setSortedEntryRows] = createStore<entryRow[]>(entryRows);
+let entryRows: EntryRow[] = await getEntries();
+
+const[sortedEntryRows, setSortedEntryRows] = createStore<EntryRow[]>(entryRows);
 
 const ArchiveTable: Component = () => {
 
     onMount(async function() {
         setDescDateSortOrder(true);
         sortDate(sortedEntryRows, descDateSortOrder());
-        await getEntries();
+        entryRows = await getEntries();
     })
 
-    const[entry, setEntry] = createStore<entryRow[]>(entryRows);
+    const[entry, setEntry] = createStore<EntryRow[]>(entryRows);
     const[selectedEntry, setSelectedEntry] = createSignal<number>(0);
     const[descDateSortOrder, setDescDateSortOrder] = createSignal<boolean>(true);
     
