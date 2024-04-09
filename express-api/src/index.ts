@@ -29,7 +29,6 @@ const corsOptions = {
   app.use(cors(corsOptions));
 
   app.get("/get-entries", async function(request, response) {
-    console.log("MEOW")
     let body = request.body;
     let entries = await getEntries();
     let formattedEntries: Entry[] = [];
