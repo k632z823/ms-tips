@@ -4,6 +4,7 @@ import express, { response } from "express"
 import bodyParser from "body-parser";
 import { request } from "http";
 import { Entry } from "./interfaces" 
+import cors from "cors";
 
 const db = Knex({
     client: "pg",
@@ -16,9 +17,16 @@ const db = Knex({
     pool: { min: 0, max: 30 },
 });
 
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+  optionSuccessStatus: 200
+}
+
   const app = express();
 
   app.use(bodyParser.json());
+  app.use(cors(corsOptions));
 
   app.get("/get-entries", async function(request, response) {
     console.log("MEOW")
