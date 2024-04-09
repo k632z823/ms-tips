@@ -9,7 +9,7 @@ interface Entry {
     tips: number;
     final: number;
     tipRate: number;
-    tags: string[];
+    tags: string;
 }
 
 interface EntryRow {
@@ -24,8 +24,23 @@ async function getEntries() {
     let responseData = response.data.entries; 
     let archiveEntries: EntryRow[] = [];
     for (let item of responseData) {
+        let tags: string = "";
+        item.tags.forEach((tag: string) => {
+            if (item.tags.indexOf(tag) != item.tags.length - 1) {
+                tags += tag + ", ";
+            } else {
+                tags += tag;
+            }
+        })
         archiveEntries.push({
-            entry: item, dropDownShown: false, number: responseData.indexOf(item), momentDate: moment(item.date)
+            entry: {
+                date: item.date,
+                tips: item.tips,
+                final: item.final,
+                tipRate: item.tip_rate,
+                tags:  tags,
+                drawer: item.drawer
+            }, dropDownShown: false, number: responseData.indexOf(item), momentDate: moment(item.date)
         });
     }
     return archiveEntries;
@@ -127,7 +142,7 @@ const ArchiveTable: Component = () => {
                                     {/* <td class='p-3 border-r border-border-gray'>{entry.tipRate}</td> */}
                                     {/* <td>{entry.base}</td> */}
                                     <td class='p-3 border-r border-border-gray '>
-                                        <div class='text-nowrap overflow-x-auto'>{entryRow.entry.tags}</div>
+                                        <div class='text-nowrap overflow-x-auto'>{entryRow.entry.tags.toString()}</div>
                                     </td>
                                     <td class='p-3 w-full relative grow font-normal'>
                                         <button
