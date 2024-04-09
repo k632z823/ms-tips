@@ -78,17 +78,32 @@ const ArchiveTable: Component = () => {
                                     }
                                 >
                                     Date
-                                    <svg 
-                                        fill="#505050" 
-                                        stroke-width="0" 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        viewBox="0 0 24 24" 
-                                        height="1em" width="1em" 
-                                        style="overflow: visible; color: currentcolor;">
-                                        <path 
-                                            d="M6.227 11h11.547c.862 0 1.32-1.02.747-1.665L12.748 2.84a.998.998 0 0 0-1.494 0L5.479 9.335C4.906 9.98 5.364 11 6.227 11zm5.026 10.159a.998.998 0 0 0 1.494 0l5.773-6.495c.574-.644.116-1.664-.747-1.664H6.227c-.862 0-1.32 1.02-.747 1.665l5.773 6.494z">    
-                                        </path>
-                                    </svg>
+                                    <Show when={descDateSortOrder()}>
+                                        <svg 
+                                            fill="currentColor" 
+                                            stroke-width="0" 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            baseProfile="tiny" version="1.2" 
+                                            viewBox="0 0 24 24" height="1em" 
+                                            width="1em" 
+                                            style="overflow: visible; color: currentcolor;">
+                                            <path d="M5.8 9.7 12 16l6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7c-.2-.2-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3-.2.2-.3.4-.3.7s.1.5.3.7z"></path>
+                                        </svg>
+                                    </Show>
+                                    <Show when={!descDateSortOrder()}>
+                                        <svg 
+                                            fill="currentColor" 
+                                            stroke-width="0" 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            baseProfile="tiny" 
+                                            version="1.2" 
+                                            viewBox="0 0 24 24" 
+                                            height="1em" 
+                                            width="1em" 
+                                            style="overflow: visible; color: currentcolor;">
+                                            <path d="M18.2 13.3 12 7l-6.2 6.3c-.2.2-.3.5-.3.7s.1.5.3.7c.2.2.4.3.7.3h11c.3 0 .5-.1.7-.3.2-.2.3-.5.3-.7s-.1-.5-.3-.7z"></path>
+                                        </svg>
+                                    </Show>
                                 </button>
                             </td>
                             {/* <th>Drawer</th> */}
