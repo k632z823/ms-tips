@@ -1,6 +1,7 @@
 import { For, Component, createSignal, onMount, onCleanup, createEffect, Show } from 'solid-js';
 import { createStore } from "solid-js/store";
 import moment from 'moment';
+import axios from 'axios';
 
 interface Entry {
     date: string;
@@ -16,6 +17,11 @@ interface entryRow {
     dropDownShown: boolean;
     number: number;
     momentDate: any;
+}
+
+async function getEntries() {
+    let data = await axios.get("http://localhost:3001/get-entries");
+    console.log(data)
 }
 
 const meow = [{date: "03-29-2024", drawer: 40, tips: 50, 
@@ -47,10 +53,10 @@ const[sortedEntryRows, setSortedEntryRows] = createStore<entryRow[]>(entryRows);
 
 const ArchiveTable: Component = () => {
 
-    onMount(() => {
+    onMount(async function() {
         setDescDateSortOrder(true);
         sortDate(sortedEntryRows, descDateSortOrder());
-
+        await getEntries();
     })
 
     const[entry, setEntry] = createStore<entryRow[]>(entryRows);
