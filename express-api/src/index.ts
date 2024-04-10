@@ -8,7 +8,7 @@ import cors from "cors";
 import axios from "axios";
 import moment from "moment";
 
-import { Entry } from "./interfaces" 
+import { Entry, ShiftData } from "./interfaces" 
 import {Sling} from "./sling";
 
 const db = Knex({
@@ -57,7 +57,9 @@ let sling_api = new Sling();
   app.get("/get-shift-summary", async function (request, response) {
     let body = request.body;
 
-    await sling_api.getUsers(); 
+    let shiftSummary: ShiftData[] =  await sling_api.getTimeSheet("2024-04-05T00:00:00Z/2024-04-05T23:00:00Z"); 
+
+    response.json({succes: true, shift_data: shiftSummary})
   })
 
   app.listen(process.env.HOST_PORT);

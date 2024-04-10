@@ -1,9 +1,9 @@
 import "dotenv-safe/config";
 import Knex from "knex";
 import moment from "moment";
-import axios from "axios";
+import axios, { all } from "axios";
 
-import { Auth, User } from "./interfaces" 
+import { Auth, Group, ShiftData, Timesheet_Entry, User } from "./interfaces" 
 
 const db = Knex({
     client: "pg",
@@ -18,6 +18,8 @@ const db = Knex({
 
 export class Sling {
     private auth_key: string = "";
+    private users: {[key: number]: User} = {};
+    private positions: {[key: number]: Group} = {};
 
     constructor() {
         this.init();
@@ -25,6 +27,8 @@ export class Sling {
 
     async init() {
         await this.getAuthKey();
+        await this.getUsers();
+        await this.getGroups();
     }
 
     //pulls current auth key from db
@@ -36,7 +40,7 @@ export class Sling {
 
         if (moment().isAfter(created_at.add(1, "hours"))) {
             console.log('ALERT::: auth_key has expired -> requesting new auth token');
-            await this.generateAuthKey();
+            await this.refreshAuthKey();
             auth_data = await db("auth").withSchema("public").select("*").where("id", 1);
             
         }
@@ -45,7 +49,7 @@ export class Sling {
     }
 
 //uses sling api to generate a new auth token
-    async generateAuthKey() {
+    async refreshAuthKey() {
         let url = <string>process.env.SLING_API_URL + "/account/login"
         let data = await axios.post(url, {
             email: process.env.SLING_API_EMAIL,
@@ -56,52 +60,153 @@ export class Sling {
         await db('auth').withSchema("public").update("auth_key", auth).where("id", 1);
     }
 
+    // refreshes user table to include the new users/update user names etc.
     async refreshUsersCache() {
         let url = <string>process.env.SLING_API_URL + "/users"
-        let users = await axios.get(url, {
+        let requestData = await axios.get(url, {
             headers: {
                 "Authorization": this.auth_key
             }
+        }).then(function(response) {
+            return response.data
         });
 
-        let groups;
+        let users: User[] = [];
 
-        let db_users: User[] = [];
+        for (let user of requestData) {
+            users.push({
+                id: user.id,
+                name: user.name,
+                lastname: user.lastname
+            });  
+        }
 
+        await db("users").withSchema('public').insert(users).onConflict("id").merge(["name", "lastname"]);
     }
 
-    async getGroups() {
+    async refreshGroups() {
         let url = <string>process.env.SLING_API_URL + "/groups";
-        let groups = await axios.get(url, {
+        let requestData = await axios.get(url, {
             headers: {
                 "Authorization": this.auth_key
             }
-        }) 
+        }).then(function (response) {
+            return response.data;
+        });
+
+        let groups: Group[] = [];
+
+        for (let group of requestData) {
+            groups.push({
+                id: group.id,
+                type: group.type,
+                name: group.name
+            })
+        }
+
+        await db("groups").withSchema('public').insert(groups).onConflict("id").merge(["name", "type"]);
     }
 
     async getUsers() {
-        console.log('requesting users');
+        let users = await db('users').withSchema('public').select("*");
         
-        // let all_users: {[key: number]: User} = {}; 
-        // for (let user of users.data) {
-        //     all_users[user.id] = {
-        //         id: user.id,
-        //         type: user.type,
-        //         name: user.name,
-        //         lastname: user.lastname
-        //     }
-        // }
+        let all_users: {[key: number]: User} = {}; 
+        for (let user of users) {
+            all_users[user.id] = {
+                id: user.id,
+                name: user.name,
+                lastname: user.lastname
+            }
+        }
 
-
-
-        
-
-        console.log('stop');
+        this.users = all_users;
     }
 
-    async getTimeSheet() {}
+    //gets all positions stored in groups db table
+    async getGroups() {
+        let groups = await db('groups').withSchema('public').select("*").where("type", "position");
 
-    async getShiftSummary() {}
-    
-    
+        let positions: {[key: number]: Group} = {};
+        for (let group of groups) {
+            positions[group.id] = {
+                id: group.id,
+                type: group.type,
+                name: group.name
+            }
+        }
+        this.positions = positions;
+    }
+
+    async getTimeSheet(date: string) {
+        let url = <string>process.env.SLING_API_URL + "/reports/timesheets"
+        let timeSheet: Timesheet_Entry[] = await axios.get(url, {
+            params: {
+                dates: date
+            },
+            headers: {
+                "Authorization": this.auth_key
+            }
+        }).then(function (response) {
+            return response.data;
+        });
+
+        let shiftData: ShiftData[] = [];
+
+        for (let entry of timeSheet) {
+            //skips entries that don't have a p
+            if (entry.timesheetProjections.length == 0 || entry.timesheetProjections.length > 1) {
+                continue;
+            } 
+
+            let user_id = entry.user.id;
+            let position_id = entry.position.id;
+
+            //checks if the user_id is stored in cache
+            //if not tries refreshing to get new users
+            if (!(user_id in this.users)) {
+                await this.refreshUsersCache();
+                await this.getUsers();
+
+                if (!(user_id in this.users)) {
+                    console.log('eroror');
+                    continue;
+                }
+
+            }
+
+            //checks if position_id is stored in cache
+            //if not, tries refreshing to get new groups
+            if (!(position_id in this.positions)) {
+                await this.refreshGroups();
+                await this.getGroups();
+
+                if (!(position_id in this.positions)) {
+                    console.log('eroror');
+                    continue;
+                }
+
+            }
+
+            let hours = entry.timesheetProjections[0].paidMinutes / 60
+
+            // console.log(hours);
+            // console.log(Math.round(hours * 4))
+            // console.log(Math.round(hours * 4) / 4);
+            // console.log((Math.round(hours * 4) / 4).toFixed(2));
+            // console.log(parseFloat((Math.round(hours * 4) / 4).toFixed(2)));
+
+            shiftData.push({
+                name: this.users[user_id].name,
+                hours_worked: parseFloat((Math.round(hours * 4) / 4).toFixed(2)),
+                position: this.positions[position_id].name,
+                initial_tip: 0,
+                tips: 0,
+                total: 0,
+                offset: 0,
+            })
+
+        }
+
+        return shiftData
+    }
 }

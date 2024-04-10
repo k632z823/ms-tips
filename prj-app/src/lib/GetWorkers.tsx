@@ -1,54 +1,64 @@
-export interface EmployeeData {
+import axios from "axios";
+
+export interface ShiftData {
 	name: string;
 	hours_worked: number;
-	position: Position;
+	position: string;
 	initial_tip: number;
 	tips: number;
 	total: number;
 	offset: number;
 }
 
-type Position = "Server" | "Cook";
+// type Position = "Server" | "Cook";
 
-let data: EmployeeData[] = [
-	{
-		name: "Cecil Heimerdinger",
-		hours_worked: 10,
-		position: "Server",
-		initial_tip: 0,
-		tips: 0,
-		total: 0,
-		offset: 0,
-	},
-	{
-		name: "Luxanna Crownguard",
-		hours_worked: 8,
-		position: "Server",
-		initial_tip: 0,
-		tips: 0,
-		total: 0,
-		offset: 0,
-	},
-	{
-		name: "Jarvan Lightshield IV",
-		hours_worked: 12,
-		position: "Cook",
-		initial_tip: 0,
-		tips: 0,
-		total: 0,
-		offset: 0,
-	},
-	{
-		name: "Viego Santiarul Molach vol Kalah Heigaari",
-		hours_worked: 4,
-		position: "Cook",
-		initial_tip: 0,
-		tips: 0,
-		total: 0,
-		offset: 0,
-	},
-];
+// let data: EmployeeData[] = [
+// 	{
+// 		name: "Cecil Heimerdinger",
+// 		hours_worked: 10,
+// 		position: "Server",
+// 		initial_tip: 0,
+// 		tips: 0,
+// 		total: 0,
+// 		offset: 0,
+// 	},
+// 	{
+// 		name: "Luxanna Crownguard",
+// 		hours_worked: 8,
+// 		position: "Server",
+// 		initial_tip: 0,
+// 		tips: 0,
+// 		total: 0,
+// 		offset: 0,
+// 	},
+// 	{
+// 		name: "Jarvan Lightshield IV",
+// 		hours_worked: 12,
+// 		position: "Cook",
+// 		initial_tip: 0,
+// 		tips: 0,
+// 		total: 0,
+// 		offset: 0,
+// 	},
+// 	{
+// 		name: "Viego Santiarul Molach vol Kalah Heigaari",
+// 		hours_worked: 4,
+// 		position: "Cook",
+// 		initial_tip: 0,
+// 		tips: 0,
+// 		total: 0,
+// 		offset: 0,
+// 	},
+// ];
 
-export function pullSlingEmployeeData() {
+export async function pullSlingEmployeeData() {
+	let data = await axios
+		.get("http://localhost:3001/get-shift-summary")
+		.then(function (response) {
+			return response.data.shift_data;
+		});
+
+	console.log(data);
+
 	return data;
 }

@@ -31,7 +31,6 @@ interface TimeSheet_Projection {
     clockIn: string;
     clockOut: string;
     paidMinutes: number;
-
 }
 
 //simplified response body from https://api.getsling.com/v1/groups
@@ -46,7 +45,16 @@ export interface Group {
 //shows all users/employees
 export interface User {
     id: number;
-    type: string;
     name: string;
     lastname: string;
+}
+
+export interface ShiftData {
+	name: string;
+	hours_worked: number;
+	position: string;
+	initial_tip: number;
+	tips: number;
+	total: number;
+	offset: number;
 }
