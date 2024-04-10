@@ -58,7 +58,5 @@ export async function pullSlingEmployeeData() {
 			return response.data.shift_data;
 		});
 
-	console.log(data);
-
 	return data;
 }

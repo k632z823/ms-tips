@@ -23,7 +23,6 @@ interface EntryRow {
 }
 
 async function getEntries() {
-	console.log("get entries function");
 	let response = await axios.get("http://localhost:3001/get-entries");
 	let responseData = response.data.entries;
 	let archiveEntries: EntryRow[] = [];
@@ -77,7 +76,6 @@ const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	setSortedEntryRows((rows) => (rows = [...copyEntryRowsToSort]));
 };
 
-console.log("global entries");
 let entryRows: EntryRow[] = []; //await getEntries();
 
 const [sortedEntryRows, setSortedEntryRows] =
