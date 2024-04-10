@@ -1,4 +1,4 @@
-import { Component, createSignal, createEffect } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 
 interface OverviewEntriesProps {
     drawer: number;
