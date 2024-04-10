@@ -313,15 +313,8 @@ const ArchiveTable: Component = () => {
 									<table>
 										<tbody>
 											<tr>
-												<td>ID: {entryRows[selectedEntry()].entry.id}</td>
-											</tr>
-											<tr>
 												<td>Date</td>
-												<td>
-													{entryRows[selectedEntry()].momentDate
-														.format("L")
-														.toString()}
-												</td>
+												<td>{entryRows[selectedEntry()].momentDate.format("L").toString()}</td>
 											</tr>
 											<tr>
 												<td>Drawer</td>
