@@ -1,5 +1,6 @@
 // for ArchiveTable.tsx
 export interface Entry {
+    id: number;
     date: string;
     drawer: number;
     tips: number;

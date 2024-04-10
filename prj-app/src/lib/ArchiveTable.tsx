@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Portal } from 'solid-js/web';
 
 interface Entry {
+    id: number;
     date: string;
     drawer: number;
     tips: number;
@@ -36,6 +37,7 @@ async function getEntries() {
         })
         archiveEntries.push({
             entry: {
+                id: item.id,
                 date: item.date,
                 tips: item.tips,
                 final: item.final,
@@ -48,6 +50,11 @@ async function getEntries() {
     return archiveEntries;
 }
 
+async function deleteEntry(idToDelete: number) {
+    let response = await axios.delete("http://localhost:3001/delete-entry", {params: {
+        id: idToDelete
+    }});
+}
 
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
     let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
@@ -66,9 +73,10 @@ const[sortedEntryRows, setSortedEntryRows] = createStore<EntryRow[]>(entryRows);
 const ArchiveTable: Component = () => {
 
     onMount(async function() {
+        entryRows = await getEntries();
+        setSortedEntryRows(...[entryRows]);
         setDescDateSortOrder(true);
         sortDate(sortedEntryRows, descDateSortOrder());
-        entryRows = await getEntries();
         for (let item of sortedEntryRows) {
             setSortedEntryRows(sortedEntryRows.indexOf(item), (entry) => ({
                 ...entry,viewShown: false,
@@ -220,7 +228,17 @@ const ArchiveTable: Component = () => {
                                                                     Edit
                                                                 </li>
                                                                 <li class='block px-4 py-1 hover:bg-input-gray'>
-                                                                    Delete
+                                                                    <button
+                                                                        onclick={async function() {
+                                                                            await deleteEntry(entryRows[selectedEntry()].entry.id)
+                                                                            entryRows = await getEntries();
+                                                                            setSortedEntryRows([...entryRows])
+                                                                            sortDate(sortedEntryRows, descDateSortOrder())    
+                                                                        }}
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -254,6 +272,9 @@ const ArchiveTable: Component = () => {
                             <div>
                                 <table>
                                     <tbody>
+                                        <tr>
+                                            <td>ID: {entryRows[selectedEntry()].entry.id}</td>
+                                        </tr>
                                         <tr>
                                             <td>Date</td>
                                             <td>{entryRows[selectedEntry()].momentDate.format("L").toString()}</td>

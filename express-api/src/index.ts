@@ -37,11 +37,11 @@ let sling_api = new Sling();
 
   //gets all rows from archive_entries db table
   app.get("/get-entries", async function(request, response) {
-    let body = request.body;
     let entries = await getEntries();
     let formattedEntries: Entry[] = [];
     for (let item of entries) {
       formattedEntries.push({
+        id: item.id,
         date: item.date,
         drawer: item.drawer,
         tips: item.tips,
@@ -51,6 +51,12 @@ let sling_api = new Sling();
       })
     }
     response.json({success: true, entries: formattedEntries})
+  })
+
+  app.delete("/delete-entry", async function(request, response) {
+    let id = request.query.id;
+    // @ts-ignore
+    await deleteEntry(parseInt(id));
   })
 
   //gets all the employees that worked for the day
@@ -66,6 +72,10 @@ let sling_api = new Sling();
 
   async function getEntries() {
     return await db.withSchema("public").from("archive_entries").select("*");
+  }
+
+  async function deleteEntry(idToDelete: number) {
+    await db.withSchema("public").from("archive_entries").where("id", idToDelete).del();
   }
 
   //gets the current sling api key 
