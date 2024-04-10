@@ -37,6 +37,7 @@ let sling_api = new Sling();
 
   //gets all rows from archive_entries db table
   app.get("/get-entries", async function(request, response) {
+    console.log("Request: GET all entries from archive_entries");
     let entries = await getEntries();
     let formattedEntries: Entry[] = [];
     for (let item of entries) {
@@ -55,9 +56,11 @@ let sling_api = new Sling();
 
   app.delete("/delete-entry", async function(request, response) {
     let id = request.query.id;
+    console.log('Request: delete row on id ' + id);
     // @ts-ignore
     await deleteEntry(parseInt(id));
-  })
+    response.json({success: true});
+  });
 
   //gets all the employees that worked for the day
   app.get("/get-shift-summary", async function (request, response) {
