@@ -354,37 +354,43 @@ const ArchiveTable: Component = () => {
 			</div>
 			<Show when={confirmDeleteShown()}>
 				<Portal>
-					<section>
-						<div>Are you sure you want to delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>
-						<div>
-							<button
-								onclick={() => setConfirmDeleteShown(false)}
-							>
-								No
-							</button>
-							<button
-								onclick={async function () {
-									await deleteEntry(
-										entryRows[selectedEntry()].entry.id,
-									);
-									setRendered(false);
-									entryRows = await getEntries();
-									setSortedEntryRows((entry) => [
-										...entryRows,
-									]);
-									sortDate(
-										sortedEntryRows,
-										descDateSortOrder(),
-									);
-									setSelectedEntry(0);
-									setRendered(true);
-									setConfirmDeleteShown(false);
-								}}
-							>
-								Yes
-							</button>
+					<div class='px-5'>
+						<div class='border border-border-gray rounded-md p-5'>
+							<div class='flex justify-center'>
+								<div>Delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>
+							</div>
+							<div class='grid grid-cols-2 gap-5 text-sm font-normal w-1/2'>
+								<button
+									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
+									onclick={() => setConfirmDeleteShown(false)}
+								>
+									No
+								</button>
+								<button
+									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
+									onclick={async function () {
+										await deleteEntry(
+											entryRows[selectedEntry()].entry.id,
+										);
+										setRendered(false);
+										entryRows = await getEntries();
+										setSortedEntryRows((entry) => [
+											...entryRows,
+										]);
+										sortDate(
+											sortedEntryRows,
+											descDateSortOrder(),
+										);
+										setSelectedEntry(0);
+										setRendered(true);
+										setConfirmDeleteShown(false);
+									}}
+								>
+									Yes
+								</button>
+							</div>
 						</div>
-					</section>
+					</div>
 				</Portal>
 			</Show>
 		</>
