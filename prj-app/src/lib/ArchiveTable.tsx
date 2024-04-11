@@ -244,6 +244,10 @@ const ArchiveTable: Component = () => {
 																	<li class='block px-4 py-1 hover:bg-input-gray'>
 																		<button
 																			onclick={() => {
+																				setEntry(selectedEntry(), (row) => ({
+																					...row,
+																					dropDownShown: false,
+																				}))
 																				setTableShown(false);
 																				setConfirmDeleteShown(false);
 																				setSortedEntryRows(
@@ -263,7 +267,14 @@ const ArchiveTable: Component = () => {
 																	</li>
 																	<li class='block px-4 py-1 hover:bg-input-gray'>
 																		<button
-																			onclick={() => setConfirmDeleteShown(true)}
+																			onclick={() => {
+																				setConfirmDeleteShown(true)
+																				setEntry(selectedEntry(), (row) => ({
+																					...row,
+																					dropDownShown: false,
+																					}))
+																				}
+																			}
 																		>
 																			Delete
 																		</button>
