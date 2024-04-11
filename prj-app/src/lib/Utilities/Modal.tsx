@@ -2,6 +2,7 @@ import { Component, JSX } from "solid-js";
 import { Portal } from "solid-js/web";
 
 interface ModalProps {
+    header: string;
     body: JSX.Element;
     deny: string;
     confirm: string;
@@ -10,7 +11,7 @@ interface ModalProps {
 }
 
 const Modal: Component<ModalProps> = (props) => {
-    const { body, deny, confirm, onDenyClick, onConfirmClick } = props;
+    const { header, body, deny, confirm, onDenyClick, onConfirmClick } = props;
 
     return (
         <>
@@ -20,7 +21,7 @@ const Modal: Component<ModalProps> = (props) => {
                         <div class='w-4/5 bg-input-gray'>
                             <div class='border border-border-gray rounded-md'>
                                 <div class='flex justify-center pt-5 font-semibold'>
-                                    Are you sure?
+                                    {header}
                                 </div>
                                 <div class='flex justify-center pt-1 pb-5 px-5 text-content-gray text-sm text-center'>
                                     {body}

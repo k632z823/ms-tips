@@ -355,27 +355,29 @@ const ArchiveTable: Component = () => {
 				</Show>
 			</div>
 			<Show when={confirmDeleteShown()}>
-				<Modal body={<div>This will permanently delete the entry created on {entryRows[selectedEntry()].momentDate.format("L").toString()}.</div>}
-					   deny={"Cancel"}
-					   confirm={"Continue"}
-					   onDenyClick={() => setConfirmDeleteShown(false)}
-					   onConfirmClick={async function () {
-							await deleteEntry(
-								entryRows[selectedEntry()].entry.id,
-							);
-							setRendered(false);
-							entryRows = await getEntries();
-							setSortedEntryRows((entry) => [
-								...entryRows,
-							]);
-							sortDate(
-								sortedEntryRows,
-								descDateSortOrder(),
-							);
-							setSelectedEntry(0);
-							setRendered(true);
-							setConfirmDeleteShown(false);
-					   }}
+				<Modal 
+					header={"Are you sure?"}
+					body={<div>This will permanently delete the entry created on {entryRows[selectedEntry()].momentDate.format("L").toString()}.</div>}
+					deny={"Cancel"}
+					confirm={"Continue"}
+					onDenyClick={() => setConfirmDeleteShown(false)}
+					onConfirmClick={async function () {
+						await deleteEntry(
+							entryRows[selectedEntry()].entry.id,
+						);
+						setRendered(false);
+						entryRows = await getEntries();
+						setSortedEntryRows((entry) => [
+							...entryRows,
+						]);
+						sortDate(
+							sortedEntryRows,
+							descDateSortOrder(),
+						);
+						setSelectedEntry(0);
+						setRendered(true);
+						setConfirmDeleteShown(false);
+					}}
 				>
 				</Modal>
 			</Show>
