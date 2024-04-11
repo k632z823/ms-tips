@@ -374,7 +374,7 @@ const EntryDisplay: Component = () => {
 							</div>
 						</div>
 						<div class='py-5 flex justify-center'>
-							<div class='px-5 grid grid-cols-2 gap-5 text-sm font-light w-full'>
+							<div class='px-5 grid grid-cols-2 gap-5 text-sm font-normal w-full'>
 								<button
 									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
 									onClick={() => {
