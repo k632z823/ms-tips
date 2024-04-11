@@ -245,6 +245,7 @@ const ArchiveTable: Component = () => {
 																		<button
 																			onclick={() => {
 																				setTableShown(false);
+																				setConfirmDeleteShown(false);
 																				setSortedEntryRows(
 																					selectedEntry(),
 																					(entry) => ({
