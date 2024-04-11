@@ -102,6 +102,7 @@ const ArchiveTable: Component = () => {
 	const [descDateSortOrder, setDescDateSortOrder] = createSignal<boolean>(true);
 	const [tableShown, setTableShown] = createSignal<boolean>(true);
 	const [rendered, setRendered] = createSignal<boolean>(false);
+	const [confirmDeleteShown, setConfirmDeleteShown] = createSignal<boolean>(false);
 
 	// let sortedEntryRows: entryRow[] = [...entryRows];
 
@@ -196,6 +197,7 @@ const ArchiveTable: Component = () => {
 															dropDownShown: false,
 														}));
 														setSelectedEntry(entryRow.number);
+														setConfirmDeleteShown(false);
 													}
 
 													setEntry(selectedEntry(), (row) => ({
@@ -257,23 +259,8 @@ const ArchiveTable: Component = () => {
 																	Edit
 																</li>
 																<li class='block px-4 py-1 hover:bg-input-gray'>
-																	<button
-																		onclick={async function () {
-																			await deleteEntry(
-																				entryRows[selectedEntry()].entry.id,
-																			);
-																			setRendered(false);
-																			entryRows = await getEntries();
-																			setSortedEntryRows((entry) => [
-																				...entryRows,
-																			]);
-																			sortDate(
-																				sortedEntryRows,
-																				descDateSortOrder(),
-																			);
-																			setSelectedEntry(0);
-																			setRendered(true);
-																		}}
+																	<button 
+																		onclick={() => setConfirmDeleteShown(true)}
 																	>
 																		Delete
 																	</button>
@@ -338,9 +325,44 @@ const ArchiveTable: Component = () => {
 									</table>
 								</div>
 							</Portal>
-						</Show>
+						</Show>  
 					</Show>
 				</div>
+				<Show when={confirmDeleteShown()}>
+					<Portal>
+						<section>  
+							<div>Are you sure you want to delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>
+							<div>
+								<button
+									onclick={() => setConfirmDeleteShown(false)}
+								>
+									No
+								</button>
+								<button
+									onclick={async function() {
+										await deleteEntry(
+											entryRows[selectedEntry()].entry.id,
+										);
+										setRendered(false);
+										entryRows = await getEntries();
+										setSortedEntryRows((entry) => [
+											...entryRows,
+										]);
+										sortDate(
+											sortedEntryRows,
+											descDateSortOrder(),
+										);
+										setSelectedEntry(0);
+										setRendered(true);
+										setConfirmDeleteShown(false);
+									}}
+								>
+									Yes
+								</button>
+							</div>
+						</section>
+        			</Portal>
+				</Show>
 			</div>
 		</div>
 	);
