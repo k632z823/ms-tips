@@ -355,9 +355,9 @@ const ArchiveTable: Component = () => {
 				</Show>
 			</div>
 			<Show when={confirmDeleteShown()}>
-				<Modal body={<div>Delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>}
-					   deny={"No"}
-					   confirm={"Yes"}
+				<Modal body={<div>This will permanently delete the entry created on {entryRows[selectedEntry()].momentDate.format("L").toString()}.</div>}
+					   deny={"Cancel"}
+					   confirm={"Continue"}
 					   onDenyClick={() => setConfirmDeleteShown(false)}
 					   onConfirmClick={async function () {
 							await deleteEntry(
