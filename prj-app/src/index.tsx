@@ -6,6 +6,7 @@ import "./index.css";
 import Overview from "./pages/Overview";
 import Entries from "./pages/Entries";
 import Archive from "./pages/Archive";
+import Settings from "./pages/Settings";
 import Nav from "./lib/Nav";
 import App from "./App";
 
@@ -31,6 +32,10 @@ render(
 			<Route
 				path='/Archive'
 				component={Archive}
+			/>
+			<Route
+				path='/Settings'
+				component={Settings}
 			/>
 		</Router>
 	),
