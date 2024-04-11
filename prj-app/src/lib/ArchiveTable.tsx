@@ -3,6 +3,7 @@ import { createStore } from "solid-js/store";
 import moment from "moment";
 import axios from "axios";
 import { Portal } from "solid-js/web";
+import Modal from "./Utilities/Modal";
 
 interface Entry {
 	id: number;
@@ -353,45 +354,29 @@ const ArchiveTable: Component = () => {
 				</Show>
 			</div>
 			<Show when={confirmDeleteShown()}>
-				<Portal>
-					<div class='px-5'>
-						<div class='border border-border-gray rounded-md p-5'>
-							<div class='flex justify-center'>
-								<div>Delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>
-							</div>
-							<div class='grid grid-cols-2 gap-5 text-sm font-normal w-1/2'>
-								<button
-									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
-									onclick={() => setConfirmDeleteShown(false)}
-								>
-									No
-								</button>
-								<button
-									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
-									onclick={async function () {
-										await deleteEntry(
-											entryRows[selectedEntry()].entry.id,
-										);
-										setRendered(false);
-										entryRows = await getEntries();
-										setSortedEntryRows((entry) => [
-											...entryRows,
-										]);
-										sortDate(
-											sortedEntryRows,
-											descDateSortOrder(),
-										);
-										setSelectedEntry(0);
-										setRendered(true);
-										setConfirmDeleteShown(false);
-									}}
-								>
-									Yes
-								</button>
-							</div>
-						</div>
-					</div>
-				</Portal>
+				<Modal body={<div>Delete entry on {entryRows[selectedEntry()].momentDate.format("L").toString()}?</div>}
+					   deny={"No"}
+					   confirm={"Yes"}
+					   onDenyClick={() => setConfirmDeleteShown(false)}
+					   onConfirmClick={async function () {
+							await deleteEntry(
+								entryRows[selectedEntry()].entry.id,
+							);
+							setRendered(false);
+							entryRows = await getEntries();
+							setSortedEntryRows((entry) => [
+								...entryRows,
+							]);
+							sortDate(
+								sortedEntryRows,
+								descDateSortOrder(),
+							);
+							setSelectedEntry(0);
+							setRendered(true);
+							setConfirmDeleteShown(false);
+					   }}
+				>
+				</Modal>
 			</Show>
 		</>
 	);
