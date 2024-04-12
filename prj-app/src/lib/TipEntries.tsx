@@ -127,12 +127,14 @@ const EntryDisplay: Component = () => {
 
 	createEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			const dropdownDefaultButton = document.getElementById(
-				"dropdownDefaultButton",
-			);
+			const dropdownDefaultButton = document.getElementById("dropdownDefaultButton");
+			const dropdown = document.getElementById("dropdown");
+
 			if (
 				dropdownDefaultButton &&
-				!dropdownDefaultButton.contains(event.target as Node)
+				!dropdownDefaultButton.contains(event.target as Node) &&
+				dropdown &&
+				!dropdown.contains(event.target as Node)
 			) {
 				setDropDown(false);
 			}
@@ -187,7 +189,7 @@ const EntryDisplay: Component = () => {
 									<button
 										id='dropdownDefaultButton'
 										data-dropdown-toggle='dropdown'
-										class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+										class='border border-border-gray rounded-md text-white text-center px-2.5 py-1.5 hover:bg-border-gray inline-flex items-center justify-between w-full'
 										type='button'
 										onClick={() => setDropDown(!dropDown())}
 									>
@@ -200,7 +202,7 @@ const EntryDisplay: Component = () => {
 											viewBox='0 0 10 6'
 										>
 											<path
-												stroke='currentColor'
+												stroke='#505050'
 												stroke-linecap='round'
 												stroke-linejoin='round'
 												stroke-width='2'
@@ -213,45 +215,95 @@ const EntryDisplay: Component = () => {
 									<div class='absolute px-5 py-1.5 w-full'>
 										<div
 											id='dropdown'
-											class='border border-border-gray bg-menu-gray rounded-md text-content-gray'
+											class='border border-border-gray bg-black rounded-md text-white font-normal'
 										>
 											<ul
-												class='py-2'
+												class=''
 												aria-labelledby='dropdownDefaultButton'
 											>
-												<li>
-													<a
-														onClick={() => {
-															setEntryType("Drawer");
-															calcTotals(entry[entryType()]);
-														}}
-														class='block px-4 py-1 hover:bg-input-gray'
-													>
-														Drawer
-													</a>
-												</li>
-												<li>
-													<a
-														onClick={() => {
-															setEntryType("Tips");
-															calcTotals(entry[entryType()]);
-														}}
-														class='block px-4 py-1 hover:bg-input-gray'
-													>
-														Tips
-													</a>
-												</li>
-												<li>
-													<a
-														onClick={() => {
-															setEntryType("Final");
-															calcTotals(entry[entryType()]);
-														}}
-														class='block px-4 py-1 hover:bg-input-gray'
-													>
-														Final
-													</a>
-												</li>
+												<div class='p-1'>
+													<li class='px-2 pt-2 font-semibold text-xs text-content-gray pointer-events-none'>
+														Select a classification
+													</li>
+												</div>
+												<div class='pt-1 px-1'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+														<div class='inline-flex gap-3'>
+														<svg
+															fill="currentColor"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 16 16"
+															height="1em"
+															width="1em"
+															style="overflow: visible; color: currentcolor;"
+														>
+															<path fill="currentColor" d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
+														</svg>
+															<a
+																onClick={() => {
+																	setEntryType("Drawer");
+																	calcTotals(entry[entryType()]);
+																}}
+																class=''
+															>
+																Drawer
+															</a>
+														</div>
+													</li>
+												</div>
+												<div class='px-1'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+														<div class='inline-flex items-center gap-3'>
+														<svg 
+															fill="currentColor"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 640 512"
+															height="1em" 
+															width="1em" 
+															style="overflow: visible; color: currentcolor;"
+														>
+															<path d="M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z"></path>
+														</svg>
+															<a
+																onClick={() => {
+																	setEntryType("Tips");
+																	calcTotals(entry[entryType()]);
+																}}
+																class=''
+															>
+																Tips
+															</a>
+														</div>
+													</li>
+												</div>
+												<div class='pb-1 px-1'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+														<div class='inline-flex items-center gap-3'>
+															<svg
+																fill="currentColor"
+																stroke-width="0"
+																xmlns="http://www.w3.org/2000/svg"
+																viewBox="0 0 1024 1024"
+																height="1.2em"
+																width="1.2em"
+																style="overflow: visible; color: currentcolor;"
+															>
+																<path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path>
+															</svg>
+															<a
+																onClick={() => {
+																	setEntryType("Final");
+																	calcTotals(entry[entryType()]);
+																}}
+																class=''
+															>
+																Final
+															</a>
+														</div>
+													</li>
+												</div>
 											</ul>
 										</div>
 									</div>

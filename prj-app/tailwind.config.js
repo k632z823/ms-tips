@@ -25,6 +25,7 @@ module.exports = {
 			'mini-gray': '#404040',
 			'icon-gray': '#505050',
 			'input-gray': '#0A0A0A',
+			'red': '#DC2626',
 		},
 		extend: {
 		},

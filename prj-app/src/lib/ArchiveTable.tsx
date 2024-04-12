@@ -191,7 +191,7 @@ const ArchiveTable: Component = () => {
 											<td class='p-3 w-full relative grow font-normal'>
 												<button
 													id='dropdownDefaultButton'
-													class='border border-border-gray rounded-md text-content-gray text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+													class='bg-black border border-border-gray rounded-md text-white text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
 													onClick={() => {
 														if (selectedEntry() != entryRow.number) {
 															setEntry(selectedEntry(), (row) => ({
@@ -223,7 +223,7 @@ const ArchiveTable: Component = () => {
 														viewBox='0 0 10 6'
 													>
 														<path
-															stroke='currentColor'
+															stroke='#505050'
 															stroke-linecap='round'
 															stroke-linejoin='round'
 															stroke-width='2'
@@ -237,48 +237,69 @@ const ArchiveTable: Component = () => {
 														entry[selectedEntry()].dropDownShown
 													}
 												>
-													<div class='flex justify-center'>
-														<div class='absolute px-3 py-1.5 z-50 w-full'>
-															<div class='border border-border-gray bg-menu-gray rounded-md text-content-gray'>
-																<ul class='py-2'>
-																	<li class='block px-4 py-1 hover:bg-input-gray'>
-																		<button
-																			onclick={() => {
-																				setEntry(selectedEntry(), (row) => ({
-																					...row,
-																					dropDownShown: false,
-																				}))
-																				setTableShown(false);
-																				setConfirmDeleteShown(false);
-																				setSortedEntryRows(
-																					selectedEntry(),
-																					(entry) => ({
-																						...entry,
-																						viewShown: !entry.viewShown,
-																					}),
-																				);
-																			}}
-																		>
-																			View
-																		</button>
-																	</li>
-																	<li class='block px-4 py-1 hover:bg-input-gray'>
-																		Edit
-																	</li>
-																	<li class='block px-4 py-1 hover:bg-input-gray'>
-																		<button
-																			onclick={() => {
-																				setConfirmDeleteShown(true)
-																				setEntry(selectedEntry(), (row) => ({
-																					...row,
-																					dropDownShown: false,
+													<div class='flex justify-start'>
+														<div class='absolute py-1.5 z-50 w-full'>
+															<div class='bg-black border border-border-gray rounded-md text-white'>
+																<ul class='font-normal'>
+																	<div class='px-1 pt-1'>
+																		<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
+																			<button
+																				class='w-full flex justify-start'
+																				onclick={() => {
+																					setEntry(selectedEntry(), (row) => ({
+																						...row,
+																						dropDownShown: false,
 																					}))
-																				}
-																			}
-																		>
-																			Delete
-																		</button>
-																	</li>
+																					setTableShown(false);
+																					setConfirmDeleteShown(false);
+																					setSortedEntryRows(
+																						selectedEntry(),
+																						(entry) => ({
+																							...entry,
+																							viewShown: !entry.viewShown,
+																						}),
+																					);
+																				}}
+																			>
+																				View
+																			</button>
+																		</li>
+																	</div>
+																	<div class='px-1 pb-1'>
+																		<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
+																			Edit
+																		</li>
+																	</div>
+																	<div class='border-t border-border-gray'>
+																		<div class='p-1'>
+																			<li class='block px-3 py-2 hover:bg-input-gray hover:rounded text-red'>
+																				<button
+																					class='w-full inline-flex justify-between items-center'
+																					onclick={() => {
+																						setConfirmDeleteShown(true)
+																						setEntry(selectedEntry(), (row) => ({
+																							...row,
+																							dropDownShown: false,
+																							}))
+																						}
+																					}
+																				>
+																					Delete
+																				<svg
+																					fill="currentColor"
+																					stroke-width="0"
+																					xmlns="http://www.w3.org/2000/svg"
+																					viewBox="0 0 448 512"
+																					height="0.9em"
+																					width="0.9em"
+																					style="overflow: visible; color: currentcolor;"
+																				>
+																					<path d="m170.5 51.6-19 28.4h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6h-93.7c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6 36.7 55H424c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8v304c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128h-8c-13.3 0-24-10.7-24-24s10.7-24 24-24h69.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128v304c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32V128H80zm80 64v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
+																				</svg>
+																				</button>
+																			</li>
+																		</div>
+																	</div>
 																</ul>
 															</div>
 														</div>

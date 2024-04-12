@@ -113,7 +113,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
 										<img src={item.icon} draggable='false'/>
 										<a href={item.path}>{item.label}</a>
 									</div>
@@ -121,13 +121,13 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 
 							)}
 						</For>
-						<div class="px-0.5 flex items-center">
+						<div class="flex items-center">
 							<div class="flex-grow border-t border-border-gray"></div>
 						</div>
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "profile"}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded-md transition-all'>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
 										<img src={item.icon} draggable='false'/>
 										<A href={item.path}>{item.label}</A>
 									</div>
