@@ -43,10 +43,10 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 			<div
 				id='profile'
 				class='text-white text-md font-semibold flex items-center gap-1.5 cursor-default'
-			//@ts-ignore
-			// use:clickOutside={() => {
-			// 	setIsSelected(false);
-			// }}
+				//@ts-ignore
+				// use:clickOutside={() => {
+				// 	setIsSelected(false);
+				// }}
 			>
 				<img
 					id='avatarButton'
@@ -55,9 +55,9 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					// data-dropdown-toggle='userDropdown'
 					// data-dropdown-placement='bottom-start'
 					src={logo}
-				// onClick={() => {
-				// 	setIsSelected(!isSelected());
-				// }}
+					// onClick={() => {
+					// 	setIsSelected(!isSelected());
+					// }}
 				></img>
 				tippy
 				{/* <div
@@ -114,10 +114,10 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
 									<a href={item.path}>
-										<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-											<img src={item.icon} draggable='false' />
-											{item.label}
-										</div>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+										<img src={item.icon} draggable='false'/>
+										{item.label}
+									</div>
 									</a>
 								</Show>
 
@@ -130,10 +130,10 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 							{(item) => (
 								<Show when={item.group == "profile"}>
 									<A href={item.path}>
-										<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-											<img src={item.icon} draggable='false' />
-											{item.label}
-										</div>
+									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+										<img src={item.icon} draggable='false'/>
+										{item.label}
+									</div>
 									</A>
 								</Show>
 							)}

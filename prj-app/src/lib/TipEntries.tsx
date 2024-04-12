@@ -218,7 +218,6 @@ const EntryDisplay: Component = () => {
 											class='border border-border-gray bg-black rounded-md text-white font-normal'
 										>
 											<ul
-												class=''
 												aria-labelledby='dropdownDefaultButton'
 											>
 												<div class='p-1'>
@@ -227,7 +226,7 @@ const EntryDisplay: Component = () => {
 													</li>
 												</div>
 												<div class='pt-1 px-1'>
-													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 														<div class='inline-flex gap-3'>
 														<svg
 															fill="currentColor"
@@ -253,7 +252,7 @@ const EntryDisplay: Component = () => {
 													</li>
 												</div>
 												<div class='px-1'>
-													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 														<div class='inline-flex items-center gap-3'>
 														<svg 
 															fill="currentColor"
@@ -279,7 +278,7 @@ const EntryDisplay: Component = () => {
 													</li>
 												</div>
 												<div class='pb-1 px-1'>
-													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded-md cursor-pointer'>
+													<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 														<div class='inline-flex items-center gap-3'>
 															<svg
 																fill="currentColor"
