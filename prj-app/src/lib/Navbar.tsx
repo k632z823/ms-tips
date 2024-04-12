@@ -43,10 +43,10 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 			<div
 				id='profile'
 				class='text-white text-md font-semibold flex items-center gap-1.5 cursor-default'
-				//@ts-ignore
-				// use:clickOutside={() => {
-				// 	setIsSelected(false);
-				// }}
+			//@ts-ignore
+			// use:clickOutside={() => {
+			// 	setIsSelected(false);
+			// }}
 			>
 				<img
 					id='avatarButton'
@@ -55,9 +55,9 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					// data-dropdown-toggle='userDropdown'
 					// data-dropdown-placement='bottom-start'
 					src={logo}
-					// onClick={() => {
-					// 	setIsSelected(!isSelected());
-					// }}
+				// onClick={() => {
+				// 	setIsSelected(!isSelected());
+				// }}
 				></img>
 				tippy
 				{/* <div
@@ -113,10 +113,12 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "dropdown"}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-										<img src={item.icon} draggable='false'/>
-										<a href={item.path}>{item.label}</a>
-									</div>
+									<a href={item.path}>
+										<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+											<img src={item.icon} draggable='false' />
+											{item.label}
+										</div>
+									</a>
 								</Show>
 
 							)}
@@ -127,10 +129,12 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 						<For each={props.items}>
 							{(item) => (
 								<Show when={item.group == "profile"}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-										<img src={item.icon} draggable='false'/>
-										<A href={item.path}>{item.label}</A>
-									</div>
+									<A href={item.path}>
+										<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+											<img src={item.icon} draggable='false' />
+											{item.label}
+										</div>
+									</A>
 								</Show>
 							)}
 						</For>
