@@ -112,7 +112,7 @@ const ArchiveTable: Component = () => {
 			<Show when={tableShown()}>
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
-						<table class='table-fixed text-sm font-light w-full'>
+						<table class='table-fixed text-sm font-normal w-full'>
 							<thead class='bg-input-gray'>
 								<tr class='text-start'>
 									<td class='p-3 w-[44.5px] border-r border-border-gray text-center'>
@@ -272,7 +272,7 @@ const ArchiveTable: Component = () => {
 																	</div>
 																	<div class='border-t border-border-gray'>
 																		<div class='p-1'>
-																			<li class='block px-3 py-2 hover:bg-input-gray hover:rounded text-red'>
+																			<li class='block px-3 py-2 hover:bg-select-red hover:rounded text-red'>
 																				<button
 																					class='w-full inline-flex justify-between items-center'
 																					onclick={() => {
