@@ -21,10 +21,10 @@ const OverviewEntries: Component<OverviewEntriesProps> = (props) => {
             <div class='border border-border-gray rounded-md w-full'>
                 <table class='table-auto w-full'>
                     <tbody>
-                        <tr class='border-b border-border-gray bg-menu-gray'>
-                            <td class='p-3 text-sm'>Today's Entry</td>
-                            <td class='p-2 text-sm flex justify-end'>
-                            <button class='p-1 px-8 border border-border-gray rounded-md bg-black hover:bg-border-gray'>Edit</button>
+                        <tr class='border-b border-border-gray'>
+                            <td class='p-3 text-sm rounded-tl-md bg-input-gray'>Today's Entry</td>
+                            <td class='p-2 text-sm flex justify-end rounded-tr-md bg-input-gray'>
+                                <button class='p-1 px-8 border border-border-gray rounded-md bg-black hover:bg-border-gray'>Edit</button>
                             </td>
                         </tr>
                         <tr class='border-b border-border-gray'>

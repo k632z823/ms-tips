@@ -150,20 +150,22 @@ const EntryDisplay: Component = () => {
 	return (
 		<>
 			<div
-				class='flex justify-center px-5'
+				class='px-5 flex justify-center'
 				id='entry-info'
 			>
 				<div class='border border-border-gray rounded-md w-full'>
 					<table class='table-auto w-full'>
 						<tbody>
-							<tr class='border-border-gray'>
+							<tr class='border-border-gray font-medium'>
 								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
 									Drawer
 								</td>
 								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
 									Tips
 								</td>
-								<td class='p-2 align-top text-xs text-mini-gray'>Final</td>
+								<td class='p-2 align-top text-xs text-mini-gray'>
+									Final
+								</td>
 							</tr>
 							<tr class='border-border-gray'>
 								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
@@ -246,9 +248,7 @@ const EntryDisplay: Component = () => {
 																>
 																	<path fill="currentColor" d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
 																</svg>
-
 																Drawer
-
 															</div>
 														</li>
 													</div>
@@ -275,7 +275,6 @@ const EntryDisplay: Component = () => {
 																	<path d="M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z"></path>
 																</svg>
 																Tips
-
 															</div>
 														</li>
 													</div>
@@ -301,9 +300,7 @@ const EntryDisplay: Component = () => {
 																>
 																	<path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path>
 																</svg>
-
 																Final
-
 															</div>
 														</li>
 													</div>
@@ -322,19 +319,19 @@ const EntryDisplay: Component = () => {
 						<div class='flex justify-center px-5'>
 							<div class='border border-border-gray rounded-md grow'>
 								<table
-									class='table-auto w-full text-sm font-light'
+									class='table-auto w-full text-sm font-normal'
 									id='bills'
 								>
 									<tbody>
 										<For each={entry[entryType()]}>
 											{(item) => (
 												<tr class='text-center'>
-													<td class='border-r border-b border-border-gray bg-input-gray px-8'>
+													<td class={`p-4 w-1/6 ${item.id === 0 ? 'rounded-tl-md border-b border-border-gray' : ''} ${item.id === 5 ? 'rounded-bl-md border-t border-border-gray' : 'border-b border-border-gray'} border-r border-border-gray bg-input-gray`}>
 														{labels[item.id].bill_label}
 													</td>
-													<td class='border-b border-border-gray p-2'>
+													<td class={`p-2 w-2/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'}`}>
 														<input
-															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+															class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
 															value={item.bill_amount}
 															onChange={(e) => {
 																if (Number.isNaN(parseInt(e.target.value))) {
@@ -362,12 +359,12 @@ const EntryDisplay: Component = () => {
 															}}
 														></input>
 													</td>
-													<td class='border-l border-r border-b border-border-gray bg-input-gray px-8'>
+													<td class={`p-4 w-1/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'} border-x border-border-gray bg-input-gray`}>
 														{labels[item.id].change_label}
 													</td>
-													<td class='border-b border-border-gray p-2'>
+													<td class={`p-2 w-2/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'}`}>
 														<input
-															class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+															class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
 															value={item.change_amount}
 															onChange={(e) => {
 																if (Number.isNaN(parseInt(e.target.value))) {
@@ -401,25 +398,25 @@ const EntryDisplay: Component = () => {
 											)}
 										</For>
 										<tr class='text-center'>
-											<td class='border-r border-b border-border-gray p-4 bg-input-gray'>
-												Bill Total
+											<td class='p-3 border-r border-y border-border-gray bg-input-gray'>
+												Bill
 											</td>
-											<td class='border-b border-border-gray text-content-gray w-1/4'>
+											<td class='p-3 w-2/6 border-y border-border-gray text-content-gray'>
 												${billTotal()}
 											</td>
-											<td class='border-t border-l border-r border-b border-border-gray bg-input-gray'>
-												Coin Total
+											<td class='p-3 border-x border-y  border-border-gray bg-input-gray'>
+												Coin
 											</td>
-											<td class='border-b border-border-gray text-content-gray w-1/4'>
+											<td class='p-3 w-2/6 border-y border-border-gray text-content-gray'>
 												${changeTotal()}
 											</td>
 										</tr>
 										<tr class='text-center'>
-											<td class='border-r border-border-gray rounded-bl-lg p-4 bg-input-gray'>
+											<td class='p-3 border-r border-border-gray rounded-bl-lg bg-input-gray'>
 												Total
 											</td>
 											<td
-												class='text-content-gray'
+												class='p-3 text-content-gray'
 												colspan={3}
 											>
 												${total()}

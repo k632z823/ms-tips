@@ -113,12 +113,12 @@ const ArchiveTable: Component = () => {
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<table class='table-fixed text-sm font-normal w-full'>
-							<thead class='bg-input-gray'>
+							<thead>
 								<tr class='text-start'>
-									<td class='p-3 w-[44.5px] border-r border-border-gray text-center'>
+									<td class='p-3 w-[44.5px] text-center border-r rounded-tl-md border-border-gray bg-input-gray'>
 										#
 									</td>
-									<td class='p-3 w-[6.5rem] border-r border-border-gray'>
+									<td class='p-3 w-[6.5rem] border-r border-border-gray  bg-input-gray'>
 										<button
 											class='inline-flex items-center justify-between w-full'
 											onClick={() => {
@@ -164,8 +164,8 @@ const ArchiveTable: Component = () => {
 									{/* <td class='p-3 border-r border-border-gray'>Final</td> */}
 									{/* <td class='p-3 border-r border-border-gray'>Tip Rate</td> */}
 									{/* <th>Base</th> */}
-									<td class='p-3 border-r border-border-gray'>Tags</td>
-									<td class='p-3 w-[7rem]'>Action</td>
+									<td class='p-3 border-r border-border-gray bg-input-gray'>Tags</td>
+									<td class='p-3 w-[7rem] rounded-tr-md bg-input-gray'>Action</td>
 								</tr>
 							</thead>
 							<tbody>
@@ -188,7 +188,7 @@ const ArchiveTable: Component = () => {
 													{entryRow.entry.tags.toString()}
 												</div>
 											</td>
-											<td class='p-3 w-full relative grow font-normal'>
+											<td class='p-2 w-full relative grow font-normal'>
 												<button
 													id='dropdownDefaultButton'
 													class='bg-black border border-border-gray rounded-md text-white text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
@@ -351,24 +351,24 @@ const ArchiveTable: Component = () => {
 													<table class='table-fixed w-full text-sm font-light'>
 														<tbody>
 															<tr>
-																<td class='border-r border-border-gray bg-input-gray w-2/6 p-3'>Drawer</td>
+																<td class='p-3 w-2/6 border-r rounded-tl-md border-border-gray bg-input-gray'>Drawer</td>
 																<td class='p-3 text-content-gray'>${entryRows[selectedEntry()].entry.drawer}</td>
 															</tr>
 															<tr>
-																<td class='border-r border-t border-border-gray bg-input-gray p-3'>Tips</td>
-																<td class='border-t border-border-gray p-3 text-content-gray'>${entryRows[selectedEntry()].entry.tips}</td>
+																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>Tips</td>
+																<td class='p-3 border-t border-border-gray text-content-gray'>${entryRows[selectedEntry()].entry.tips}</td>
 															</tr>
 															<tr>
-																<td class='border-r border-t border-border-gray bg-input-gray p-3'>Final</td>
-																<td class='border-t border-border-gray p-3 text-content-gray'>${entryRows[selectedEntry()].entry.final}</td>
+																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>Final</td>
+																<td class='p-3 border-t border-border-gray text-content-gray'>${entryRows[selectedEntry()].entry.final}</td>
 															</tr>
 															<tr>
-																<td class='border-r border-t border-border-gray bg-input-gray p-3'>Tip Rate</td>
-																<td class='border-t border-border-gray p-3 text-content-gray'>${entryRows[selectedEntry()].entry.tipRate}</td>
+																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>Tip Rate</td>
+																<td class='p-3 border-t border-border-gray text-content-gray'>${entryRows[selectedEntry()].entry.tipRate}</td>
 															</tr>
 															<tr>
-																<td class='border-r border-t border-border-gray bg-input-gray p-3'>Tags</td>
-																<td class='border-t border-border-gray p-3 text-content-gray'>
+																<td class='p-3 border-r border-t rounded-bl-md border-border-gray bg-input-gray'>Tags</td>
+																<td class='p-3 border-t border-border-gray text-content-gray'>
 																	<div class='text-nowrap overflow-x-auto'>
 																		{entryRows[selectedEntry()].entry.tags}
 																	</div>
