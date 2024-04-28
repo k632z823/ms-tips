@@ -154,7 +154,9 @@ let sling_api = new Sling();
     for (let key of keys) {
       //@ts-ignore
       if (dbRecords[key].length != 0) {
+        //@ts-ignore
         let entry = dbRecords[key][0];
+        //@ts-ignore
         entries[key] = [
           {
             id: 0,
@@ -188,6 +190,7 @@ let sling_api = new Sling();
           }
         ]
       } else {
+        //@ts-ignore
         entries[key] = JSON.parse(JSON.stringify(starter))
       }
     }
