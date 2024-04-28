@@ -42,7 +42,7 @@ let sling_api = new Sling();
     let date = request.query.date;
     let entries;
 
-    if (date = "default") {
+    if (date == "default") {
       entries = await getEntries('04-28-2024');
     } else {
       entries = await getEntries(date);
@@ -51,6 +51,10 @@ let sling_api = new Sling();
    response.json({success: true, entries: entries})
 
   });
+
+  app.post("/add-entry", async function(request, response) {
+
+  })
 
   //gets all rows from archive_entries db table
   app.get("/get-archive-entries", async function(request, response) {
@@ -70,6 +74,10 @@ let sling_api = new Sling();
     }
     response.json({success: true, entries: formattedEntries})
   });
+
+  app.get("/add-archive-entry", async function(request, response) {
+
+  })
 
   app.delete("/delete-entry", async function(request, response) {
     let id = request.query.id;
@@ -196,4 +204,8 @@ let sling_api = new Sling();
     }
 
     return entries;
+  }
+
+  async function addEntry() {
+
   }

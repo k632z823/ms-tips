@@ -9,7 +9,7 @@ const Entries: Component = () => {
 
 	return (
 		<>
-			<EntryDisplay entryDate={params.id}></EntryDisplay>
+			<EntryDisplay entryDate={params.date}></EntryDisplay>
 		</>
 	);
 };
