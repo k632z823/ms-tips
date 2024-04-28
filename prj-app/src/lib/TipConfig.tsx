@@ -21,15 +21,22 @@ function calculateTipRate(tipTotal: number, employeeData: ShiftData[]) {
 	setRemainingTipTotal(0);
 	setTipRate(0);
 
-	console.log(employeeData);
-
 	let empData = [...employeeData];
 
 	for (let entry of empData) {
 		let index = empData.indexOf(entry);
 
+		//bakers and dishwashers are not included in tip distribution -> skips them
+		if (
+			employees[index].position === "Baker" ||
+			employees[index].position === "Dishwasher"
+		) {
+			continue;
+		}
+
 		totalHours += entry.hours_worked;
 
+		//checks if the position is a server -> servers are the only ones who recieve an initial tip amount
 		if (entry.position == "Server") {
 			editEmployees(index, (entry) => ({
 				...entry,
@@ -39,6 +46,8 @@ function calculateTipRate(tipTotal: number, employeeData: ShiftData[]) {
 		}
 	}
 
+	//subtracts the total initial tips given to servers from the original tip count
+	//the remaining is what is used to calculate the tip rate
 	setRemainingTipTotal(tipTotal - initialTipTotal());
 	let tipRate = remainingTipTotal() / totalHours;
 	setTipRate(Math.round(tipRate));
@@ -49,6 +58,15 @@ function calculateTipDistribution(emps: ShiftData[]) {
 
 	for (let employee of empData) {
 		let index = empData.indexOf(employee);
+
+		//bakers and dishwashers are not included in tip distribution -> skips them
+		if (
+			employees[index].position === "Baker" ||
+			employees[index].position === "Dishwasher"
+		) {
+			continue;
+		}
+
 		let tips = employee.hours_worked * tipRate();
 		let total = tips + employee.initial_tip;
 
@@ -65,8 +83,10 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 		on(
 			() => props.tip_total,
 			() => {
-				calculateTipRate(props.tip_total, employees);
-				calculateTipDistribution(employees);
+				if (props.tip_total != 0) {
+					calculateTipRate(props.tip_total, employees);
+					calculateTipDistribution(employees);
+				}
 			},
 		),
 	);
