@@ -1,5 +1,5 @@
 // for ArchiveTable.tsx
-export interface Entry {
+export interface Archive_Entry {
     id: number;
     date: string;
     drawer: number;
@@ -59,3 +59,16 @@ export interface ShiftData {
 	total: number;
 	offset: number;
 }
+
+export enum Entry_type {
+    drawer_label = 'drawer',
+    final_label ='final', 
+    tips_label= 'tips'
+}
+
+export interface Entry {
+    id: number;
+    bill_amount: number;
+    change_amount: number;
+}
+

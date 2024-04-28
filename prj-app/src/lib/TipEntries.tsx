@@ -6,9 +6,11 @@ import {
 	onCleanup,
 	createEffect,
 	type Setter,
+	onMount,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import TipConfig from "./TipConfig";
+import axios from "axios";
 
 interface Entry {
 	id: number;
@@ -21,9 +23,9 @@ interface Label {
 }
 
 export interface EntryProps {
-	Drawer: Entry[];
-	Tips: Entry[];
-	Final: Entry[];
+	drawer: Entry[];
+	tips: Entry[];
+	final: Entry[];
 }
 
 const labels: Label[] = [
@@ -94,6 +96,30 @@ const [total, setTotal] = createSignal<number>(0);
 const [showConfig, setShowConfig] = createSignal<boolean>(false);
 const [tipTotal, setTipTotal] = createSignal<number>(0);
 
+const [entry, setEntry] = createStore({
+	drawer: [
+		{
+			id: 0,
+			bill_amount: 0,
+			change_amount: 0,
+		},
+	],
+	tips: [
+		{
+			id: 0,
+			bill_amount: 0,
+			change_amount: 0,
+		},
+	],
+	final: [
+		{
+			id: 0,
+			bill_amount: 0,
+			change_amount: 0,
+		},
+	],
+});
+
 function calcTotals(entry: Entry[]) {
 	setBillTotal(() => {
 		let sum = 0;
@@ -110,24 +136,51 @@ function calcTotals(entry: Entry[]) {
 	setTotal(billTotal() + changeTotal());
 }
 
-const EntryDisplay: Component = () => {
-	const [entryType, setEntryType] = createSignal<entryTypes>("Drawer");
+async function requestEntryData(date: string) {
+	let entries = await axios
+		.get("http://localhost:3001/get-entries", {
+			params: { date: date },
+		})
+		.then(async function (response) {
+			return await response.data.entries;
+		});
 
-	const [entry, setEntry] = createStore({
-		Drawer: JSON.parse(JSON.stringify(starter)),
-		Tips: JSON.parse(JSON.stringify(starter)),
-		Final: JSON.parse(JSON.stringify(starter)),
-	});
+	setEntry("drawer", entries.drawer);
+	setEntry("tips", entries.tips);
+	setEntry("final", entries.final);
+}
+
+const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
+	let { entryDate } = props;
+	const [entryType, setEntryType] = createSignal<entryTypes>("drawer");
+	let entries;
+
 	const [allTotals, setAllTotals] = createStore({
-		Drawer: 0,
-		Tips: 0,
-		Final: 0,
+		drawer: 0,
+		tips: 0,
+		final: 0,
 	});
+
 	const [dropDown, setDropDown] = createSignal<boolean>(false);
+
+	onMount(async function () {
+		//gets the entry data for the selected date
+		await requestEntryData(entryDate);
+
+		//prefills the total summary bar w/ the existing values otherwise they're 0
+		calcTotals(entry.drawer);
+		setAllTotals("drawer", () => total());
+		calcTotals(entry.tips);
+		setAllTotals("tips", total());
+		calcTotals(entry.final);
+		setAllTotals("final", total());
+	});
 
 	createEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			const dropdownDefaultButton = document.getElementById("dropdownDefaultButton");
+			const dropdownDefaultButton = document.getElementById(
+				"dropdownDefaultButton",
+			);
 			const dropdown = document.getElementById("dropdown");
 
 			if (
@@ -163,19 +216,17 @@ const EntryDisplay: Component = () => {
 								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
 									Tips
 								</td>
-								<td class='p-2 align-top text-xs text-mini-gray'>
-									Final
-								</td>
+								<td class='p-2 align-top text-xs text-mini-gray'>Final</td>
 							</tr>
 							<tr class='border-border-gray'>
 								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
-									${allTotals.Drawer}
+									${allTotals.drawer}
 								</td>
 								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
-									${allTotals.Tips}
+									${allTotals.tips}
 								</td>
 								<td class='px-2 pb-2 w-1/3 text-l text-right'>
-									${allTotals.Final}
+									${allTotals.final}
 								</td>
 							</tr>
 						</tbody>
@@ -195,7 +246,7 @@ const EntryDisplay: Component = () => {
 										type='button'
 										onClick={() => setDropDown(!dropDown())}
 									>
-										{entryType()}
+										{entryType().charAt(0).toUpperCase() + entryType().slice(1)}
 										<svg
 											class='w-1.5 h-1.5'
 											aria-hidden='true'
@@ -219,9 +270,7 @@ const EntryDisplay: Component = () => {
 											id='dropdown'
 											class='border border-border-gray bg-black rounded-md text-white font-normal'
 										>
-											<ul
-												aria-labelledby='dropdownDefaultButton'
-											>
+											<ul aria-labelledby='dropdownDefaultButton'>
 												<div class='p-1'>
 													<li class='px-2 pt-2 font-semibold text-xs text-content-gray pointer-events-none'>
 														Select a classification
@@ -229,7 +278,7 @@ const EntryDisplay: Component = () => {
 												</div>
 												<a
 													onClick={() => {
-														setEntryType("Drawer");
+														setEntryType("drawer");
 														calcTotals(entry[entryType()]);
 													}}
 													class=''
@@ -238,15 +287,18 @@ const EntryDisplay: Component = () => {
 														<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 															<div class='inline-flex gap-3'>
 																<svg
-																	fill="currentColor"
-																	stroke-width="0"
-																	xmlns="http://www.w3.org/2000/svg"
-																	viewBox="0 0 16 16"
-																	height="1.2em"
-																	width="1.2em"
-																	style="overflow: visible; color: currentcolor;"
+																	fill='currentColor'
+																	stroke-width='0'
+																	xmlns='http://www.w3.org/2000/svg'
+																	viewBox='0 0 16 16'
+																	height='1.2em'
+																	width='1.2em'
+																	style='overflow: visible; color: currentcolor;'
 																>
-																	<path fill="currentColor" d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
+																	<path
+																		fill='currentColor'
+																		d='m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z'
+																	></path>
 																</svg>
 																Drawer
 															</div>
@@ -255,7 +307,7 @@ const EntryDisplay: Component = () => {
 												</a>
 												<a
 													onClick={() => {
-														setEntryType("Tips");
+														setEntryType("tips");
 														calcTotals(entry[entryType()]);
 													}}
 													class=''
@@ -264,15 +316,15 @@ const EntryDisplay: Component = () => {
 														<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 															<div class='inline-flex items-center gap-3'>
 																<svg
-																	fill="currentColor"
-																	stroke-width="0"
-																	xmlns="http://www.w3.org/2000/svg"
-																	viewBox="0 0 640 512"
-																	height="1.2em"
-																	width="1.2em"
-																	style="overflow: visible; color: currentcolor;"
+																	fill='currentColor'
+																	stroke-width='0'
+																	xmlns='http://www.w3.org/2000/svg'
+																	viewBox='0 0 640 512'
+																	height='1.2em'
+																	width='1.2em'
+																	style='overflow: visible; color: currentcolor;'
 																>
-																	<path d="M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z"></path>
+																	<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
 																</svg>
 																Tips
 															</div>
@@ -281,7 +333,7 @@ const EntryDisplay: Component = () => {
 												</a>
 												<a
 													onClick={() => {
-														setEntryType("Final");
+														setEntryType("final");
 														calcTotals(entry[entryType()]);
 													}}
 													class=''
@@ -290,15 +342,15 @@ const EntryDisplay: Component = () => {
 														<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
 															<div class='inline-flex items-center gap-3'>
 																<svg
-																	fill="currentColor"
-																	stroke-width="0"
-																	xmlns="http://www.w3.org/2000/svg"
-																	viewBox="0 0 1024 1024"
-																	height="1.2em"
-																	width="1.2em"
-																	style="overflow: visible; color: currentcolor;"
+																	fill='currentColor'
+																	stroke-width='0'
+																	xmlns='http://www.w3.org/2000/svg'
+																	viewBox='0 0 1024 1024'
+																	height='1.2em'
+																	width='1.2em'
+																	style='overflow: visible; color: currentcolor;'
 																>
-																	<path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path>
+																	<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
 																</svg>
 																Final
 															</div>
@@ -326,17 +378,37 @@ const EntryDisplay: Component = () => {
 										<For each={entry[entryType()]}>
 											{(item) => (
 												<tr class='text-center'>
-													<td class={`p-4 w-1/6 ${item.id === 0 ? 'rounded-tl-md border-b border-border-gray' : ''} ${item.id === 5 ? 'rounded-bl-md border-t border-border-gray' : 'border-b border-border-gray'} border-r border-border-gray bg-input-gray`}>
+													<td
+														class={`p-4 w-1/6 ${
+															item.id === 0
+																? "rounded-tl-md border-b border-border-gray"
+																: ""
+														} ${
+															item.id === 5
+																? "rounded-bl-md border-t border-border-gray"
+																: "border-b border-border-gray"
+														} border-r border-border-gray bg-input-gray`}
+													>
 														{labels[item.id].bill_label}
 													</td>
-													<td class={`p-2 w-2/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'}`}>
+													<td
+														class={`p-2 w-2/6 ${
+															item.id === 0 ? "border-b border-border-gray" : ""
+														} ${
+															item.id === 5
+																? "border-t border-border-gray"
+																: "border-b border-border-gray"
+														}`}
+													>
 														<input
 															class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
 															value={item.bill_amount}
 															onChange={(e) => {
 																if (Number.isNaN(parseInt(e.target.value))) {
 																	e.target.value =
-																		entry[entryType()][item.id].bill_amount;
+																		entry[entryType()][
+																			item.id
+																		].bill_amount.toString();
 																	return;
 																}
 																setEntry(entryType(), item.id, (entry) => ({
@@ -345,7 +417,7 @@ const EntryDisplay: Component = () => {
 																}));
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
-																setTipTotal(allTotals.Tips);
+																setTipTotal(allTotals.tips);
 															}}
 															onFocus={(e) => {
 																if (e.target.value == "0") {
@@ -359,17 +431,35 @@ const EntryDisplay: Component = () => {
 															}}
 														></input>
 													</td>
-													<td class={`p-4 w-1/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'} border-x border-border-gray bg-input-gray`}>
+													<td
+														class={`p-4 w-1/6 ${
+															item.id === 0 ? "border-b border-border-gray" : ""
+														} ${
+															item.id === 5
+																? "border-t border-border-gray"
+																: "border-b border-border-gray"
+														} border-x border-border-gray bg-input-gray`}
+													>
 														{labels[item.id].change_label}
 													</td>
-													<td class={`p-2 w-2/6 ${item.id === 0 ? 'border-b border-border-gray' : ''} ${item.id === 5 ? 'border-t border-border-gray' : 'border-b border-border-gray'}`}>
+													<td
+														class={`p-2 w-2/6 ${
+															item.id === 0 ? "border-b border-border-gray" : ""
+														} ${
+															item.id === 5
+																? "border-t border-border-gray"
+																: "border-b border-border-gray"
+														}`}
+													>
 														<input
 															class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
 															value={item.change_amount}
 															onChange={(e) => {
 																if (Number.isNaN(parseInt(e.target.value))) {
 																	e.target.value =
-																		entry[entryType()][item.id].change_amount;
+																		entry[entryType()][
+																			item.id
+																		].change_amount.toString();
 																	return;
 																}
 																setEntry(
@@ -380,7 +470,7 @@ const EntryDisplay: Component = () => {
 																);
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
-																setTipTotal(allTotals.Tips);
+																setTipTotal(allTotals.tips);
 															}}
 															onFocus={(e) => {
 																if (e.target.value == "0") {
@@ -448,7 +538,7 @@ const EntryDisplay: Component = () => {
 										});
 										calcTotals(entry[entryType()]);
 										setAllTotals(entryType(), total());
-										setTipTotal(allTotals.Tips);
+										setTipTotal(allTotals.tips);
 									}}
 								>
 									Clear
