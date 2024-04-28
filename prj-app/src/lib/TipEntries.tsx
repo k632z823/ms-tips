@@ -172,6 +172,7 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 		setAllTotals("drawer", () => total());
 		calcTotals(entry.tips);
 		setAllTotals("tips", total());
+		setTipTotal(total());
 		calcTotals(entry.final);
 		setAllTotals("final", total());
 	});
@@ -417,7 +418,6 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 																}));
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
-																setTipTotal(allTotals.tips);
 															}}
 															onFocus={(e) => {
 																if (e.target.value == "0") {
@@ -470,7 +470,6 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 																);
 																calcTotals(entry[entryType()]);
 																setAllTotals(entryType(), total());
-																setTipTotal(allTotals.tips);
 															}}
 															onFocus={(e) => {
 																if (e.target.value == "0") {
@@ -521,10 +520,13 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 								<button
 									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
 									onClick={() => {
-										setShowConfig(!showConfig());
+										if (entryType() == "tips") {
+											setTipTotal(allTotals.tips);
+										}
 									}}
 								>
-									Calculate Tip Rate
+									Submit{" "}
+									{entryType().charAt(0).toUpperCase() + entryType().slice(1)}
 								</button>
 								<button
 									class='p-1.5 border border-border-gray hover:bg-border-gray rounded-md'
@@ -538,7 +540,6 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 										});
 										calcTotals(entry[entryType()]);
 										setAllTotals(entryType(), total());
-										setTipTotal(allTotals.tips);
 									}}
 								>
 									Clear
@@ -549,10 +550,8 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 				</div>
 			</div>
 
-			<Show when={showConfig()}>
-				<br></br>
-				<TipConfig tip_total={tipTotal()}></TipConfig>
-			</Show>
+			<br></br>
+			<TipConfig tip_total={tipTotal()}></TipConfig>
 		</>
 	);
 };
