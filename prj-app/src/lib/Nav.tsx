@@ -22,7 +22,7 @@ const Nav: Component = () => {
 					group: "dropdown",
 					label: "Entries",
 					icon: entriesIcon,
-					path: "/Entries",
+					path: "/Entries/default",
 				},
 				{
 					group: "dropdown",

@@ -26,7 +26,7 @@ render(
 				component={Overview}
 			/>
 			<Route
-				path='/Entries'
+				path='/Entries/:date'
 				component={Entries}
 			/>
 			<Route
