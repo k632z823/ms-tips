@@ -104,8 +104,7 @@ const ArchiveTable: Component = () => {
 	const [descDateSortOrder, setDescDateSortOrder] = createSignal<boolean>(true);
 	const [tableShown, setTableShown] = createSignal<boolean>(true);
 	const [rendered, setRendered] = createSignal<boolean>(false);
-	const [confirmDeleteShown, setConfirmDeleteShown] =
-		createSignal<boolean>(false);
+	const [confirmDeleteShown, setConfirmDeleteShown] = createSignal<boolean>(false);
 	const navigate = useNavigate();
 	// let sortedEntryRows: entryRow[] = [...entryRows];
 
@@ -114,6 +113,11 @@ const ArchiveTable: Component = () => {
 			<Show when={tableShown()}>
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
+						<div>
+							<button>
+								Export
+							</button>
+						</div>
 						<table class='table-fixed text-sm font-normal w-full'>
 							<thead>
 								<tr class='text-start'>
@@ -275,7 +279,7 @@ const ArchiveTable: Component = () => {
 																		<li
 																			class='block px-3 py-2 hover:bg-input-gray hover:rounded'
 																			onClick={() => {
-																				navigate("/Entries/default", {
+																				navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
 																					replace: true,
 																				});
 																			}}
