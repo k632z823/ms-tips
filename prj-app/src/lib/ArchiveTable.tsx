@@ -4,6 +4,7 @@ import moment from "moment";
 import axios from "axios";
 import { Portal } from "solid-js/web";
 import Modal from "./Utilities/Modal";
+import { useNavigate } from "@solidjs/router";
 
 interface Entry {
 	id: number;
@@ -105,7 +106,7 @@ const ArchiveTable: Component = () => {
 	const [rendered, setRendered] = createSignal<boolean>(false);
 	const [confirmDeleteShown, setConfirmDeleteShown] =
 		createSignal<boolean>(false);
-
+	const navigate = useNavigate();
 	// let sortedEntryRows: entryRow[] = [...entryRows];
 
 	return (
@@ -271,7 +272,14 @@ const ArchiveTable: Component = () => {
 																		</li>
 																	</div>
 																	<div class='px-1 pb-1'>
-																		<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
+																		<li
+																			class='block px-3 py-2 hover:bg-input-gray hover:rounded'
+																			onClick={() => {
+																				navigate("/Entries/default", {
+																					replace: true,
+																				});
+																			}}
+																		>
 																			Edit
 																		</li>
 																	</div>
