@@ -45,6 +45,7 @@ let sling_api = new Sling();
     if (date == "default") {
       entries = await getEntries('04-28-2024');
     } else {
+      // @ts-ignore
       entries = await getEntries(date);
     }
    
@@ -74,6 +75,14 @@ let sling_api = new Sling();
     }
     response.json({success: true, entries: formattedEntries})
   });
+
+  app.get("/get-export-entries", async function(request, response) {
+    let fromDate = request.query.fromDate;
+    let toDate = request.query.toDate;
+    // @ts-ignore
+    let entries = await getEntriesToExport(fromDate, toDate);
+    response.json({success: true, entries: entries})
+  })
 
   app.get("/add-archive-entry", async function(request, response) {
 
@@ -208,4 +217,8 @@ let sling_api = new Sling();
 
   async function addEntry() {
 
+  }
+
+  async function getEntriesToExport(fromDate: string, toDate: string) {
+    return await db.withSchema("public").from("archive_entries").select("*").where("date", ">=", fromDate).andWhere("date", "<=", toDate);
   }

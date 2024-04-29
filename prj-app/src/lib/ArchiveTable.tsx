@@ -1,10 +1,11 @@
-import { For, Component, createSignal, onMount, Show } from "solid-js";
+import { For, Component, createSignal, onMount, Show, from } from "solid-js";
 import { createStore } from "solid-js/store";
 import moment from "moment";
 import axios from "axios";
 import { Portal } from "solid-js/web";
 import Modal from "./Utilities/Modal";
 import { useNavigate } from "@solidjs/router";
+import { fromJSON } from "postcss";
 
 interface Entry {
 	id: number;
@@ -64,6 +65,15 @@ async function deleteEntry(idToDelete: number) {
 	});
 }
 
+async function getExportEntries(fromDate: string, toDate: string) {
+	let response = await axios.get("http://localhost:3001/get-export-entries", {
+		params: {
+			fromDate: fromDate,
+			toDate: toDate,
+		}
+	})
+}
+
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
 	if (sortByDesc) {
@@ -105,6 +115,11 @@ const ArchiveTable: Component = () => {
 	const [tableShown, setTableShown] = createSignal<boolean>(true);
 	const [rendered, setRendered] = createSignal<boolean>(false);
 	const [confirmDeleteShown, setConfirmDeleteShown] = createSignal<boolean>(false);
+	const [exportModalShown, setExportModalShown] = createSignal<boolean>(false);
+	const [fromDate, setFromDate] = createSignal<string>("");
+	const [toDate, setToDate] = createSignal<string>(moment().format("L"));
+	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
+
 	const navigate = useNavigate();
 	// let sortedEntryRows: entryRow[] = [...entryRows];
 
@@ -114,7 +129,9 @@ const ArchiveTable: Component = () => {
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<div>
-							<button>
+							<button
+								onclick={() => setExportModalShown(true)}
+							>
 								Export
 							</button>
 						</div>
@@ -451,7 +468,80 @@ const ArchiveTable: Component = () => {
 						setRendered(true);
 						setConfirmDeleteShown(false);
 					}}
-				></Modal>
+				>
+				</Modal>
+			</Show>
+			<Show when={exportModalShown()}>
+				<Modal
+					header="Select date range to export"
+					body={
+						<div>
+							<div>
+								<label for="from-date">From {fromDate()}</label>
+								<input 
+									id="from-date" 
+									type="date" 
+									onchange={
+										(e) => {
+											let invalidFromDateMsg = document.getElementById("invalid-from-date");
+											if (moment(e.target.value).isAfter(moment(toDate()))) {
+												setFromDate("");
+												e.target.value = "";
+												//@ts-ignore
+												invalidFromDateMsg.innerHTML = "Invalid date";
+											} else {
+												setFromDate(e.target.value)
+												//@ts-ignore
+												invalidFromDateMsg.innerHTML = "";
+												setValidDateRange(true);
+											}
+										} 
+									}
+								/>
+								<div id="invalid-from-date"></div>
+							</div>
+							<div>
+								<label for="to-date">To {toDate()}</label>
+								<input 
+									id="to-date" 
+									type="date" 
+									value={moment().format("YYYY-MM-DD")}
+									onchange={
+										(e) => {
+											let invalidToDateMsg = document.getElementById("invalid-to-date"); 
+											if (moment(e.target.value).isBefore(moment(fromDate()))) {
+												e.target.value = "";
+												//@ts-ignore
+												invalidToDateMsg.innerHTML = "Invalid date";
+											} else {
+												setToDate(e.target.value)
+												//@ts-ignore
+												invalidToDateMsg.innerHTML = "";
+												setValidDateRange(true);
+											}
+										}
+									}
+								/>
+								<div id="invalid-to-date"></div>
+							</div>
+						</div>
+					}
+					deny={"Cancel"}
+					confirm={"Export"}
+					onDenyClick={() => {
+						setFromDate("");
+						setToDate(moment().format("YYYY-MM-DD"));
+						setExportModalShown(false);
+					}}
+					onConfirmClick={() => {
+						if (validDateRange()) {
+							let entries = getExportEntries(fromDate(), toDate());
+						} else if (!validDateRange()) {
+							
+						}
+					}}
+				>
+				</Modal>
 			</Show>
 		</>
 	);
