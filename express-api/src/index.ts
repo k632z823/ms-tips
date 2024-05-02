@@ -43,7 +43,7 @@ let sling_api = new Sling();
     let entries;
 
     if (date == "default") {
-      entries = await getEntries('04-28-2024');
+      entries = await getEntries(moment().format("L"));
     } else {
       // @ts-ignore
       entries = await getEntries(date);
@@ -54,7 +54,10 @@ let sling_api = new Sling();
   });
 
   app.post("/add-entry", async function(request, response) {
+    let entry = request.body.entry;
+    await addEntry(entry);
 
+    response.json({success: true})
   })
 
   //gets all rows from archive_entries db table
@@ -195,7 +198,7 @@ let sling_api = new Sling();
       drawer: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.drawer_label),
       final: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.final_label)
     }
-
+    
     let keys = Object.keys(dbRecords);
 
     for (let key of keys) {
@@ -245,8 +248,28 @@ let sling_api = new Sling();
     return entries;
   }
 
-  async function addEntry() {
+  async function addEntry(entry: any) {
+    let existingEntry = await db.withSchema("public").from('entries').select("*").where('entry_date', entry.entry_date).andWhere('type', entry.type);
 
+    if (existingEntry.length != 0) {
+      await db('public.entries').update({
+        coin_01: entry.coin_01,
+        coin_05: entry.coin_05,
+        coin_10: entry.coin_10,
+        coin_25: entry.coin_25,
+        coin_50: entry.coin_50,
+        coin_1: entry.coin_1,
+        bill_1: entry.bill_1,
+        bill_5: entry.bill_5,
+        bill_10: entry.bill_10,
+        bill_20: entry.bill_20,
+        bill_50: entry.bill_50,
+        bill_100: entry.bill_100
+      }).where('entry_date', entry.entry_date).andWhere('type', entry.type);
+    } else {
+      await db.withSchema("public").insert(entry).into('entries');
+    }
+    
   }
 
   async function getEntriesToExport(fromDate: string, toDate: string) {

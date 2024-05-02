@@ -11,6 +11,7 @@ import {
 import { createStore } from "solid-js/store";
 import TipConfig from "./TipConfig";
 import axios from "axios";
+import moment from "moment";
 
 interface Entry {
 	id: number;
@@ -95,6 +96,7 @@ const [changeTotal, setChangeTotal] = createSignal<number>(0);
 const [total, setTotal] = createSignal<number>(0);
 const [showConfig, setShowConfig] = createSignal<boolean>(false);
 const [tipTotal, setTipTotal] = createSignal<number>(0);
+const [entryType, setEntryType] = createSignal<entryTypes>("drawer");
 
 const [entry, setEntry] = createStore({
 	drawer: [
@@ -150,9 +152,31 @@ async function requestEntryData(date: string) {
 	setEntry("final", entries.final);
 }
 
+async function addEntry(entryDate: string) {
+	let date = entryDate == "default" ? moment().format("L") : entryDate;
+
+	await axios.post("http://localhost:3001/add-entry", {
+		entry: {
+			entry_date: date,
+			type: entryType(),
+			coin_01: entry[entryType()][0].change_amount,
+			coin_05: entry[entryType()][1].change_amount,
+			coin_10: entry[entryType()][2].change_amount,
+			coin_25: entry[entryType()][3].change_amount,
+			coin_50: entry[entryType()][4].change_amount,
+			coin_1: entry[entryType()][5].change_amount,
+			bill_1: entry[entryType()][0].bill_amount,
+			bill_5: entry[entryType()][1].bill_amount,
+			bill_10: entry[entryType()][2].bill_amount,
+			bill_20: entry[entryType()][3].bill_amount,
+			bill_50: entry[entryType()][4].bill_amount,
+			bill_100: entry[entryType()][5].bill_amount,
+		},
+	});
+}
+
 const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 	let { entryDate } = props;
-	const [entryType, setEntryType] = createSignal<entryTypes>("drawer");
 	let entries;
 
 	const [allTotals, setAllTotals] = createStore({
@@ -167,7 +191,7 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 		//gets the entry data for the selected date
 		await requestEntryData(entryDate);
 
-		//prefills the total summary bar w/ the existing values otherwise they're 0
+		//prefills the total summary bar w/ the existing values totals otherwise they're 0
 		calcTotals(entry.drawer);
 		setAllTotals("drawer", () => total());
 		calcTotals(entry.tips);
@@ -519,10 +543,11 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 							<div class='px-5 grid grid-cols-2 gap-5 text-sm font-normal w-full'>
 								<button
 									class='order-last p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
-									onClick={() => {
+									onClick={async () => {
 										if (entryType() == "tips") {
 											setTipTotal(allTotals.tips);
 										}
+										await addEntry(entryDate);
 									}}
 								>
 									Submit{" "}
