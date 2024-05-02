@@ -477,7 +477,6 @@ const ArchiveTable: Component = () => {
 					body={
 						<div>
 							<div>
-								<label for="from-date">From {fromDate()}</label>
 								<input 
 									id="from-date" 
 									type="date" 
@@ -501,7 +500,6 @@ const ArchiveTable: Component = () => {
 								<div id="invalid-from-date"></div>
 							</div>
 							<div>
-								<label for="to-date">To {toDate()}</label>
 								<input 
 									id="to-date" 
 									type="date" 
@@ -510,6 +508,7 @@ const ArchiveTable: Component = () => {
 										(e) => {
 											let invalidToDateMsg = document.getElementById("invalid-to-date"); 
 											if (moment(e.target.value).isBefore(moment(fromDate()))) {
+												setToDate("");
 												e.target.value = "";
 												//@ts-ignore
 												invalidToDateMsg.innerHTML = "Invalid date";
