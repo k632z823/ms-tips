@@ -1,18 +1,24 @@
 import TipConfigBar from "./TipConfigBar";
 import { ShiftData as ShiftData, pullSlingEmployeeData } from "./GetWorkers";
-import { Component, createSignal, createEffect, For, on } from "solid-js";
+import {
+	Component,
+	createSignal,
+	createEffect,
+	For,
+	on,
+	onMount,
+} from "solid-js";
 import { SetStoreFunction, createStore } from "solid-js/store";
 
 export interface TipConfigProps {
 	tip_total: number;
+	date: string;
 }
 
 const [initialTipTotal, setInitialTipTotal] = createSignal<number>(0);
 const [remainingTipTotal, setRemainingTipTotal] = createSignal<number>(0);
 const [tipRate, setTipRate] = createSignal<number>(0);
-const [employees, editEmployees] = createStore<ShiftData[]>(
-	await pullSlingEmployeeData(),
-);
+const [employees, editEmployees] = createStore<ShiftData[]>([]);
 
 function calculateTipRate(tipTotal: number, employeeData: ShiftData[]) {
 	//stores the total hours worked between all employees on that shift
@@ -79,6 +85,9 @@ function calculateTipDistribution(emps: ShiftData[]) {
 }
 
 const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
+	onMount(async () => {
+		editEmployees(await pullSlingEmployeeData(props.date));
+	});
 	createEffect(
 		on(
 			() => props.tip_total,

@@ -51,9 +51,9 @@ export interface ShiftData {
 // 	},
 // ];
 
-export async function pullSlingEmployeeData() {
+export async function pullSlingEmployeeData(date: string) {
 	let data = await axios
-		.get("http://localhost:3001/get-shift-summary")
+		.get("http://localhost:3001/get-shift-summary", { params: { date: date } })
 		.then(function (response) {
 			return response.data.shift_data;
 		});

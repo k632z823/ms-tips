@@ -132,9 +132,11 @@ let sling_api = new Sling();
   //gets all the employees that worked for the day
   app.get("/get-shift-summary", async function (request, response) {
     console.log('Request Recieved: GET shift summary');
-    let body = request.body;
 
-    let shiftSummary: ShiftData[] =  await sling_api.getTimeSheet("2024-04-05T00:00:00Z/2024-04-05T23:00:00Z"); 
+    //@ts-ignore
+    let date = request.query.date === 'default' ? moment().format("YYYY-MM-DD") : moment(request.query.date).format("YYYY-MM-DD");
+
+    let shiftSummary: ShiftData[] =  await sling_api.getTimeSheet(`${date}T00:00:00Z/${date}T23:00:00Z`); 
 
     response.json({succes: true, shift_data: shiftSummary})
   })
@@ -198,7 +200,7 @@ let sling_api = new Sling();
       drawer: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.drawer_label),
       final: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.final_label)
     }
-    
+
     let keys = Object.keys(dbRecords);
 
     for (let key of keys) {
