@@ -6,7 +6,7 @@ import { request } from "http";
 
 import cors from "cors";
 import axios from "axios";
-import moment from "moment";
+import moment, { now } from "moment";
 
 import { Archive_Entry, ShiftData, Entry_type, Entry } from "./interfaces" 
 import {Sling} from "./sling";
@@ -74,6 +74,36 @@ let sling_api = new Sling();
       })
     }
     response.json({success: true, entries: formattedEntries})
+  });
+
+  app.get("/get-todays-entry", async function(request,response) {
+    let todaysDate: string = moment().format("YYYY-MM-DD");
+    console.log(todaysDate);
+    let data = await getTodaysEntry(todaysDate);
+    console.log(data);
+    let todaysEntry: Archive_Entry;
+    if (data.length != 0) {
+      todaysEntry = {
+        id: data[0].id,
+        date: data[0].date,
+        drawer: data[0].drawer,
+        tips: data[0].tips,
+        final: data[0].final,
+        tipRate: data[0].tip_rate,
+        tags: data[0].tags
+      }
+    } else {
+      todaysEntry = {
+        id: 0,
+        date: "",
+        drawer: 0,
+        tips: 0,
+        final: 0,
+        tipRate: 0,
+        tags: []
+      }
+    }
+    response.json({success: true, todaysEntry: todaysEntry});
   });
 
   app.get("/get-export-entries", async function(request, response) {
@@ -221,4 +251,8 @@ let sling_api = new Sling();
 
   async function getEntriesToExport(fromDate: string, toDate: string) {
     return await db.withSchema("public").from("archive_entries").select("*").where("date", ">=", fromDate).andWhere("date", "<=", toDate);
+  }
+
+  async function getTodaysEntry(todaysDate: string) {
+    return await db.withSchema("public").from("archive_entries").select("*").where("date",todaysDate);
   }

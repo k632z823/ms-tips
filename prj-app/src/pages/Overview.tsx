@@ -10,7 +10,7 @@ const Overview: Component = () => {
 				<DateDisplay/>
 			</div>
 			<div class='text-sm font-light'>
-				<OverviewEntries drawer={86} tips={45} final={86} tipRate={12}/>
+				<OverviewEntries/>
 			</div>
 		</>
 	);
