@@ -106,8 +106,8 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 				tip_total={props.tip_total}
 				tip_rate={tipRate()}
 			></TipConfigBar>
-			<div class='flex justify-center px-5'>
-				<div class='border border-border-gray rounded-md w-full'>
+			<div class='flex justify-center px-5 pt-5'>
+				<div class='border border-border-gray rounded-md w-full overflow-x-auto'>
 					<table class='table-fixed text-sm font-light w-full'>
 						<thead class='bg-input-gray'>
 							<tr class='text-start'>
