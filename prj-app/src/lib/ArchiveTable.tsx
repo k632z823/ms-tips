@@ -73,7 +73,7 @@ async function getExportEntries(fromDate: string, toDate: string) {
 			toDate: toDate,
 		}
 	})
-	let entries: any  = response.data.entries;
+	let entries: any = response.data.entries;
 	return entries;
 }
 
@@ -129,24 +129,40 @@ const ArchiveTable: Component = () => {
 	return (
 		<>
 			<Show when={tableShown()}>
+				<div class='px-5 pb-5 text-sm'>
+					<div class='grid grid-cols-4'>
+						<button
+							class='col-start-4 px-2 py-1 inline-flex items-center justify-between w-full text-center bg-black border border-border-gray rounded-md hover:bg-border-gray'
+							onclick={() => {
+								setExportModalShown(true)
+								setEntry(
+									selectedEntry(),
+									(row) => ({
+										...row,
+										dropDownShown: false,
+									}),
+								);
+							}}
+						>
+							Export
+							<svg
+								fill="#505050"
+								stroke-width="0"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								height="1em"
+								width="1em"
+								style="overflow: visible; color: currentcolor;">
+								<path d="M18 22a2 2 0 0 0 2-2v-5l-5 4v-3H8v-2h7v-3l5 4V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12zM13 4l5 5h-5V4z"></path>
+							</svg>
+						</button>
+					</div>
+				</div>
+				{/* <div class='pb-5 px-5 flex items-center'>
+						<div class='flex-grow border-t border-border-gray'></div>
+				</div> */}
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
-						<div>
-							<button
-								onclick={() => {
-									setExportModalShown(true)
-									setEntry(
-										selectedEntry(),
-										(row) => ({
-											...row,
-											dropDownShown: false,
-										}),
-									);
-								}}
-							>
-								Export
-							</button>
-						</div>
 						<table class='table-fixed text-sm font-normal w-full'>
 							<thead>
 								<tr class='text-start'>
@@ -468,7 +484,7 @@ const ArchiveTable: Component = () => {
 						</div>
 					}
 					denyButton={
-						<button 
+						<button
 							class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
 							onclick={() => setConfirmDeleteShown(false)}
 						>
@@ -497,13 +513,15 @@ const ArchiveTable: Component = () => {
 			</Show>
 			<Show when={exportModalShown()}>
 				<Modal
-					header="Select date range to export"
+					header="Export Entries"
 					body={
-						<div>
-							<div>
-								<input 
-									id="from-date" 
-									type="date" 
+						<div class='w-full'>
+							Select the start and end dates to export data within a specific range.
+							<div class='flex gap-2 pt-3 items-center'>
+								<input
+									id="from-date"
+									type="date"
+									class='w-full border border-border-gray rounded-md bg-black px-2 py-1'
 									onchange={
 										(e) => {
 											let invalidFromDateMsg = document.getElementById("invalid-from-date");
@@ -522,19 +540,18 @@ const ArchiveTable: Component = () => {
 													setValidDateRange(true);
 												}
 											}
-										} 
+										}
 									}
 								/>
-								<div id="invalid-from-date"></div>
-							</div>
-							<div>
-								<input 
-									id="to-date" 
-									type="date" 
+								to
+								<input
+									id="to-date"
+									type="date"
+									class='w-full border border-border-gray rounded-md bg-black px-2 py-1'
 									value={moment().format("YYYY-MM-DD")}
-									onchange={	
+									onchange={
 										(e) => {
-											let invalidToDateMsg = document.getElementById("invalid-to-date"); 
+											let invalidToDateMsg = document.getElementById("invalid-to-date");
 											if (moment(e.target.value).isBefore(moment(fromDate()))) {
 												setToDate("");
 												e.target.value = "";
@@ -552,8 +569,9 @@ const ArchiveTable: Component = () => {
 										}
 									}
 								/>
-								<div id="invalid-to-date"></div>
 							</div>
+							<div id="invalid-from-date"></div>
+							<div id="invalid-to-date"></div>
 						</div>
 					}
 					denyButton={
@@ -571,14 +589,14 @@ const ArchiveTable: Component = () => {
 					confirmButton={
 						<button
 							class={validDateRange() ? 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90' : 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'}
-							onclick={async function(e) {
+							onclick={async function (e) {
 								if (validDateRange()) {
 									let entries = await getExportEntries(fromDate(), toDate());
 									const csvConfig = mkConfig({ useKeysAsHeaders: true });
 									const csv = generateCsv(csvConfig)(entries);
 									download(csvConfig)(csv);
 								} else if (!validDateRange()) {
-									
+
 								}
 							}}
 						>
