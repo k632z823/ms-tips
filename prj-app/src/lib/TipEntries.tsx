@@ -574,8 +574,6 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 					</div>
 				</div>
 			</div>
-
-			<br></br>
 			<TipConfig
 				tip_total={tipTotal()}
 				date={entryDate}
