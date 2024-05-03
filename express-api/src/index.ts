@@ -8,7 +8,7 @@ import cors from "cors";
 import axios from "axios";
 import moment, { now } from "moment";
 
-import { Archive_Entry, ShiftData, Entry_type, Entry } from "./interfaces" 
+import { Archive_Entry, ShiftData, Entry_type, Entry, Archive_Entry_TagsNotArray, Archive_Entry_TagsNotArray_DateString } from "./interfaces" 
 import {Sling} from "./sling";
 
 const db = Knex({
@@ -81,9 +81,7 @@ let sling_api = new Sling();
 
   app.get("/get-todays-entry", async function(request,response) {
     let todaysDate: string = moment().format("YYYY-MM-DD");
-    console.log(todaysDate);
     let data = await getTodaysEntry(todaysDate);
-    console.log(data);
     let todaysEntry: Archive_Entry;
     if (data.length != 0) {
       todaysEntry = {
@@ -113,7 +111,42 @@ let sling_api = new Sling();
     let fromDate = request.query.fromDate;
     let toDate = request.query.toDate;
     // @ts-ignore
-    let entries = await getEntriesToExport(fromDate, toDate);
+    let data = await getEntriesToExport(fromDate, toDate);
+    let entriesTagsNotArray: Archive_Entry_TagsNotArray[] = [];
+    for (let item of data) {
+      let tags: string = "";
+      item.tags.forEach((tag: string) => {
+        if (item.tags.indexOf(tag) != item.tags.length - 1) {
+          tags += tag + ", ";
+        } else {
+          tags += tag;
+        }
+      });
+      entriesTagsNotArray.push({
+        id: item.id,
+        date: moment(item.date),
+        tips: item.tips,
+        final: item.final,
+        tipRate: item.tipRate,
+        tags: tags,
+        drawer: item.drawer,
+      });
+      entriesTagsNotArray.sort(
+        (a, b) => b.date.valueOf() - a.date.valueOf()
+      );
+    }
+    let entries: Archive_Entry_TagsNotArray_DateString[] = [];
+    for (let item of entriesTagsNotArray) {
+      entries.push({
+        id: item.id,
+        date: moment(item.date).format("MM-DD-YYYY"),
+        tips: item.tips,
+        final: item.final,
+        tipRate: item.tipRate,
+        tags: item.tags,
+        drawer: item.drawer,
+      })
+    }
     response.json({success: true, entries: entries})
   })
 
@@ -275,7 +308,7 @@ let sling_api = new Sling();
   }
 
   async function getEntriesToExport(fromDate: string, toDate: string) {
-    return await db.withSchema("public").from("archive_entries").select("*").where("date", ">=", fromDate).andWhere("date", "<=", toDate);
+    return await db.withSchema("public").from("archive_entries").select("date", "tips", "final", "tip_rate","tags", "drawer").where("date", ">=", fromDate).andWhere("date", "<=", toDate);
   }
 
   async function getTodaysEntry(todaysDate: string) {

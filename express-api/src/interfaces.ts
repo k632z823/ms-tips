@@ -1,4 +1,6 @@
 // for ArchiveTable.tsx
+import moment, { Moment } from "moment";
+
 export interface Archive_Entry {
     id: number;
     date: string;
@@ -7,6 +9,26 @@ export interface Archive_Entry {
     final: number;
     tipRate: number;
     tags: string[];
+}
+
+export interface Archive_Entry_TagsNotArray {
+    id: number;
+    date: Moment;
+    drawer: number;
+    tips: number;
+    final: number;
+    tipRate: number;
+    tags: string;
+}
+
+export interface Archive_Entry_TagsNotArray_DateString {
+    id: number;
+    date: string;
+    drawer: number;
+    tips: number;
+    final: number;
+    tipRate: number;
+    tags: string;
 }
 
 export interface Auth {

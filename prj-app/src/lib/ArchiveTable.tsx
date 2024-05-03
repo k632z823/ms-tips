@@ -6,6 +6,7 @@ import { Portal } from "solid-js/web";
 import Modal from "./Utilities/Modal";
 import { useNavigate } from "@solidjs/router";
 import { fromJSON } from "postcss";
+import { mkConfig, generateCsv, download } from "export-to-csv";
 
 interface Entry {
 	id: number;
@@ -72,6 +73,8 @@ async function getExportEntries(fromDate: string, toDate: string) {
 			toDate: toDate,
 		}
 	})
+	let entries: any  = response.data.entries;
+	return entries;
 }
 
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
@@ -532,9 +535,12 @@ const ArchiveTable: Component = () => {
 						setToDate(moment().format("YYYY-MM-DD"));
 						setExportModalShown(false);
 					}}
-					onConfirmClick={() => {
+					onConfirmClick={async function() {
 						if (validDateRange()) {
-							let entries = getExportEntries(fromDate(), toDate());
+							let entries = await getExportEntries(fromDate(), toDate());
+							const csvConfig = mkConfig({ useKeysAsHeaders: true });
+							const csv = generateCsv(csvConfig)(entries);
+							download(csvConfig)(csv);
 						} else if (!validDateRange()) {
 							
 						}
