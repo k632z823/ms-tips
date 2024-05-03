@@ -4,14 +4,12 @@ import { Portal } from "solid-js/web";
 interface ModalProps {
     header: string;
     body: JSX.Element;
-    deny: string;
-    confirm: string;
-    onDenyClick: () => void;
-    onConfirmClick: () => void;
+    denyButton: JSX.Element;
+    confirmButton: JSX.Element;
 }
 
 const Modal: Component<ModalProps> = (props) => {
-    const { header, body, deny, confirm, onDenyClick, onConfirmClick } = props;
+    const { header, body, denyButton, confirmButton} = props;
 
     return (
         <>
@@ -28,20 +26,10 @@ const Modal: Component<ModalProps> = (props) => {
                                 </div>
                                 <div class='px-5'>
                                     <div class='flex justify-center pb-2 text-sm'>
-                                        <button
-                                            class='w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
-                                            onclick={() => onConfirmClick()}
-                                        >
-                                            {confirm}
-                                        </button>
+                                        {confirmButton}                                     
                                     </div>
                                     <div class='flex justify-center pb-5 text-sm'>
-                                        <button
-                                            class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
-                                            onclick={() => onDenyClick()}
-                                        >
-                                            {deny}
-                                        </button>
+                                        {denyButton}
                                     </div>
                                 </div>
                             </div>

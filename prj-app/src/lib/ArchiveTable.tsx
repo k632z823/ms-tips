@@ -133,7 +133,16 @@ const ArchiveTable: Component = () => {
 					<div class='border border-border-gray rounded-md w-full'>
 						<div>
 							<button
-								onclick={() => setExportModalShown(true)}
+								onclick={() => {
+									setExportModalShown(true)
+									setEntry(
+										selectedEntry(),
+										(row) => ({
+											...row,
+											dropDownShown: false,
+										}),
+									);
+								}}
 							>
 								Export
 							</button>
@@ -458,19 +467,31 @@ const ArchiveTable: Component = () => {
 							{entryRows[selectedEntry()].momentDate.format("L").toString()}.
 						</div>
 					}
-					deny={"Cancel"}
-					confirm={"Continue"}
-					onDenyClick={() => setConfirmDeleteShown(false)}
-					onConfirmClick={async function () {
-						await deleteEntry(entryRows[selectedEntry()].entry.id);
-						setRendered(false);
-						entryRows = await getEntries();
-						setSortedEntryRows((entry) => [...entryRows]);
-						sortDate(sortedEntryRows, descDateSortOrder());
-						setSelectedEntry(0);
-						setRendered(true);
-						setConfirmDeleteShown(false);
-					}}
+					denyButton={
+						<button 
+							class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
+							onclick={() => setConfirmDeleteShown(false)}
+						>
+							Cancel
+						</button>
+					}
+					confirmButton={
+						<button
+							class='w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
+							onclick={async function () {
+								await deleteEntry(entryRows[selectedEntry()].entry.id);
+								setRendered(false);
+								entryRows = await getEntries();
+								setSortedEntryRows((entry) => [...entryRows]);
+								sortDate(sortedEntryRows, descDateSortOrder());
+								setSelectedEntry(0);
+								setRendered(true);
+								setConfirmDeleteShown(false);
+							}}
+						>
+							Continue
+						</button>
+					}
 				>
 				</Modal>
 			</Show>
@@ -491,11 +512,15 @@ const ArchiveTable: Component = () => {
 												e.target.value = "";
 												//@ts-ignore
 												invalidFromDateMsg.innerHTML = "Invalid date";
+												setValidDateRange(false);
 											} else {
 												setFromDate(e.target.value)
 												//@ts-ignore
 												invalidFromDateMsg.innerHTML = "";
 												setValidDateRange(true);
+												if (toDate() != "") {
+													setValidDateRange(true);
+												}
 											}
 										} 
 									}
@@ -507,7 +532,7 @@ const ArchiveTable: Component = () => {
 									id="to-date" 
 									type="date" 
 									value={moment().format("YYYY-MM-DD")}
-									onchange={
+									onchange={	
 										(e) => {
 											let invalidToDateMsg = document.getElementById("invalid-to-date"); 
 											if (moment(e.target.value).isBefore(moment(fromDate()))) {
@@ -515,11 +540,14 @@ const ArchiveTable: Component = () => {
 												e.target.value = "";
 												//@ts-ignore
 												invalidToDateMsg.innerHTML = "Invalid date";
+												setValidDateRange(false);
 											} else {
 												setToDate(e.target.value)
 												//@ts-ignore
 												invalidToDateMsg.innerHTML = "";
-												setValidDateRange(true);
+												if (fromDate() != "") {
+													setValidDateRange(true);
+												}
 											}
 										}
 									}
@@ -528,23 +556,35 @@ const ArchiveTable: Component = () => {
 							</div>
 						</div>
 					}
-					deny={"Cancel"}
-					confirm={"Export"}
-					onDenyClick={() => {
-						setFromDate("");
-						setToDate(moment().format("YYYY-MM-DD"));
-						setExportModalShown(false);
-					}}
-					onConfirmClick={async function() {
-						if (validDateRange()) {
-							let entries = await getExportEntries(fromDate(), toDate());
-							const csvConfig = mkConfig({ useKeysAsHeaders: true });
-							const csv = generateCsv(csvConfig)(entries);
-							download(csvConfig)(csv);
-						} else if (!validDateRange()) {
-							
-						}
-					}}
+					denyButton={
+						<button
+							class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
+							onclick={() => {
+								setFromDate("");
+								setToDate(moment().format("YYYY-MM-DD"));
+								setExportModalShown(false);
+							}}
+						>
+							Cancel
+						</button>
+					}
+					confirmButton={
+						<button
+							class={validDateRange() ? 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90' : 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'}
+							onclick={async function(e) {
+								if (validDateRange()) {
+									let entries = await getExportEntries(fromDate(), toDate());
+									const csvConfig = mkConfig({ useKeysAsHeaders: true });
+									const csv = generateCsv(csvConfig)(entries);
+									download(csvConfig)(csv);
+								} else if (!validDateRange()) {
+									
+								}
+							}}
+						>
+							Export
+						</button>
+					}
 				>
 				</Modal>
 			</Show>
