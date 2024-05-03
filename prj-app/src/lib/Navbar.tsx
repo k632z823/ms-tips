@@ -1,26 +1,7 @@
 import { For, type Component, Show, createSignal, onCleanup } from "solid-js";
 import { A } from "@solidjs/router";
-
+import Dismiss from "solid-dismiss";
 import logo from "../logos/junimo-tippy.png";
-
-function clickOutside(
-	el: {
-		contains: (arg0: any) => any;
-	},
-	accessor: () => {
-		(): any;
-		new(): any;
-	},
-) {
-	const onClick = (e: { target: any }) =>
-		!el.contains(e.target) && accessor()?.();
-
-	document.body.addEventListener("click", onClick);
-
-	onCleanup(() => {
-		document.body.removeEventListener("click", onClick);
-	});
-}
 
 // MOBILE
 interface NavbarMobileProps {
@@ -37,6 +18,7 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 ) => {
 	const [isSelected, setIsSelected] = createSignal<boolean>(false);
 	const [isOpen, setIsOpen] = createSignal<boolean>(false);
+	let dropdown;
 
 	return (
 		<>
@@ -81,18 +63,10 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 					</div>
 				</div> */}
 			</div>
-			<div
-				id='dropdown'
-				//@ts-ignore
-				use:clickOutside={() => {
-					setIsOpen(false);
-				}}
-			>
+			<div id='dropdown'>
 				<svg
 					id='dropdown-icon'
-					onClick={() => {
-						setIsOpen(!isOpen());
-					}}
+					ref={dropdown}
 					class='cursor-pointer h-9 w-9 p-1.5 border border-border-gray rounded-md hover:bg-input-gray'
 					fill='white'
 					stroke-width='0'
@@ -102,44 +76,56 @@ const NavbarMobile: Component<NavbarMobileProps> = (
 				>
 					<path d='M64 384h384v-42.67H64Zm0-106.67h384v-42.66H64ZM64 128v42.67h384V128Z'></path>
 				</svg>
-				<div
-					id='dropdown-items'
-					class='absolute right-0 top-10 w-full p-2'
+				<Dismiss
+					open={isOpen}
+					setOpen={setIsOpen}
+					menuButton={dropdown}
 				>
 					<div
-						class={`bg-black flex flex-col mt-3.5 gap-2 rounded-md min-w-max w-full overflow-hidden ${isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
-							}`}
+						id='dropdown-items'
+						class='absolute right-0 top-10 w-full p-2'
 					>
-						<For each={props.items}>
-							{(item) => (
-								<Show when={item.group == "dropdown"}>
-									<a href={item.path}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-										<img src={item.icon} draggable='false'/>
-										{item.label}
-									</div>
-									</a>
-								</Show>
-
-							)}
-						</For>
-						<div class="flex items-center">
-							<div class="flex-grow border-t border-border-gray"></div>
+						<div
+							class={`bg-black flex flex-col mt-3.5 gap-2 rounded-md min-w-max w-full overflow-hidden ${
+								isOpen() ? "border border-border-gray p-2" : "max-h-0 p-0"
+							}`}
+						>
+							<For each={props.items}>
+								{(item) => (
+									<Show when={item.group == "dropdown"}>
+										<a href={item.path}>
+											<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+												<img
+													src={item.icon}
+													draggable='false'
+												/>
+												{item.label}
+											</div>
+										</a>
+									</Show>
+								)}
+							</For>
+							<div class='flex items-center'>
+								<div class='flex-grow border-t border-border-gray'></div>
+							</div>
+							<For each={props.items}>
+								{(item) => (
+									<Show when={item.group == "profile"}>
+										<A href={item.path}>
+											<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
+												<img
+													src={item.icon}
+													draggable='false'
+												/>
+												{item.label}
+											</div>
+										</A>
+									</Show>
+								)}
+							</For>
 						</div>
-						<For each={props.items}>
-							{(item) => (
-								<Show when={item.group == "profile"}>
-									<A href={item.path}>
-									<div class='text-sm flex items-center gap-3 hover:bg-input-gray p-2.5 rounded transition-all'>
-										<img src={item.icon} draggable='false'/>
-										{item.label}
-									</div>
-									</A>
-								</Show>
-							)}
-						</For>
 					</div>
-				</div>
+				</Dismiss>
 			</div>
 		</>
 	);
@@ -158,7 +144,7 @@ interface NavbarProps {
 const Navbar: Component<NavbarProps> = (props: NavbarProps) => {
 	//pulls one of each group names
 	return (
-		<nav class="navbar-container">
+		<nav class='navbar-container'>
 			<div class='border-b border-border-gray bg-black fixed md:hidden flex w-full items-center justify-between px-4 py-2'>
 				<NavbarMobile items={props.items} />
 			</div>

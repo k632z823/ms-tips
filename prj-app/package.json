@@ -24,6 +24,7 @@
     "axios": "^1.6.8",
     "moment": "^2.30.1",
     "solid-app-router": "^0.4.2",
+    "solid-dismiss": "^1.8.1",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11"
   }
