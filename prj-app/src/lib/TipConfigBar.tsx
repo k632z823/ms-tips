@@ -41,15 +41,15 @@ const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 										props.offset_total == 0
 											? ""
 											: props.offset_total > 0
-											? "text-green"
-											: "text-red"
+											? "text-red"
+											: "text-green"
 									}`}
 								>
 									{props.offset_total == 0
 										? ""
 										: props.offset_total > 0
-										? "+"
-										: "-"}
+										? "-"
+										: "+"}
 									$
 									{props.offset_total.toString().includes("-")
 										? props.offset_total.toString().replace("-", "")
