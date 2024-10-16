@@ -19,6 +19,7 @@ const [initialTipTotal, setInitialTipTotal] = createSignal<number>(0);
 const [remainingTipTotal, setRemainingTipTotal] = createSignal<number>(0);
 const [tipRate, setTipRate] = createSignal<number>(0);
 const [employees, editEmployees] = createStore<ShiftData[]>([]);
+const [expandedRow, setExpandedRow] = createSignal<number | null>(null); // Track expanded row
 
 function calculateTipRate(tipTotal: number, employeeData: ShiftData[]) {
 	//stores the total hours worked between all employees on that shift
@@ -100,6 +101,11 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 		),
 	);
 
+	// Function to toggle the expanded row
+	const toggleRow = (index: number) => {
+		setExpandedRow(expandedRow() === index ? null : index);
+	};
+
 	return (
 		<>
 			<TipConfigBar
@@ -111,11 +117,13 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 					<table class='table-fixed text-sm font-light w-full'>
 						<thead class='bg-input-gray'>
 							<tr class='text-start'>
-								<td class='p-3 w-[44.5px] border-r border-border-gray text-center'>
+								<td class='p-3 w-[42px] border-r border-border-gray text-center'>
 									#
 								</td>
-								<td class='p-3 w-[6.5rem] border-r border-border-gray'>Name</td>
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
+									Name
+								</td>
+								{/* <td class='p-3 w-[6.5rem] border-r border-border-gray'>
 									Position
 								</td>
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
@@ -124,65 +132,109 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
 									Inital
 								</td>
-								<td class='p-3 w-[6.5rem] border-r border-border-gray'>Tips</td>
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
+									Tips
+								</td> */}
+								<td class='p-3 w-[5rem] border-r border-border-gray'>
 									Total
 								</td>
-								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
+								<td class='p-3 w-[5rem] border-r border-border-gray'>
 									Offset
 								</td>
+								<td class='p-3 w-[3rem] border-border-gray text-center'></td> {/* Arrow column */}
 							</tr>
 						</thead>
 						<tbody>
 							<For each={employees}>
-								{(entry) => (
-									<tr class='border-t border-border-gray text-content-gray hover:bg-menu-gray'>
-										<td class='p-3 border-r border-border-gray text-center'>
-											{employees.indexOf(entry) + 1}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.name}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.position}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.hours_worked}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.initial_tip}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.tips}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											{entry.total}
-										</td>
-										<td class='p-3 border-r border-border-gray'>
-											<input
-												class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
-												value={entry.offset}
-												onChange={(e) => {
-													if (Number.isNaN(parseInt(e.target.value))) {
-														e.target.value =
-															employees[
-																employees.indexOf(entry)
-															].offset.toString();
-													}
-												}}
-												onFocus={(e) => {
-													if (e.target.value == "0") {
-														e.target.value = "";
-													}
-												}}
-												onBlur={(e) => {
-													if (e.target.value == "") {
-														e.target.value = "0";
-													}
-												}}
-											></input>
-										</td>
-									</tr>
+								{(entry, index) => (
+									<>
+										<tr class='border-t border-border-gray text-content-gray hover:bg-menu-gray'>
+											<td class='p-3 border-r border-border-gray text-center'>
+												{index() + 1}
+											</td>
+											<td class='p-3 border-r border-border-gray'>
+												{entry.name}
+											</td>
+											{/* <td class='p-3 border-r border-border-gray'>
+												{entry.position}
+											</td>
+											<td class='p-3 border-r border-border-gray'>
+												{entry.hours_worked}
+											</td>
+											<td class='p-3 border-r border-border-gray'>
+												{entry.initial_tip}
+											</td>
+											<td class='p-3 border-r border-border-gray'>
+												{entry.tips}
+											</td> */}
+											<td class='p-3 border-r border-border-gray'>
+												{entry.total}
+											</td>
+											<td class='p-3 border-r border-border-gray'>
+												<input
+													class='rounded-md border border-border-gray bg-input-gray text-center text-content-gray p-1 w-full'
+													value={entry.offset}
+													onChange={(e) => {
+														if (Number.isNaN(parseInt(e.target.value))) {
+															e.target.value =
+																employees[
+																	employees.indexOf(entry)
+																].offset.toString();
+														}
+													}}
+													onFocus={(e) => {
+														if (e.target.value == "0") {
+															e.target.value = "";
+														}
+													}}
+													onBlur={(e) => {
+														if (e.target.value == "") {
+															e.target.value = "0";
+														}
+													}}
+												></input>
+											</td>
+											<td class='p-2 border-border-gray text-center'>
+												<button
+													class='p-1 px-2.5 border text-white border-border-gray hover:bg-border-gray rounded-md'
+													onClick={() => toggleRow(index())}>
+													{expandedRow() === index() ? '˄' : '˅'}
+												</button>
+											</td>
+										</tr>
+										{expandedRow() === index() && (
+											<tr>
+												<td>
+													<div class="grid grid-cols-2 p-3 border-t border-border-gray">
+														<div>Position</div>
+														<div class="grid grid-cols-subgrid gap-4 col-span-2">
+															<div class="row-start-2">
+																{entry.position}
+															</div>
+														</div>
+														<div>Hours</div>
+														<div class="grid grid-cols-subgrid gap-4 col-span-2">
+															<div class="row-start-2">
+																{entry.hours_worked}
+															</div>
+														</div> 
+														<div>Initial</div>
+														<div class="grid grid-cols-subgrid gap-4 col-span-2">
+															<div class="row-start-2">
+																{entry.initial_tip}
+															</div>
+														</div>
+														<div>Tips Received</div>
+														<div class="grid grid-cols-subgrid gap-4 col-span-2">
+															<div class="row-start-2">
+																{entry.tips}
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										)}
+									</>
 								)}
 							</For>
 						</tbody>
