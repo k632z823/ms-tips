@@ -27,6 +27,7 @@ module.exports = {
 			'input-gray': '#0A0A0A',
 			'select-red': '#140000',
 			'red': '#DC2626',
+			'green': '#16A34A',
 		},
 		extend: {
 		},
