@@ -13,6 +13,7 @@ import { SetStoreFunction, createStore } from "solid-js/store";
 export interface TipConfigProps {
 	tip_total: number;
 	date: string;
+	offset_total: number;
 }
 
 const [initialTipTotal, setInitialTipTotal] = createSignal<number>(0);
@@ -20,6 +21,7 @@ const [remainingTipTotal, setRemainingTipTotal] = createSignal<number>(0);
 const [tipRate, setTipRate] = createSignal<number>(0);
 const [employees, editEmployees] = createStore<ShiftData[]>([]);
 const [expandedRow, setExpandedRow] = createSignal<number | null>(null); // Track expanded row
+const [offsetTotal, setOffsetTotal] = createSignal<number>(0);
 
 function calculateTipRate(tipTotal: number, employeeData: ShiftData[]) {
 	//stores the total hours worked between all employees on that shift
@@ -111,6 +113,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 			<TipConfigBar
 				tip_total={props.tip_total}
 				tip_rate={tipRate()}
+				offset_total={offsetTotal()}
 			></TipConfigBar>
 			<div class='flex justify-center px-5 pt-5'>
 				<div class='border border-border-gray rounded-md w-full overflow-x-auto'>
@@ -120,9 +123,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 								<td class='p-3 w-[42px] border-r border-border-gray text-center'>
 									#
 								</td>
-								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
-									Name
-								</td>
+								<td class='p-3 w-[6.5rem] border-r border-border-gray'>Name</td>
 								{/* <td class='p-3 w-[6.5rem] border-r border-border-gray'>
 									Position
 								</td>
@@ -135,13 +136,10 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>
 									Tips
 								</td> */}
-								<td class='p-3 w-[5rem] border-r border-border-gray'>
-									Total
-								</td>
-								<td class='p-3 w-[5rem] border-r border-border-gray'>
-									Offset
-								</td>
-								<td class='p-3 w-[3rem] border-border-gray text-center'></td> {/* Arrow column */}
+								<td class='p-3 w-[5rem] border-r border-border-gray'>Total</td>
+								<td class='p-3 w-[5rem] border-r border-border-gray'>Offset</td>
+								<td class='p-3 w-[3rem] border-border-gray text-center'></td>{" "}
+								{/* Arrow column */}
 							</tr>
 						</thead>
 						<tbody>
@@ -180,6 +178,41 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																employees[
 																	employees.indexOf(entry)
 																].offset.toString();
+														} else {
+															if (parseInt(e.target.value) == 0) {
+																console.log(
+																	offsetTotal() -
+																		employees[employees.indexOf(entry)].offset,
+																);
+																setOffsetTotal(
+																	offsetTotal() -
+																		employees[employees.indexOf(entry)].offset,
+																);
+
+																editEmployees(
+																	employees.indexOf(entry),
+																	(entry) => ({
+																		...entry,
+																		offset: 0,
+																	}),
+																);
+															} else {
+																editEmployees(
+																	employees.indexOf(entry),
+																	(entry) => ({
+																		...entry,
+																		offset: parseInt(e.target.value),
+																	}),
+																);
+
+																setOffsetTotal(() => {
+																	let total = 0;
+																	for (let employee of employees) {
+																		total += employee.offset;
+																	}
+																	return total;
+																});
+															}
 														}
 													}}
 													onFocus={(e) => {
@@ -197,38 +230,33 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 											<td class='p-2 border-border-gray text-center'>
 												<button
 													class='p-1 px-2.5 border text-white border-border-gray hover:bg-border-gray rounded-md'
-													onClick={() => toggleRow(index())}>
-													{expandedRow() === index() ? '˄' : '˅'}
+													onClick={() => toggleRow(index())}
+												>
+													{expandedRow() === index() ? "˄" : "˅"}
 												</button>
 											</td>
 										</tr>
 										{expandedRow() === index() && (
 											<tr>
 												<td>
-													<div class="grid grid-cols-2 p-3 border-t border-border-gray">
+													<div class='grid grid-cols-2 p-3 border-t border-border-gray'>
 														<div>Position</div>
-														<div class="grid grid-cols-subgrid gap-4 col-span-2">
-															<div class="row-start-2">
-																{entry.position}
-															</div>
+														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
+															<div class='row-start-2'>{entry.position}</div>
 														</div>
 														<div>Hours</div>
-														<div class="grid grid-cols-subgrid gap-4 col-span-2">
-															<div class="row-start-2">
+														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
+															<div class='row-start-2'>
 																{entry.hours_worked}
 															</div>
-														</div> 
+														</div>
 														<div>Initial</div>
-														<div class="grid grid-cols-subgrid gap-4 col-span-2">
-															<div class="row-start-2">
-																{entry.initial_tip}
-															</div>
+														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
+															<div class='row-start-2'>{entry.initial_tip}</div>
 														</div>
 														<div>Tips Received</div>
-														<div class="grid grid-cols-subgrid gap-4 col-span-2">
-															<div class="row-start-2">
-																{entry.tips}
-															</div>
+														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
+															<div class='row-start-2'>{entry.tips}</div>
 														</div>
 													</div>
 												</td>
