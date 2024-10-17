@@ -436,6 +436,10 @@ const ArchiveTable: Component = () => {
 						>
 							Prev
 						</button>
+						{/* current page */}
+						<div>
+							{currentPage()} of {Math.ceil(sortedEntryRows.length / 15)}
+						</div>
 						{/* go to next page */}
 						<button
 							onclick={() => nextPage()}
