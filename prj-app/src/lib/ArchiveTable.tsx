@@ -96,6 +96,42 @@ let entryRows: EntryRow[] = []; //await getEntries();
 const [sortedEntryRows, setSortedEntryRows] =
 	createStore<EntryRow[]>(entryRows);
 
+
+// let sortedEntryRows: entryRow[] = [...entryRows];
+const [currentPage, setCurrentPage] = createSignal<number>(1);
+
+
+const getCurrentPageRows = () => {
+	let rowsPerPage: number = 15;
+	let pages: number = Math.ceil(sortedEntryRows.length / rowsPerPage);
+
+	let startEntryIndex: number = (currentPage() - 1) * rowsPerPage;
+	let endEntryIndex = startEntryIndex + rowsPerPage;
+
+	return sortedEntryRows.slice(startEntryIndex, endEntryIndex);
+}
+
+const prevPage = (toFirstPage?: boolean) => {
+	let firstPage: number = 1;
+	if (currentPage() != firstPage && toFirstPage) {
+		setCurrentPage(firstPage);
+	} 
+	if (currentPage() != firstPage) {
+		setCurrentPage(currentPage() - 1);
+	}
+}
+
+const nextPage = (toLastPage?: boolean) => {
+	let lastPage: number = Math.ceil(sortedEntryRows.length / 15);
+	if (currentPage() != lastPage && toLastPage) {
+		setCurrentPage(lastPage);
+	}
+	if (currentPage() != lastPage) {
+		setCurrentPage(currentPage() + 1);
+	}
+}
+
+
 const ArchiveTable: Component = () => {
 	onMount(async function () {
 		entryRows = await getEntries();
@@ -122,9 +158,11 @@ const ArchiveTable: Component = () => {
 	const [fromDate, setFromDate] = createSignal<string>("");
 	const [toDate, setToDate] = createSignal<string>(moment().format("L"));
 	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
+	const [pageButtonsShown, setPageButtonsShown] = createSignal<boolean>(true);
 
 	const navigate = useNavigate();
-	// let sortedEntryRows: entryRow[] = [...entryRows];
+
+
 
 	return (
 		<>
@@ -142,6 +180,7 @@ const ArchiveTable: Component = () => {
 										dropDownShown: false,
 									}),
 								);
+								getCurrentPageRows();
 							}}
 						>
 							Export
@@ -174,7 +213,7 @@ const ArchiveTable: Component = () => {
 											class='inline-flex items-center justify-between w-full'
 											onClick={() => {
 												setDescDateSortOrder(!descDateSortOrder());
-												sortDate(sortedEntryRows, descDateSortOrder());
+												sortDate(sortedEntryRows, descDateSortOrder());												
 											}}
 										>
 											Date
@@ -224,7 +263,8 @@ const ArchiveTable: Component = () => {
 								</tr>
 							</thead>
 							<tbody>
-								<For each={sortedEntryRows}>
+								{/* <For each={sortedEntryRows}> */}
+								<For each={getCurrentPageRows()}>
 									{(entryRow) => (
 										<tr class='border-t border-border-gray text-content-gray hover:bg-menu-gray'>
 											<td class='p-3 border-r border-border-gray text-center'>
@@ -286,6 +326,7 @@ const ArchiveTable: Component = () => {
 														/>
 													</svg>
 												</button>
+												{/* view entry window */}
 												<Show
 													when={
 														selectedEntry() == entryRow.number &&
@@ -307,6 +348,7 @@ const ArchiveTable: Component = () => {
 																					}));
 																					setTableShown(false);
 																					setConfirmDeleteShown(false);
+																					setPageButtonsShown(false);
 																					setSortedEntryRows(
 																						selectedEntry(),
 																						(entry) => ({
@@ -378,7 +420,39 @@ const ArchiveTable: Component = () => {
 					</div>
 				</div>
 			</Show>
+			{/* page buttons */}
+			<Show when={pageButtonsShown()}>
+				<div>
+					<div>
+						{/* go to first page */}
+						<button
+							onclick={() => prevPage(true)}
+						>
+							First
+						</button>
+						{/* go to prev page */}
+						<button
+							onclick={() => prevPage()}
+						>
+							Prev
+						</button>
+						{/* go to next page */}
+						<button
+							onclick={() => nextPage()}
+						>
+							Next
+						</button>
+						{/* go to last page */}
+						<button
+							onclick={() => nextPage(true)}
+						>
+							Last
+						</button>
+					</div>
+				</div>
+			</Show>
 			<div>
+				{/* row action list */}
 				<Show when={rendered()}>
 					<Show when={sortedEntryRows[selectedEntry()].viewShown}>
 						<Portal>
@@ -395,6 +469,7 @@ const ArchiveTable: Component = () => {
 												<svg
 													onclick={() => {
 														setTableShown(true);
+														setPageButtonsShown(true);
 														setSortedEntryRows(selectedEntry(), (entry) => ({
 															...entry,
 															viewShown: false,
@@ -474,6 +549,7 @@ const ArchiveTable: Component = () => {
 					</Show>
 				</Show>
 			</div>
+			{/* delete modal */}
 			<Show when={confirmDeleteShown()}>
 				<Modal
 					header={"Are you sure?"}
@@ -511,6 +587,7 @@ const ArchiveTable: Component = () => {
 				>
 				</Modal>
 			</Show>
+		    {/* export modal */}
 			<Show when={exportModalShown()}>
 				<Modal
 					header="Export Entries"
