@@ -126,7 +126,7 @@ const OverviewEntries: Component = () => {
 				<div class="flex justify-between items-center pt-4">
 					<span class="font-semibold text-content-gray text-sm">Last updated 2 hours ago</span>
 					<button
-						class='py-1.5 px-3 flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray font-normal'
+						class='py-1.5 px-3 inline-flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray font-normal'
 						onClick={() => {
 							navigate("/Entries/default", {
 								replace: true,
@@ -134,7 +134,7 @@ const OverviewEntries: Component = () => {
 						}}
 					>
 						<svg
-							class="fill-icon-gray mr-4"
+							class="mr-4 fill-icon-gray"
 							stroke-width="0"
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 1024 1024"

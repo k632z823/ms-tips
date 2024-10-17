@@ -168,9 +168,9 @@ const ArchiveTable: Component = () => {
 		<>
 			<Show when={tableShown()}>
 				<div class='px-5 pb-4 text-sm'>
-					<div class='grid grid-cols-4'>
+					<div class='flex'>
 						<button
-							class='col-start-4 px-2 py-1 inline-flex items-center justify-between w-full text-center bg-black border border-border-gray rounded-md hover:bg-border-gray'
+							class='py-1.5 px-3 inline-flex items-center justify-between text-center bg-black border border-border-gray rounded-md hover:bg-border-gray font-normal'
 							onclick={() => {
 								setExportModalShown(true)
 								setEntry(
@@ -183,9 +183,8 @@ const ArchiveTable: Component = () => {
 								getCurrentPageRows();
 							}}
 						>
-							Export
 							<svg
-								fill="#505050"
+								class="mr-4 fill-icon-gray"
 								stroke-width="0"
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 24 24"
@@ -194,6 +193,7 @@ const ArchiveTable: Component = () => {
 								style="overflow: visible; color: currentcolor;">
 								<path d="M18 22a2 2 0 0 0 2-2v-5l-5 4v-3H8v-2h7v-3l5 4V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12zM13 4l5 5h-5V4z"></path>
 							</svg>
+							Export
 						</button>
 					</div>
 				</div>
