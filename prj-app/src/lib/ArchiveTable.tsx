@@ -431,8 +431,12 @@ const ArchiveTable: Component = () => {
 						<div class="space-x-2">
 							{/* go to first page */}
 							<button
-								class="p-2 border border-border-gray rounded-md hover:bg-border-gray"
-								onclick={() => prevPage(true)}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
+										? 'bg-input-gray'
+										: 'hover:bg-border-gray'
+									}`}
+								onClick={() => prevPage(true)}
+								disabled={currentPage() === 1}
 							>
 								<svg
 									class="fill-icon-gray"
@@ -441,15 +445,21 @@ const ArchiveTable: Component = () => {
 									viewBox="0 0 24 24"
 									height="1em"
 									width="1em"
-									style="overflow: visible; color: currentcolor;">
+									style="overflow: visible; color: currentcolor;"
+								>
 									<path
-										d="m16.293 17.707 1.414-1.414L13.414 12l4.293-4.293-1.414-1.414L10.586 12zM7 6h2v12H7z"></path>
+										d="m16.293 17.707 1.414-1.414L13.414 12l4.293-4.293-1.414-1.414L10.586 12zM7 6h2v12H7z"
+									></path>
 								</svg>
 							</button>
 							{/* go to prev page */}
 							<button
-								class="p-2 border border-border-gray rounded-md hover:bg-border-gray"
-								onclick={() => prevPage()}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
+										? 'bg-input-gray'
+										: 'hover:bg-border-gray'
+									}`}
+								onClick={() => prevPage()}
+								disabled={currentPage() === 1}
 							>
 								<svg
 									class="fill-icon-gray"
@@ -458,15 +468,21 @@ const ArchiveTable: Component = () => {
 									viewBox="0 0 24 24"
 									height="1em"
 									width="1em"
-									style="overflow: visible; color: currentcolor;">
+									style="overflow: visible; color: currentcolor;"
+								>
 									<path
-										d="m10.828 12 4.95 4.95-1.414 1.415L8 12l6.364-6.364 1.414 1.414-4.95 4.95Z"></path>
+										d="m10.828 12 4.95 4.95-1.414 1.415L8 12l6.364-6.364 1.414 1.414-4.95 4.95Z"
+									></path>
 								</svg>
 							</button>
 							{/* go to next page */}
 							<button
-								class="p-2 border border-border-gray rounded-md hover:bg-border-gray"
-								onclick={() => nextPage()}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? 'bg-input-gray'
+										: 'hover:bg-border-gray'
+									}`}
+								onClick={() => nextPage()}
+								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
 									class="fill-icon-gray"
@@ -475,15 +491,21 @@ const ArchiveTable: Component = () => {
 									viewBox="0 0 24 24"
 									height="1em"
 									width="1em"
-									style="overflow: visible; color: currentcolor;">
+									style="overflow: visible; color: currentcolor;"
+								>
 									<path
-										d="m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z"></path>
+										d="m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z"
+									></path>
 								</svg>
 							</button>
 							{/* go to last page */}
 							<button
-								class="p-2 border border-border-gray rounded-md hover:bg-border-gray"
-								onclick={() => nextPage(true)}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? 'bg-input-gray'
+										: 'hover:bg-border-gray'
+									}`}
+								onClick={() => nextPage(true)}
+								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
 									class="fill-icon-gray"
@@ -492,9 +514,11 @@ const ArchiveTable: Component = () => {
 									viewBox="0 0 24 24"
 									height="1em"
 									width="1em"
-									style="overflow: visible; color: currentcolor;">
+									style="overflow: visible; color: currentcolor;"
+								>
 									<path
-										d="M7.707 17.707 13.414 12 7.707 6.293 6.293 7.707 10.586 12l-4.293 4.293zM15 6h2v12h-2z"></path>
+										d="M7.707 17.707 13.414 12 7.707 6.293 6.293 7.707 10.586 12l-4.293 4.293zM15 6h2v12h-2z"
+									></path>
 								</svg>
 							</button>
 						</div>
