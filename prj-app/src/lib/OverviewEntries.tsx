@@ -65,7 +65,7 @@ const OverviewEntries: Component = () => {
 						</svg>
 					</div>
 					<span class="pt-3 font-bold text-2xl">${todaysEntry.drawer}</span>
-					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous working day</span> */}
+					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
 					<div class="flex justify-between items-center">
@@ -83,7 +83,7 @@ const OverviewEntries: Component = () => {
 						</svg>
 					</div>
 					<span class="pt-3 font-bold text-2xl">${todaysEntry.tips}</span>
-					<span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous working day</span>
+					<span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span>
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
 					<div class="flex justify-between items-center">
@@ -101,7 +101,7 @@ const OverviewEntries: Component = () => {
 						</svg>
 					</div>
 					<span class="pt-3 font-bold text-2xl">${todaysEntry.final}</span>
-					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous working day</span> */}
+					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
 					<div class="flex justify-between items-center">
@@ -120,8 +120,48 @@ const OverviewEntries: Component = () => {
 							<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
 					</div>
 					<span class="pt-3 font-bold text-2xl">${todaysEntry.tipRate}</span>
-					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous working day</span> */}
-
+					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
+				</div>
+				<div class="mt-4 flex justify-between border border-border-gray rounded-md">
+					<div class="flex flex-col p-6 w-full">
+						<div class="flex justify-between items-center w-full">
+							<span class="font-medium">Tip Rate</span>
+							<svg
+								class="fill-none stroke-icon-gray"
+								stroke-width="2"
+								xmlns="http://www.w3.org/2000/svg"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								viewBox="0 0 24 24"
+								height="1em"
+								width="1em"
+								style="overflow: visible; color: currentcolor;"
+							>
+								<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+						</div>
+						<span class="pt-3 font-bold text-2xl">${todaysEntry.tipRate}</span>
+						{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
+					</div>
+					<div class="my-4 px-4 flex flex-row items-center border-l border-border-gray">
+						<div class="flex flex-col font-medium text-content-gray">
+							<span>10/16</span>
+							<span>10/15</span>
+							<span>10/12</span>
+							<span>10/11</span>
+						</div>
+						<div class="pl-4 flex flex-col font-medium">
+							<span>$10</span>
+							<span>$7.5</span>
+							<span>$9.5</span>
+							<span>$15</span>
+						</div>
+						<div class="pl-4 flex flex-col font-medium">
+							<span class="text-green">+2.5</span>
+							<span class="text-red">-2</span>
+							<span class="text-red">-5.5</span>
+							<span class="text-red">-4</span>
+						</div>
+					</div>
 				</div>
 				<div class="flex justify-between items-center pt-4">
 					<span class="font-semibold text-content-gray text-sm">Last updated 2 hours ago</span>
@@ -148,7 +188,6 @@ const OverviewEntries: Component = () => {
 					</button>
 				</div>
 			</Show>
-
 		</div>
 	);
 };
