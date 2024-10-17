@@ -425,7 +425,7 @@ const ArchiveTable: Component = () => {
 				<div>
 					<div class="px-5 pt-4 flex justify-between items-center">
 						{/* current page */}
-						<div class="font-medium text-sm">
+						<div class="font-semibold text-content-gray text-sm">
 							Page {currentPage()} of {Math.ceil(sortedEntryRows.length / 15)}
 						</div>
 						<div class="space-x-2">

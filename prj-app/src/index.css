@@ -4,7 +4,11 @@
   html {
     @apply text-white;
     @apply bg-black;
-  } 
+  }
+
+  p, h1, h2, h3, h4, h5, h6, span, a, div {
+    @apply tracking-tight;
+  }
 }
 
 @tailwind components;
