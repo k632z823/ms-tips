@@ -392,15 +392,18 @@ const ArchiveTable: Component = () => {
 																				>
 																					Delete
 																					<svg
-																						fill='currentColor'
-																						stroke-width='0'
-																						xmlns='http://www.w3.org/2000/svg'
-																						viewBox='0 0 448 512'
-																						height='0.9em'
-																						width='0.9em'
-																						style='overflow: visible; color: currentcolor;'
-																					>
-																						<path d='m170.5 51.6-19 28.4h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6h-93.7c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6 36.7 55H424c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8v304c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128h-8c-13.3 0-24-10.7-24-24s10.7-24 24-24h69.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128v304c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32V128H80zm80 64v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0v208c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z'></path>
+																						class="stroke-red"
+																						fill="none"
+																						stroke-width="2"
+																						xmlns="http://www.w3.org/2000/svg"
+																						stroke="currentcolor"
+																						stroke-linecap="round"
+																						stroke-linejoin="round"
+																						viewBox="0 0 24 24"
+																						height="1em"
+																						width="1em"
+																						style="overflow: visible; color: currentcolor;">
+																						<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
 																					</svg>
 																				</button>
 																			</li>
@@ -432,8 +435,8 @@ const ArchiveTable: Component = () => {
 							{/* go to first page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
-										? 'bg-input-gray'
-										: 'hover:bg-border-gray'
+									? 'bg-input-gray'
+									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => prevPage(true)}
 								disabled={currentPage() === 1}
@@ -455,8 +458,8 @@ const ArchiveTable: Component = () => {
 							{/* go to prev page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
-										? 'bg-input-gray'
-										: 'hover:bg-border-gray'
+									? 'bg-input-gray'
+									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => prevPage()}
 								disabled={currentPage() === 1}
@@ -478,8 +481,8 @@ const ArchiveTable: Component = () => {
 							{/* go to next page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
-										? 'bg-input-gray'
-										: 'hover:bg-border-gray'
+									? 'bg-input-gray'
+									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => nextPage()}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
@@ -501,8 +504,8 @@ const ArchiveTable: Component = () => {
 							{/* go to last page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
-										? 'bg-input-gray'
-										: 'hover:bg-border-gray'
+									? 'bg-input-gray'
+									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => nextPage(true)}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
@@ -531,90 +534,158 @@ const ArchiveTable: Component = () => {
 					<Show when={sortedEntryRows[selectedEntry()].viewShown}>
 						<Portal>
 							<div class='fixed top-[4.5rem] w-full'>
-								<div class='flex justify-center px-5'>
-									<div class='border border-border-gray rounded-md w-full'>
-										<div class='p-3'>
-											<div class='flex items-center justify-between'>
-												<div class='pl-2 font-medium text-xs text-icon-gray'>
-													{entryRows[selectedEntry()].momentDate
-														.format("L")
-														.toString()}
-												</div>
+								<div class='flex flex-col justify-center px-5'>
+									<div class="flex flex-row justify-between items-center">
+										<button
+											class='py-1.5 px-3 inline-flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray text-sm'
+											onclick={() => {
+												setTableShown(true);
+												setPageButtonsShown(true);
+												setSortedEntryRows(selectedEntry(), (entry) => ({
+													...entry,
+													viewShown: false,
+												}));
+											}}
+										>
+											<svg
+												class="mr-4 fill-icon-gray stroke-icon-gray"
+												stroke-width="0"
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 512 512"
+												height="1em"
+												width="1em"
+												style="overflow: visible; color: currentcolor;">
+												<path
+													class="stroke-icon-gray"
+													fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 160 48 224 112 288"></path>
+												<path
+													class="stroke-icon-gray"
+													fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M64 224h294c58.76 0 106 49.33 106 108v20"></path>
+											</svg>
+											Return
+										</button>
+										<div class="flex flex-row">
+											<button
+												class='mr-2 p-2 border border-border-gray rounded-md hover:bg-border-gray'
+												onClick={() => {
+													navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
+														replace: true,
+													});
+												}}
+											>
 												<svg
-													onclick={() => {
-														setTableShown(true);
-														setPageButtonsShown(true);
-														setSortedEntryRows(selectedEntry(), (entry) => ({
-															...entry,
-															viewShown: false,
-														}));
-													}}
-													class='cursor-pointer h-7 w-7 p-1 hover:fill-white'
-													fill='#505050'
-													stroke-width='0'
-													xmlns='http://www.w3.org/2000/svg'
-													viewBox='0 0 16 16'
-													height='1em'
-													width='1em'
-													style='overflow: visible; color: currentcolor;'
-												>
+													class="fill-white"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 1024 1024"
+													height="1em"
+													width="1em"
+													style="overflow: visible; color: currentcolor;">
 													<path
-														fill-rule='evenodd'
-														d='m8 8.707 3.646 3.647.708-.707L8.707 8l3.647-3.646-.707-.708L8 7.293 4.354 3.646l-.707.708L7.293 8l-3.646 3.646.707.708L8 8.707z'
-														clip-rule='evenodd'
-													></path>
+														d="M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"></path>
 												</svg>
-											</div>
-											<div class='pt-3'>
-												<div class='border border-border-gray rounded-md'>
-													<table class='table-fixed w-full text-sm font-light'>
-														<tbody>
-															<tr>
-																<td class='p-3 w-2/6 border-r rounded-tl-md border-border-gray bg-input-gray'>
-																	Drawer
-																</td>
-																<td class='p-3 text-content-gray'>
-																	${entryRows[selectedEntry()].entry.drawer}
-																</td>
-															</tr>
-															<tr>
-																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>
-																	Tips
-																</td>
-																<td class='p-3 border-t border-border-gray text-content-gray'>
-																	${entryRows[selectedEntry()].entry.tips}
-																</td>
-															</tr>
-															<tr>
-																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>
-																	Final
-																</td>
-																<td class='p-3 border-t border-border-gray text-content-gray'>
-																	${entryRows[selectedEntry()].entry.final}
-																</td>
-															</tr>
-															<tr>
-																<td class='p-3 border-r border-t border-border-gray bg-input-gray'>
-																	Tip Rate
-																</td>
-																<td class='p-3 border-t border-border-gray text-content-gray'>
-																	${entryRows[selectedEntry()].entry.tipRate}
-																</td>
-															</tr>
-															<tr>
-																<td class='p-3 border-r border-t rounded-bl-md border-border-gray bg-input-gray'>
-																	Tags
-																</td>
-																<td class='p-3 border-t border-border-gray text-content-gray'>
-																	<div class='text-nowrap overflow-x-auto'>
-																		{entryRows[selectedEntry()].entry.tags}
-																	</div>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-											</div>
+											</button>
+											<button
+												class='p-2 border border-border-gray rounded-md hover:bg-border-gray'
+												onclick={() => {
+													setConfirmDeleteShown(true);
+													setEntry(
+														selectedEntry(),
+														(row) => ({
+															...row,
+															dropDownShown: false,
+														}),
+													);
+												}}
+											>
+												<svg
+													class="stroke-red"
+													fill="none"
+													stroke-width="2"
+													xmlns="http://www.w3.org/2000/svg"
+													stroke="currentcolor"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													viewBox="0 0 24 24"
+													height="1em"
+													width="1em"
+													style="overflow: visible; color: currentcolor;">
+													<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
+												</svg>
+											</button>
+										</div>
+										{/* <span class="font-semibold text-content-gray text-xs">Last updated 2 hours ago.</span> */}
+									</div>
+									<div class="flex flex-col py-8">
+										<div class='text-2xl font-bold text-white'>
+											{entryRows[selectedEntry()].momentDate
+												.format("L")
+												.toString()}
+										</div>
+										<div class="font-medium text-content-gray text-lg">
+											{entryRows[selectedEntry()].momentDate
+												.format("dddd, D MMMM YYYY")
+												.toString()}
+										</div>
+									</div>
+									<div class=''>
+										<div class=''>
+											<table class='table-fixed w-full text-sm font-medium'>
+												<tbody>
+													<tr class="border-b border-border-gray font-bold text-content-gray">
+														<td class='p-3 w-1/2'>
+															Classification
+														</td>
+														<td class='p-3'>
+															Amount
+														</td>
+													</tr>
+													<tr class="border-b border-border-gray">
+														<td class='p-3'>
+															Drawer
+														</td>
+														<td class='p-3'>
+															${entryRows[selectedEntry()].entry.drawer}
+														</td>
+													</tr>
+													<tr class="border-b border-border-gray">
+														<td class='p-3'>
+															Tips
+														</td>
+														<td class='p-3'>
+															${entryRows[selectedEntry()].entry.tips}
+														</td>
+													</tr>
+													<tr class="border-b border-border-gray">
+														<td class='p-3'>
+															Final
+														</td>
+														<td class='p-3'>
+															${entryRows[selectedEntry()].entry.final}
+														</td>
+													</tr>
+													<tr class="border-b border-border-gray">
+														<td class='p-3'>
+															Tip Rate
+														</td>
+														<td class='p-3'>
+															${entryRows[selectedEntry()].entry.tipRate}
+														</td>
+													</tr>
+													<tr class="border-b border-border-gray">
+														<td class='p-3'>
+															Tags
+														</td>
+														<td class='p-3'>
+															<div class='text-nowrap overflow-x-auto'>
+																{entryRows[selectedEntry()].entry.tags.length > 0
+																	? entryRows[selectedEntry()].entry.tags
+																	: 'None'}
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
 									</div>
 								</div>

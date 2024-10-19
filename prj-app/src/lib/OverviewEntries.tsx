@@ -44,7 +44,7 @@ const OverviewEntries: Component = () => {
 	return (
 		<div class='flex flex-col justify-center px-5'>
 			<Show when={rendered()}>
-				<div class="fle flex-col pb-8">
+				<div class="flex flex-col pb-8">
 					<div class="font-bold text-2xl">Welcome, Mustard Seed</div>
 					<div class="font-medium text-content-gray text-lg">Here's an overview of today's entry</div>
 				</div>
@@ -164,7 +164,6 @@ const OverviewEntries: Component = () => {
 					</div>
 				</div>
 				<div class="flex justify-between items-center pt-4">
-					<span class="font-semibold text-content-gray text-sm">Last updated 2 hours ago</span>
 					<button
 						class='py-1.5 px-3 inline-flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray font-normal'
 						onClick={() => {
@@ -186,6 +185,7 @@ const OverviewEntries: Component = () => {
 						</svg>
 						Edit entry
 					</button>
+					<span class="font-semibold text-content-gray text-xs">Last updated 2 hours ago.</span>
 				</div>
 			</Show>
 		</div>
