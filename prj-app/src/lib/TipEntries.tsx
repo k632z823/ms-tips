@@ -258,7 +258,7 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 					</table>
 				</div>
 			</div>
-			<div class='flex justify-center px-5 py-5'>
+			<div class='flex justify-center px-5 pt-4 pb-5'>
 				<div class='border border-border-gray rounded-md w-full'>
 					<div id='entry-select'>
 						<div class='flex justify-center'>

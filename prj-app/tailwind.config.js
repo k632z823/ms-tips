@@ -26,7 +26,8 @@ module.exports = {
 			'icon-gray': '#505050',
 			'input-gray': '#0A0A0A',
 			'select-red': '#140000',
-			'red': '#DC2626',
+			'border-red': '#450A0A',
+			'red': '#B91C1C',
 			'green': '#22C55E',
 		},
 		extend: {
