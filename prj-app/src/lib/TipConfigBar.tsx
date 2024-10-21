@@ -74,7 +74,7 @@ const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 									style="overflow: visible; color: currentcolor;">
 									<path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM12 20c-4.411 0-8-3.589-8-8s3.567-8 7.953-8C16.391 4 20 7.589 20 12s-3.589 8-8 8z"></path><path d="M11 7h2v7h-2zm0 8h2v2h-2z"></path>
 								</svg>
-								<div class="text-red text-sm font-bold">Offset allocation error</div>
+								<div class="text-red text-sm font-bold">Alert</div>
 							</div>
 							<div class="ml-7 text-red text-sm text-pretty">
 								{props.offset_total > 0

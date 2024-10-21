@@ -138,8 +138,18 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 								</td> */}
 								<td class='p-3 w-[5rem] border-r border-border-gray'>Total</td>
 								<td class='p-3 w-[5rem] border-r border-border-gray'>Offset</td>
-								<td class='p-3 w-[3rem] border-border-gray text-center'></td>{" "}
-								{/* Arrow column */}
+								<td class='p-3 w-[3rem] border-border-gray'>
+									<svg
+										class="w-full fill-white"
+										stroke-width="0"
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 16 16"
+										height="1.4em"
+										width="1.4em"
+										style="overflow: visible; color: currentcolor;">
+										<path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"></path><path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5Zm0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+									</svg>
+								</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -182,11 +192,11 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 															if (parseInt(e.target.value) == 0) {
 																console.log(
 																	offsetTotal() -
-																		employees[employees.indexOf(entry)].offset,
+																	employees[employees.indexOf(entry)].offset,
 																);
 																setOffsetTotal(
 																	offsetTotal() -
-																		employees[employees.indexOf(entry)].offset,
+																	employees[employees.indexOf(entry)].offset,
 																);
 
 																editEmployees(
@@ -258,27 +268,23 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 											</td>
 										</tr>
 										{expandedRow() === index() && (
-											<tr>
-												<td>
-													<div class='grid grid-cols-2 p-3 border-t border-border-gray'>
-														<div>Position</div>
-														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
-															<div class='row-start-2'>{entry.position}</div>
-														</div>
-														<div>Hours</div>
-														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
-															<div class='row-start-2'>
-																{entry.hours_worked}
-															</div>
-														</div>
-														<div>Initial</div>
-														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
-															<div class='row-start-2'>{entry.initial_tip}</div>
-														</div>
-														<div>Tips Received</div>
-														<div class='grid grid-cols-subgrid gap-4 col-span-2'>
-															<div class='row-start-2'>{entry.tips}</div>
-														</div>
+											<tr class="border-t border-border-gray w-full">
+												<td class="p-4 gap-4 flex flex-row">
+													<div class='flex flex-col'>
+														<div class="font-semibold">Position</div>
+														<div class="">{entry.position}</div>
+													</div>
+													<div class='flex flex-col'>
+														<div class="font-semibold">Hours</div>
+														<div>{entry.hours_worked}</div>
+													</div>
+													<div class='flex flex-col'>
+														<div class="font-semibold">Initial</div>
+														<div>${entry.initial_tip}</div>
+													</div>
+													<div class='flex flex-col text-nowrap'>
+														<div class="font-semibold">Tips received</div>
+														<div>${entry.tips}</div>
 													</div>
 												</td>
 											</tr>
