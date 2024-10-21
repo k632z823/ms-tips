@@ -79,7 +79,7 @@ const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 							<div class="ml-7 text-red text-sm text-pretty">
 								{props.offset_total > 0
 									? `There is an overfill of $${props.offset_total} that exceeds the total tip amount.`
-									: `There is currently an unallocated amount of $${Math.abs(props.offset_total)}.`
+									: `There is currently an unallocated amount of $${Math.abs(props.offset_total)} from the total tip amount.`
 								}
 							</div>
 						</div>
