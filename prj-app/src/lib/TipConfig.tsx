@@ -120,7 +120,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 					<table class='table-fixed text-sm font-light w-full'>
 						<thead class='bg-input-gray'>
 							<tr class='text-start'>
-								<td class='p-3 w-[42px] border-r border-border-gray text-center'>
+								<td class='p-3 w-[3rem] border-r border-border-gray text-center'>
 									#
 								</td>
 								<td class='p-3 w-[6.5rem] border-r border-border-gray'>Name</td>
@@ -139,17 +139,15 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 								<td class='p-3 w-[5rem] border-r border-border-gray'>Total</td>
 								<td class='p-3 w-[5rem] border-r border-border-gray'>Offset</td>
 								<td class='p-3 w-[3rem] border-border-gray'>
-									{/* <svg
+									<svg
 										class="w-full fill-white"
 										stroke-width="0"
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox="0 0 16 16"
-										height="1.4em"
-										width="1.4em"
-										style="overflow: visible; color: currentcolor;">
-										<path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"></path><path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V11a.5.5 0 0 0-.5-.5Zm0 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
-									</svg> */}
-									<svg class="w-full fill-white" stroke-width="0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="1.2em" width="1.2em" style="overflow: visible; color: currentcolor;"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"></path></svg>
+										height="1.2em"
+										width="1.2em"
+										style="overflow: visible; color: currentcolor;"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"></path>
+									</svg>
 								</td>
 							</tr>
 						</thead>

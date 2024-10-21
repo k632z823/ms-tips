@@ -219,7 +219,7 @@ const ArchiveTable: Component = () => {
 											Date
 											<Show when={descDateSortOrder()}>
 												<svg
-													fill='currentColor'
+													class="fill-icon-gray"
 													stroke-width='0'
 													xmlns='http://www.w3.org/2000/svg'
 													baseProfile='tiny'
@@ -234,7 +234,7 @@ const ArchiveTable: Component = () => {
 											</Show>
 											<Show when={!descDateSortOrder()}>
 												<svg
-													fill='currentColor'
+													class="fill-icon-gray"
 													stroke-width='0'
 													xmlns='http://www.w3.org/2000/svg'
 													baseProfile='tiny'
