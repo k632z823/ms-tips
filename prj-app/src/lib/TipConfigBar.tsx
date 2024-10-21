@@ -76,7 +76,7 @@ const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 								</svg>
 								<div class="text-red text-sm font-bold">Offset allocation error</div>
 							</div>
-							<div class="ml-7 text-red text-sm">
+							<div class="ml-7 text-red text-sm text-pretty">
 								{props.offset_total > 0
 									? `There is an overfill of $${props.offset_total} that exceeds the total tip amount.`
 									: `There is currently an unallocated amount of $${Math.abs(props.offset_total)}.`

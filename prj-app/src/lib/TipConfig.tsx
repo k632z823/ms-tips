@@ -229,10 +229,31 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 											</td>
 											<td class='p-2 border-border-gray text-center'>
 												<button
-													class='p-1 px-2.5 border text-white border-border-gray hover:bg-border-gray rounded-md'
+													class='p-1 border text-white border-border-gray hover:bg-border-gray rounded-md'
 													onClick={() => toggleRow(index())}
 												>
-													{expandedRow() === index() ? "˄" : "˅"}
+													{expandedRow() === index()
+														? <svg
+															fill="currentColor"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 24 24"
+															height="1.5em"
+															width="1.5em"
+															style="overflow: visible; color: currentcolor;">
+															<path fill="currentColor" d="m12 11.828-2.828 2.829-1.415-1.414L12 9l4.243 4.243-1.415 1.414L12 11.828Z"></path>
+														</svg>
+														: <svg
+															fill="currentColor"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 24 24"
+															height="1.5em"
+															width="1.5em"
+															style="overflow: visible; color: currentcolor;">
+															<path fill="currentColor" d="m12 15-4.243-4.242 1.415-1.414L12 12.172l2.828-2.828 1.415 1.414L12 15.001Z"></path>
+														</svg>
+													}
 												</button>
 											</td>
 										</tr>
