@@ -204,61 +204,52 @@ const ArchiveTable: Component = () => {
 					<div class='border border-border-gray rounded-md w-full'>
 						<table class='table-fixed text-sm font-normal w-full'>
 							<thead>
-								<tr class='text-start'>
-									<td class='p-3 w-[44.5px] text-center border-r rounded-tl-md border-border-gray bg-input-gray'>
+								<tr class='text-table-header-gray text-start font-medium hover:bg-menu-gray'>
+									{/* <td class='p-3 w-[44.5px] text-center rounded-tl-md'>
 										#
-									</td>
-									<td class='p-3 w-[6.5rem] border-r border-border-gray  bg-input-gray'>
+									</td> */}
+									<td class='pl-1 pr-3 w-[7rem]'>
 										<button
-											class='inline-flex items-center justify-between w-full'
+											class='inline-flex items-center justify-between w-full h-[2.2rem] rounded-md hover:bg-border-gray hover:text-white'
 											onClick={() => {
 												setDescDateSortOrder(!descDateSortOrder());
 												sortDate(sortedEntryRows, descDateSortOrder());
 											}}
 										>
-											Date
+											<span class="pl-2">Date</span>
 											<Show when={descDateSortOrder()}>
 												<svg
-													class="fill-icon-gray"
-													stroke-width='0'
-													xmlns='http://www.w3.org/2000/svg'
-													baseProfile='tiny'
-													version='1.2'
-													viewBox='0 0 24 24'
-													height='1em'
-													width='1em'
-													style='overflow: visible; color: currentcolor;'
-												>
-													<path d='M5.8 9.7 12 16l6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7c-.2-.2-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3-.2.2-.3.4-.3.7s.1.5.3.7z'></path>
+													class="mr-1 fill-table-header-gray icon"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 24 24"
+													height="1.5em"
+													width="1.5em"
+													style="overflow: visible; color: currentcolor;">
+													<path d="m12 15-4.243-4.242 1.415-1.414L12 12.172l2.828-2.828 1.415 1.414L12 15.001Z"></path>
 												</svg>
 											</Show>
 											<Show when={!descDateSortOrder()}>
 												<svg
-													class="fill-icon-gray"
-													stroke-width='0'
-													xmlns='http://www.w3.org/2000/svg'
-													baseProfile='tiny'
-													version='1.2'
-													viewBox='0 0 24 24'
-													height='1em'
-													width='1em'
-													style='overflow: visible; color: currentcolor;'
-												>
-													<path d='M18.2 13.3 12 7l-6.2 6.3c-.2.2-.3.5-.3.7s.1.5.3.7c.2.2.4.3.7.3h11c.3 0 .5-.1.7-.3.2-.2.3-.5.3-.7s-.1-.5-.3-.7z'></path>
+													class="mr-1 fill-table-header-gray icon"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 24 24"
+													height="1.5em"
+													width="1.5em"
+													style="overflow: visible; color: currentcolor;">
+													<path d="m12 11.828-2.828 2.829-1.415-1.414L12 9l4.243 4.243-1.415 1.414L12 11.828Z"></path>
 												</svg>
 											</Show>
 										</button>
 									</td>
-									{/* <th>Drawer</th> */}
-									{/* <th>Tips</th> */}
-									{/* <td class='p-3 border-r border-border-gray'>Final</td> */}
+									<td class='p-3 w-[4.5rem]'>Drawer</td>
+									<td class='p-3 w-[4.5rem]'>Tips</td>
+									<td class='p-3 w-[4.5rem]'>Final</td>
 									{/* <td class='p-3 border-r border-border-gray'>Tip Rate</td> */}
 									{/* <th>Base</th> */}
-									<td class='p-3 border-r border-border-gray bg-input-gray'>
-										Tags
-									</td>
-									<td class='p-3 w-[7rem] rounded-tr-md bg-input-gray'>
-										Action
+									{/* <td class='p-3'>Tags</td> */}
+									<td class='p-3 w-[2.5rem]'>
 									</td>
 								</tr>
 							</thead>
@@ -266,27 +257,26 @@ const ArchiveTable: Component = () => {
 								{/* <For each={sortedEntryRows}> */}
 								<For each={getCurrentPageRows()}>
 									{(entryRow) => (
-										<tr class='border-t border-border-gray text-content-gray hover:bg-menu-gray'>
-											<td class='p-3 border-r border-border-gray text-center'>
+										<tr class='border-t border-border-gray text-white hover:bg-menu-gray'>
+											{/* <td class='p-3 text-center'>
 												{sortedEntryRows.indexOf(entryRow) + 1}
-											</td>
-											<td class='p-3 border-r border-border-gray'>
+											</td> */}
+											<td class='p-3'>
 												{moment(entryRow.momentDate).format("L")}
 											</td>
-											{/* <td>{entry.drawer}</td> */}
-											{/* <td>{entry.tips}</td> */}
-											{/* <td class='p-3 border-r border-border-gray'>${entryRow.entry.final}</td> */}
+											<td class='p-3'>${entryRow.entry.drawer}</td>
+											<td class='p-3'>${entryRow.entry.tips}</td>
+											<td class='p-3'>${entryRow.entry.final}</td>
 											{/* <td class='p-3 border-r border-border-gray'>{entry.tipRate}</td> */}
 											{/* <td>{entry.base}</td> */}
-											<td class='p-3 border-r border-border-gray '>
+											{/* <td class='p-3'>
 												<div class='text-nowrap overflow-x-auto'>
 													{entryRow.entry.tags.toString()}
 												</div>
-											</td>
-											<td class='p-2 w-full relative grow font-normal'>
+											</td> */}
+											<td class='text-center font-normal'>
 												<button
-													id='dropdownDefaultButton'
-													class='bg-black border border-border-gray rounded-md text-white text-center px-2 py-1 hover:bg-border-gray inline-flex items-center justify-between w-full'
+													class='m-1 rounded-md items-center hover:bg-border-gray'
 													onClick={() => {
 														if (selectedEntry() != entryRow.number) {
 															setEntry(selectedEntry(), (row) => ({
@@ -309,111 +299,105 @@ const ArchiveTable: Component = () => {
 														// }
 													}}
 												>
-													Select
-													<svg
-														class='w-1.5 h-1.5'
-														aria-hidden='true'
-														xmlns='http://www.w3.org/2000/svg'
-														fill='none'
-														viewBox='0 0 10 6'
-													>
-														<path
-															stroke='#505050'
-															stroke-linecap='round'
-															stroke-linejoin='round'
-															stroke-width='2'
-															d='m1 1 4 4 4-4'
-														/>
-													</svg>
-												</button>
 												{/* view entry window */}
-												<Show
-													when={
-														selectedEntry() == entryRow.number &&
-														entry[selectedEntry()].dropDownShown
-													}
-												>
-													<div class='flex justify-start'>
-														<div class='absolute py-1.5 z-50 w-full'>
-															<div class='bg-black border border-border-gray rounded-md text-white'>
-																<ul class='font-normal'>
-																	<div class='px-1 pt-1'>
-																		<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
-																			<button
-																				class='w-full flex justify-start'
-																				onclick={() => {
-																					setEntry(selectedEntry(), (row) => ({
-																						...row,
-																						dropDownShown: false,
-																					}));
-																					setTableShown(false);
-																					setConfirmDeleteShown(false);
-																					setPageButtonsShown(false);
-																					setSortedEntryRows(
-																						selectedEntry(),
-																						(entry) => ({
-																							...entry,
-																							viewShown: !entry.viewShown,
-																						}),
-																					);
-																				}}
-																			>
-																				View
-																			</button>
-																		</li>
-																	</div>
-																	<div class='px-1 pb-1'>
-																		<li
-																			class='block px-3 py-2 hover:bg-input-gray hover:rounded'
-																			onClick={() => {
-																				navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
-																					replace: true,
-																				});
-																			}}
-																		>
-																			Edit
-																		</li>
-																	</div>
-																	<div class='border-t border-border-gray'>
-																		<div class='p-1'>
-																			<li class='block px-3 py-2 hover:bg-select-red hover:rounded text-red'>
+													<Show
+														when={
+															selectedEntry() == entryRow.number &&
+															entry[selectedEntry()].dropDownShown
+														}
+													>
+														<div class='flex justify-end'>
+															<div class='absolute py-1 z-50 w-[7rem]'>
+																<div class='bg-black border border-border-gray rounded-md text-white'>
+																	<ul class='font-normal'>
+																		<div class='px-1 pt-1'>
+																			<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																				<button
-																					class='w-full inline-flex justify-between items-center'
+																					class='w-full flex justify-start'
 																					onclick={() => {
-																						setConfirmDeleteShown(true);
-																						setEntry(
+																						setEntry(selectedEntry(), (row) => ({
+																							...row,
+																							dropDownShown: false,
+																						}));
+																						setTableShown(false);
+																						setConfirmDeleteShown(false);
+																						setPageButtonsShown(false);
+																						setSortedEntryRows(
 																							selectedEntry(),
-																							(row) => ({
-																								...row,
-																								dropDownShown: false,
+																							(entry) => ({
+																								...entry,
+																								viewShown: !entry.viewShown,
 																							}),
 																						);
 																					}}
 																				>
-																					Delete
-																					<svg
-																						class="stroke-red"
-																						fill="none"
-																						stroke-width="2"
-																						xmlns="http://www.w3.org/2000/svg"
-																						stroke="currentcolor"
-																						stroke-linecap="round"
-																						stroke-linejoin="round"
-																						viewBox="0 0 24 24"
-																						height="1em"
-																						width="1em"
-																						style="overflow: visible; color: currentcolor;">
-																						<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
-																					</svg>
+																					View
 																				</button>
 																			</li>
 																		</div>
-																	</div>
-																</ul>
+																		<div class='px-1 pb-1'>
+																			<li
+																				class='flex justify-start px-3 py-2 hover:bg-input-gray hover:rounded'
+																				onClick={() => {
+																					navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
+																						replace: true,
+																					});
+																				}}
+																			>
+																				Edit
+																			</li>
+																		</div>
+																		<div class='border-t border-border-gray'>
+																			<div class='p-1'>
+																				<li class='block px-3 py-2 hover:bg-select-red hover:rounded text-red'>
+																					<button
+																						class='w-full inline-flex justify-between items-center'
+																						onclick={() => {
+																							setConfirmDeleteShown(true);
+																							setEntry(
+																								selectedEntry(),
+																								(row) => ({
+																									...row,
+																									dropDownShown: false,
+																								}),
+																							);
+																						}}
+																					>
+																						Delete
+																						<svg
+																							class="stroke-red"
+																							fill="none"
+																							stroke-width="2"
+																							xmlns="http://www.w3.org/2000/svg"
+																							stroke="currentcolor"
+																							stroke-linecap="round"
+																							stroke-linejoin="round"
+																							viewBox="0 0 24 24"
+																							height="1em"
+																							width="1em"
+																							style="overflow: visible; color: currentcolor;">
+																							<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
+																						</svg>
+																					</button>
+																				</li>
+																			</div>
+																		</div>
+																	</ul>
+																</div>
 															</div>
 														</div>
-													</div>
-												</Show>
+													</Show>	
+													<svg
+														class="p-1.5 fill-white w-full h-full"
+														stroke-width="0"
+														xmlns="http://www.w3.org/2000/svg"
+														viewBox="0 0 24 24"
+														height="1.5em"
+														width="1.5em"
+														style="overflow: visible; color: currentcolor;">
+														<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+													</svg>
+												</button>
 											</td>
 										</tr>
 									)}
@@ -435,14 +419,17 @@ const ArchiveTable: Component = () => {
 							{/* go to first page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
-									? 'bg-input-gray'
+									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => prevPage(true)}
 								disabled={currentPage() === 1}
 							>
 								<svg
-									class="fill-icon-gray"
+									class={`${currentPage() === 1
+										? 'fill-icon-gray'
+										: 'fill-white'
+										}`}
 									stroke-width="0"
 									xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 24 24"
@@ -458,14 +445,17 @@ const ArchiveTable: Component = () => {
 							{/* go to prev page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1
-									? 'bg-input-gray'
+									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => prevPage()}
 								disabled={currentPage() === 1}
 							>
 								<svg
-									class="fill-icon-gray"
+									class={`${currentPage() === 1
+										? 'fill-icon-gray'
+										: 'fill-white'
+										}`}
 									stroke-width="0"
 									xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 24 24"
@@ -481,14 +471,17 @@ const ArchiveTable: Component = () => {
 							{/* go to next page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
-									? 'bg-input-gray'
+									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => nextPage()}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
-									class="fill-icon-gray"
+									class={`${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? 'fill-icon-gray'
+										: 'fill-white'
+										}`}
 									stroke-width="0"
 									xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 24 24"
@@ -504,14 +497,17 @@ const ArchiveTable: Component = () => {
 							{/* go to last page */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
-									? 'bg-input-gray'
+									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
 								onClick={() => nextPage(true)}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
-									class="fill-icon-gray"
+									class={`${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? 'fill-icon-gray'
+										: 'fill-white'
+										}`}
 									stroke-width="0"
 									xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 24 24"

@@ -22,6 +22,7 @@ module.exports = {
 			'menu-gray': '#070707',
 			'border-gray': '#151515',
 			'content-gray': '#606060',
+			'table-header-gray': '#A3A3A3',
 			'mini-gray': '#404040',
 			'icon-gray': '#505050',
 			'input-gray': '#0A0A0A',

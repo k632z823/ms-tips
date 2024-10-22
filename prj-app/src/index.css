@@ -40,6 +40,11 @@
   background: #202020;
 }
 
+/* Changes icon color to white when button is hovered */
+button:hover .icon {
+  fill: white; 
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
