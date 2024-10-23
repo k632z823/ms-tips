@@ -740,7 +740,7 @@ const ArchiveTable: Component = () => {
 								<input
 									id="from-date"
 									type="date"
-									class='w-full border border-border-gray rounded-md bg-black px-2 py-1'
+									class='px-2 py-1 w-full border border-border-gray rounded-md bg-black text-white'
 									onchange={
 										(e) => {
 											let invalidFromDateMsg = document.getElementById("invalid-from-date");
