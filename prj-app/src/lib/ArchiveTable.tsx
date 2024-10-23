@@ -4,6 +4,7 @@ import moment from "moment";
 import axios from "axios";
 import { Portal } from "solid-js/web";
 import Modal from "./Utilities/Modal";
+import ExportModal from "./Utilities/ExportModal";
 import { useNavigate } from "@solidjs/router";
 import { fromJSON } from "postcss";
 import { mkConfig, generateCsv, download } from "export-to-csv";
@@ -730,7 +731,7 @@ const ArchiveTable: Component = () => {
 			</Show>
 			{/* export modal */}
 			<Show when={exportModalShown()}>
-				<Modal
+				<ExportModal
 					header="Export Entries"
 					body={
 						<div class='w-full'>
@@ -822,7 +823,7 @@ const ArchiveTable: Component = () => {
 						</button>
 					}
 				>
-				</Modal>
+				</ExportModal>
 			</Show>
 		</>
 	);
