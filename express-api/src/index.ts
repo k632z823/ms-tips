@@ -107,34 +107,26 @@ let sling_api = new Sling();
     response.json({success: true, todaysEntry: todaysEntry});
   });
 
-  app.get("/get-most-recent-entry", async function(request, response) {
-    let data = await getMostRecentEntry();
-    let mostRecentEntry: Archive_Entry;
-    if (data.length != 0) {
-      mostRecentEntry = {
-        id: data[0].id,
-        date: data[0].date,
-        drawer: data[0].drawer,
-        tips: data[0].tips,
-        final: data[0].final,
-        tipRate: data[0].tip_rate,
-        tags: data[0].tags
-      }
-    } else {
-      mostRecentEntry = {
-        id: 0,
-        date: "",
-        drawer: 0,
-        tips: 0,
-        final: 0,
-        tipRate: 0,
-        tags: []
-      }
+  app.get("/get-four-recent-entries", async function(request, response) {
+    console.log("Request Recieved: GET four most recent entries from archive_entries");
+    let entries = await getFourRecentEntries();
+    let formattedEntries: Archive_Entry[] = [];
+    for (let item of entries) {
+      formattedEntries.push({
+        id: item.id,
+        date: item.date,
+        drawer: item.drawer,
+        tips: item.tips,
+        final: item.final,
+        tipRate: item.tip_rate,
+        tags: item.tags
+      })
     }
-    response.json({success: true, mostRecentEntry: mostRecentEntry});
+    response.json({success: true, entries: formattedEntries})
   });
 
   app.get("/get-export-entries", async function(request, response) {
+    console.log("Request Recieved: GET export entries from archive_entries");
     let fromDate = request.query.fromDate;
     let toDate = request.query.toDate;
     // @ts-ignore
@@ -342,6 +334,6 @@ let sling_api = new Sling();
     return await db.withSchema("public").from("archive_entries").select("*").where("date",todaysDate);
   }
 
-  async function getMostRecentEntry() {
-    return await db.withSchema("public").from("archive_entries").select("*").where("date","2024-10-16");
+  async function getFourRecentEntries() {
+    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").limit(4);
   }
