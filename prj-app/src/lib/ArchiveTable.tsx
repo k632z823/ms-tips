@@ -300,7 +300,7 @@ const ArchiveTable: Component = () => {
 														// }
 													}}
 												>
-												{/* view entry window */}
+													{/* view entry window */}
 													<Show
 														when={
 															selectedEntry() == entryRow.number &&
@@ -308,7 +308,7 @@ const ArchiveTable: Component = () => {
 														}
 													>
 														<div class='flex justify-end'>
-															<div class='absolute py-1 z-50 w-[7rem]'>
+															<div class='mt-8 py-1 z-50 w-[7rem] absolute'>
 																<div class='bg-black border border-border-gray rounded-md text-white'>
 																	<ul class='font-normal'>
 																		<div class='px-1 pt-1'>
@@ -387,7 +387,7 @@ const ArchiveTable: Component = () => {
 																</div>
 															</div>
 														</div>
-													</Show>	
+													</Show>
 													<svg
 														class="p-1.5 fill-white w-full h-full"
 														stroke-width="0"
@@ -711,7 +711,7 @@ const ArchiveTable: Component = () => {
 					}
 					confirmButton={
 						<button
-							class='w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
+							class='w-full p-1.5 text-center text-red font-medium border border-border-red rounded-md bg-select-red hover:bg-border-red hover:text-white'
 							onclick={async function () {
 								await deleteEntry(entryRows[selectedEntry()].entry.id);
 								setRendered(false);
@@ -736,11 +736,11 @@ const ArchiveTable: Component = () => {
 					body={
 						<div class='w-full'>
 							Select the start and end dates to export data within a specific range.
-							<div class='flex gap-2 pt-3 items-center'>
+							<div class='flex flex-row justify-between items-center pt-5'>
 								<input
 									id="from-date"
 									type="date"
-									class='px-2 py-1 w-full border border-border-gray rounded-md bg-black text-white'
+									class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none'
 									onchange={
 										(e) => {
 											let invalidFromDateMsg = document.getElementById("invalid-from-date");
@@ -762,11 +762,20 @@ const ArchiveTable: Component = () => {
 										}
 									}
 								/>
-								to
+								<svg
+									class="fill-icon-gray"
+									stroke-width="0"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									height="1.5em"
+									width="1.5em"
+									style="overflow: visible; color: currentcolor;">
+									<path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+								</svg>
 								<input
 									id="to-date"
 									type="date"
-									class='w-full border border-border-gray rounded-md bg-black px-2 py-1'
+									class='border border-border-gray rounded-md bg-black text-white px-2 py-1'
 									value={moment().format("YYYY-MM-DD")}
 									onchange={
 										(e) => {
@@ -795,7 +804,7 @@ const ArchiveTable: Component = () => {
 					}
 					denyButton={
 						<button
-							class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
+							class='py-1.5 px-6 w-full text-center border border-border-gray hover:bg-border-gray rounded-md'
 							onclick={() => {
 								setFromDate("");
 								setToDate(moment().format("YYYY-MM-DD"));
@@ -807,7 +816,7 @@ const ArchiveTable: Component = () => {
 					}
 					confirmButton={
 						<button
-							class={validDateRange() ? 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90' : 'w-full p-1.5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'}
+							class={validDateRange() ? 'py-1.5 px-6 w-full text-center text-black font-medium rounded-md bg-white hover:bg-white/90' : 'py-1.5 px-6 w-full text-center text-black font-medium rounded-md bg-white hover:bg-white/90'}
 							onclick={async function (e) {
 								if (validDateRange()) {
 									let entries = await getExportEntries(fromDate(), toDate());
