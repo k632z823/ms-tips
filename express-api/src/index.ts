@@ -107,6 +107,33 @@ let sling_api = new Sling();
     response.json({success: true, todaysEntry: todaysEntry});
   });
 
+  app.get("/get-most-recent-entry", async function(request,response) {
+    let data = await getMostRecentEntry();
+    let mostRecentEntry: Archive_Entry;
+    if (data) {
+      mostRecentEntry = {
+        id: data.id,
+        date: data.date,
+        drawer: data.drawer,
+        tips: data.tips,
+        final: data.final,
+        tipRate: data.tip_rate,
+        tags: data.tags
+      }
+    } else {
+      mostRecentEntry = {
+        id: 0,
+        date: "",
+        drawer: 0,
+        tips: 0,
+        final: 0,
+        tipRate: 0,
+        tags: []
+      }
+    }
+    response.json({success: true, mostRecentEntry: mostRecentEntry});
+  });
+
   app.get("/get-five-recent-entries", async function(request, response) {
     console.log("Request Recieved: GET five most recent entries from archive_entries");
     let entries = await getFiveRecentEntries();
@@ -332,6 +359,10 @@ let sling_api = new Sling();
 
   async function getTodaysEntry(todaysDate: string) {
     return await db.withSchema("public").from("archive_entries").select("*").where("date",todaysDate);
+  }
+
+  async function getMostRecentEntry() {
+    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").first();
   }
 
   async function getFiveRecentEntries() {
