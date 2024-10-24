@@ -134,9 +134,9 @@ let sling_api = new Sling();
     response.json({success: true, mostRecentEntry: mostRecentEntry});
   });
 
-  app.get("/get-five-recent-entries", async function(request, response) {
-    console.log("Request Recieved: GET five most recent entries from archive_entries");
-    let entries = await getFiveRecentEntries();
+  app.get("/get-six-recent-entries", async function(request, response) {
+    console.log("Request Recieved: GET six most recent entries from archive_entries");
+    let entries = await getSixRecentEntries();
     let formattedEntries: Archive_Entry[] = [];
     for (let item of entries) {
       formattedEntries.push({
@@ -365,6 +365,6 @@ let sling_api = new Sling();
     return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").first();
   }
 
-  async function getFiveRecentEntries() {
-    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").limit(5);
+  async function getSixRecentEntries() {
+    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").limit(6);
   }
