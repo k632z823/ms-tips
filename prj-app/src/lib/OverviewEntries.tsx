@@ -20,6 +20,13 @@ async function getTodaysEntry() {
 	return responseData;
 }
 
+async function getMostRecentEntry() {
+	let response = await axios.get("http://localhost:3001/get-most-recent-entry");
+	let responseData: Entry = response.data.mostRecentEntry;
+	responseData.date = moment(responseData.date);
+	return responseData;
+}
+
 async function getRecentEntries() {
 	let response = await axios.get("http://localhost:3001/get-five-recent-entries")
 	let responseData = response.data.entries;
@@ -41,7 +48,7 @@ let recentEntries: Entry[] = [];
 const [fiveRecentEntries, setFiveRecentEntries] = createStore<Entry[]>(recentEntries);
 
 const OverviewEntries: Component = () => {
-	const [todaysEntry, setTodaysEntry] = createStore<Entry>(
+	const [mostRecentEntry, setMostRecentEntry] = createStore<Entry>(
 		{
 			id: 0,
 			date: "",
@@ -57,7 +64,8 @@ const OverviewEntries: Component = () => {
 	onMount(async function () {
 		recentEntries = await getRecentEntries();
 		setFiveRecentEntries(...[recentEntries]);
-		setTodaysEntry(await getTodaysEntry());
+		setMostRecentEntry(await getMostRecentEntry());
+		getMostRecentEntry()
 		setRendered(true);
 	})
 
@@ -70,7 +78,9 @@ const OverviewEntries: Component = () => {
 					<div class="font-bold text-2xl">Welcome, Mustard Seed</div>
 					<div class="font-medium text-content-gray text-lg">Here's an overview of today's entry</div>
 				</div>
-				<DateDisplay />
+				<div>
+					Most Recent Entry: {mostRecentEntry.date.format("MMMM D, YYYY")}
+				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
 					<div class="flex justify-between items-center">
 						<span class="font-medium">Drawer</span>
@@ -86,7 +96,7 @@ const OverviewEntries: Component = () => {
 							<path d='m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z'></path>
 						</svg>
 					</div>
-					<span class="pt-3 font-bold text-2xl">${todaysEntry.drawer}</span>
+					<span class="pt-3 font-bold text-2xl">${mostRecentEntry.drawer}</span>
 					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
@@ -104,7 +114,7 @@ const OverviewEntries: Component = () => {
 							<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
 						</svg>
 					</div>
-					<span class="pt-3 font-bold text-2xl">${todaysEntry.tips}</span>
+					<span class="pt-3 font-bold text-2xl">${mostRecentEntry.tips}</span>
 					<span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span>
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
@@ -122,7 +132,7 @@ const OverviewEntries: Component = () => {
 							<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
 						</svg>
 					</div>
-					<span class="pt-3 font-bold text-2xl">${todaysEntry.final}</span>
+					<span class="pt-3 font-bold text-2xl">${mostRecentEntry.final}</span>
 					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 				</div>
 				<div class="flex flex-col mt-4 p-6 border border-border-gray rounded-md">
@@ -141,7 +151,7 @@ const OverviewEntries: Component = () => {
 						>
 							<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
 					</div>
-					<span class="pt-3 font-bold text-2xl">${todaysEntry.tipRate}</span>
+					<span class="pt-3 font-bold text-2xl">${mostRecentEntry.tipRate}</span>
 					{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 				</div>
 				<div class="mt-4 flex justify-between border border-border-gray rounded-md">
@@ -161,7 +171,7 @@ const OverviewEntries: Component = () => {
 							>
 								<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
 						</div>
-						<span class="pt-3 font-bold text-2xl">${todaysEntry.tipRate}</span>
+						<span class="pt-3 font-bold text-2xl">${mostRecentEntry.tipRate}</span>
 						{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 					</div>
 					{/* display of four recent entries at the bottom right */}
