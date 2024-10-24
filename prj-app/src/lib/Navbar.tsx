@@ -1,5 +1,5 @@
 import { For, type Component, Show, createSignal, onCleanup } from "solid-js";
-import { A } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
 import Dismiss from "solid-dismiss";
 import logo from "../logos/junimo-tippy.png";
 

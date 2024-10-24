@@ -37,6 +37,19 @@ let sling_api = new Sling();
   app.use(bodyParser.json());
   app.use(cors(corsOptions));
 
+  app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+  
+    const staticUsername = process.env.LOGIN_USER;
+    const staticPassword = process.env.LOGIN_PASSWORD;
+  
+    if (username === staticUsername && password === staticPassword) {
+      res.json({ success: true, message: "Login successful" });
+    } else {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+  });
+
   app.get("/get-entries", async function(request, response) {
 
     let date = request.query.date;

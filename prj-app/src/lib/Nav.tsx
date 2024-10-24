@@ -16,7 +16,7 @@ const Nav: Component = () => {
 					group: "dropdown",
 					label: "Overview",
 					icon: overviewIcon,
-					path: "/",
+					path: "/Overview",
 				},
 				{
 					group: "dropdown",

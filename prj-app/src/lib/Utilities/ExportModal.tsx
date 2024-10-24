@@ -14,7 +14,7 @@ const ExportModal: Component<ModalProps> = (props) => {
     return (
         <>
             <Portal>
-                <div class='fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-[999]'>
+                <div class='fixed top-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-[999]'>
                     <div class='flex justify-center'>
                         <div class='w-[23rem] bg-black'>
                             <div class='border border-border-gray rounded-md'>

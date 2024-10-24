@@ -99,7 +99,7 @@ const OverviewEntries: Component = () => {
 							});
 						}}
 					>
-						<div class="p-2 w-full flex flex-row rounded-md border border-border-gray bg-dialog-bg-gray hover:bg-border-gray">
+						<div class="p-2 w-full flex flex-row rounded-md border border-dashed border-border-gray bg-dialog-bg-gray hover:bg-border-gray">
 							<div class="flex flex-col">
 								<div class="flex flex-row items-center">
 									<svg
