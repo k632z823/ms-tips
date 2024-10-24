@@ -3,15 +3,15 @@ import { useNavigate } from "@solidjs/router";
 import { createStore } from "solid-js/store";
 import DateDisplay from "../lib/DateDisplay";
 import axios from "axios";
+import moment from "moment";
 
 interface Entry {
 	id: number;
-	date: string;
+	date: any;
 	drawer: number;
 	tips: number;
 	final: number;
 	tipRate: number;
-	tags: string[];
 }
 
 async function getTodaysEntry() {
@@ -20,6 +20,25 @@ async function getTodaysEntry() {
 	return responseData;
 }
 
+async function getRecentEntries() {
+	let response = await axios.get("http://localhost:3001/get-five-recent-entries")
+	let responseData = response.data.entries;
+	let entries: Entry[] = [];
+	for (let item of responseData) {
+		entries.push({
+			id: item.id,
+				date: moment(item.date),
+				tips: item.tips,
+				final: item.final,
+				tipRate: item.tipRate,
+				drawer: item.drawer,
+		})
+	}
+	return entries;
+}
+
+let recentEntries: Entry[] = [];
+const [fiveRecentEntries, setFiveRecentEntries] = createStore<Entry[]>(recentEntries);
 
 const OverviewEntries: Component = () => {
 	const [todaysEntry, setTodaysEntry] = createStore<Entry>(
@@ -30,11 +49,14 @@ const OverviewEntries: Component = () => {
 			tips: 0,
 			final: 0,
 			tipRate: 0,
-			tags: []
 		}
 	)
+
 	const [rendered, setRendered] = createSignal<boolean>(false);
+
 	onMount(async function () {
+		recentEntries = await getRecentEntries();
+		setFiveRecentEntries(...[recentEntries]);
 		setTodaysEntry(await getTodaysEntry());
 		setRendered(true);
 	})
@@ -142,24 +164,29 @@ const OverviewEntries: Component = () => {
 						<span class="pt-3 font-bold text-2xl">${todaysEntry.tipRate}</span>
 						{/* <span class="pt-1 font-medium text-xs text-content-gray">+20.1% from previous entry</span> */}
 					</div>
+					{/* display of four recent entries at the bottom right */}
 					<div class="my-4 px-4 flex flex-row items-center border-l border-border-gray">
 						<div class="flex flex-col font-medium text-content-gray">
-							<span>10/16</span>
-							<span>10/15</span>
-							<span>10/12</span>
-							<span>10/11</span>
+							{fiveRecentEntries.slice(0,4).map((entry) => (
+								<span>{entry.date.format('MM/DD')}</span>
+							))}
 						</div>
 						<div class="pl-4 flex flex-col font-medium">
-							<span>$10</span>
-							<span>$7.5</span>
-							<span>$9.5</span>
-							<span>$15</span>
+							{fiveRecentEntries.slice(0,4).map((entry) => (
+								<span>${entry.tipRate}</span>
+							))}
 						</div>
-						<div class="pl-4 flex flex-col font-medium">
-							<span class="text-green">+2.5</span>
-							<span class="text-red">-2</span>
-							<span class="text-red">-5.5</span>
-							<span class="text-red">-4</span>
+						<div class="pl-4 flex flex-col font-medium text-right">
+							{fiveRecentEntries.slice(0,4).map((entry, index) => {
+								let differenceInt: number = fiveRecentEntries[index + 1].tipRate - fiveRecentEntries[index].tipRate;
+								let color: string = differenceInt < 0 ? "text-green" : "text-red"
+
+								let differenceStr: string = '\u00A0';
+								if (differenceInt != 0) {
+									differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
+								}								
+								return <span class={color}>{differenceStr}</span>
+							})}
 						</div>
 					</div>
 				</div>
