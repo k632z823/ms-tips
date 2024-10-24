@@ -300,7 +300,7 @@ const ArchiveTable: Component = () => {
 														// }
 													}}
 												>
-													{/* view entry window */}
+													{/* row action list */}
 													<Show
 														when={
 															selectedEntry() == entryRow.number &&
@@ -526,7 +526,7 @@ const ArchiveTable: Component = () => {
 				</div>
 			</Show>
 			<div>
-				{/* row action list */}
+				{/* view entry window */}
 				<Show when={rendered()}>
 					<Show when={sortedEntryRows[selectedEntry()].viewShown}>
 						<Portal>
@@ -619,7 +619,7 @@ const ArchiveTable: Component = () => {
 												.format("L")
 												.toString()}
 										</div>
-										<div class="font-medium text-content-gray text-lg">
+										<div class="font-medium text-table-header-gray text-lg">
 											{entryRows[selectedEntry()].momentDate
 												.format("dddd, D MMMM YYYY")
 												.toString()}
