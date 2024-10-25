@@ -38,7 +38,8 @@ function RedirectToLogin() {
 	const navigate = useNavigate();
 
 	createEffect(() => {
-		navigate("/login", { replace: true });
+		// navigate("/login", { replace: true });
+		navigate("/Overview", { replace: true });
 	});
 
 	return null;
