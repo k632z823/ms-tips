@@ -362,15 +362,15 @@ const OverviewEntries: Component = () => {
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
-										<span>30</span>
+										<span>$30</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
-										<span>25</span>
+										<span>$25</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
-										<span>55</span>
+										<span>$55</span>
 									</div>
 								</div>
 							</div>
@@ -391,15 +391,15 @@ const OverviewEntries: Component = () => {
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
-										<span>30</span>
+										<span>$30</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
-										<span>25</span>
+										<span>$25</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
-										<span>55</span>
+										<span>$55</span>
 									</div>
 								</div>
 							</div>
@@ -420,15 +420,15 @@ const OverviewEntries: Component = () => {
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
-										<span>30</span>
+										<span>$30</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
-										<span>25</span>
+										<span>$25</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
-										<span>55</span>
+										<span>$55</span>
 									</div>
 								</div>
 							</div>
@@ -449,15 +449,15 @@ const OverviewEntries: Component = () => {
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
-										<span>30</span>
+										<span>$30</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
-										<span>25</span>
+										<span>$25</span>
 									</div>
 									<div class="flex flex-col gap-2">
 										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
-										<span>55</span>
+										<span>$55</span>
 									</div>
 								</div>
 							</div>

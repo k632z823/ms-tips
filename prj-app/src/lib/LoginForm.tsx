@@ -41,7 +41,7 @@ const Login = () => {
         >
           <img
             id='avatarButton'
-            class='w-5 h-5'
+            class='w-4.5 h-5.5'
             draggable='false'
             src={logo}
           ></img>
