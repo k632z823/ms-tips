@@ -1,7 +1,6 @@
 import { Component, createSignal, onMount, Show } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { createStore } from "solid-js/store";
-import DateDisplay from "../lib/DateDisplay";
 import axios from "axios";
 import moment from "moment";
 
@@ -73,6 +72,8 @@ const OverviewEntries: Component = () => {
 
 	const [showCreateToday, setShowCreateToday] = createSignal<boolean>(true);
 
+	const [tabSwitch, setTabSwitch] = createSignal<boolean>(false);
+
 	onMount(async function () {
 		recentEntries = await getRecentEntries();
 		setTodaysEntry(await getTodaysEntry());
@@ -84,9 +85,9 @@ const OverviewEntries: Component = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div class='flex flex-col justify-center px-5'>
+		<div class='px-5 flex flex-col justify-center'>
 			<Show when={rendered()}>
-				<div class="flex flex-col pb-6">
+				<div class="mt-3 mb-6 flex flex-col">
 					<div class="font-bold text-2xl">Welcome, Mustard Seed</div>
 					<div class="font-medium text-table-header-gray text-lg">Here's an overview of your most recent entry</div>
 				</div>
@@ -121,7 +122,7 @@ const OverviewEntries: Component = () => {
 						</div>
 					</button>
 				</Show>
-				<div class="p-1 flex justify-between items-center border bg-menu-gray border-border-gray rounded-md">
+				<div class="mb-3 p-1 flex justify-between items-center border bg-menu-gray border-border-gray rounded-md">
 					<span class="pl-2 font-normal">
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}
 					</span>
@@ -147,183 +148,322 @@ const OverviewEntries: Component = () => {
 						Edit entry
 					</button>
 				</div>
-				{/* display of recent drawer values */}
-				<div class="mt-4 grid grid-cols-[200px_auto] border border-border-gray rounded-md">
-					<div class="flex flex-col p-6 w-full">
-						<div class="flex justify-between items-center w-full">
-							<span class="font-medium">Drawer</span>
-							<svg
-								class="fill-icon-gray stroke-icon-gray"
-								stroke-width="0"
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 16 16"
-								height="1em"
-								width="1em"
-								style="overflow: visible; color: currentcolor;">
-								<path d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
-							</svg>
-						</div>
-						<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].drawer}</span>
-					</div>
-					<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
-						<div class="flex flex-col font-medium text-content-gray">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>{entry.date.format('MM/DD')}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>${entry.drawer}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium text-right">
-							{sixRecentEntries.slice(1, 5).map((entry, index) => {
-								let differenceInt: number = sixRecentEntries[index + 2].drawer - sixRecentEntries[index + 1].drawer;
-								let color: string = differenceInt < 0 ? "text-green" : "text-red";
-
-								let differenceStr: string = '\u00A0';
-								if (differenceInt != 0) {
-									differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
-								}
-								return <span class={color}>{differenceStr}</span>;
-							})}
-						</div>
-					</div>
+				<div class="p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-md font-semibold">
+					<button
+						class={`py-1.5 px-3 items-center rounded-md ${!tabSwitch() ? 'bg-border-gray text-white' : ''
+							}`}
+						onClick={() => {
+							if (tabSwitch()) setTabSwitch(false);
+						}}
+					>
+						Classifications
+					</button>
+					<button
+						class={`py-1.5 px-3 items-center rounded-md ${tabSwitch() ? 'bg-border-gray text-white' : ''
+							}`}
+						onClick={() => {
+							if (!tabSwitch()) setTabSwitch(true);
+						}}
+					>
+						Employees
+					</button>
 				</div>
-				{/* display of recent tips */}
-				<div class="mt-4 grid grid-cols-[200px_auto] border border-border-gray rounded-md">
-					<div class="flex flex-col p-6 w-full">
-						<div class="flex justify-between items-center w-full">
-							<span class="font-medium">Tips</span>
-							<svg
-								class="fill-icon-gray stroke-icon-gray"
-								stroke-width='0'
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 640 512'
-								height='1.2em'
-								width='1.2em'
-								style='overflow: visible; color: currentcolor;'
-							>
-								<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
-							</svg>
+				<Show when={!tabSwitch()}>
+					<div class="mt-3 border border-border-gray rounded-md">
+						{/* display of recent drawer values */}
+						<div class="grid grid-cols-[200px_auto] border-b border-border-gray">
+							<div class="flex flex-col p-6 w-full">
+								<div class="flex justify-between items-center w-full">
+									<span class="font-medium">Drawer</span>
+									<svg
+										class="fill-icon-gray stroke-icon-gray"
+										stroke-width="0"
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 16 16"
+										height="1em"
+										width="1em"
+										style="overflow: visible; color: currentcolor;">
+										<path d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
+									</svg>
+								</div>
+								<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].drawer}</span>
+							</div>
+							<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
+								<div class="flex flex-col font-medium text-content-gray">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>{entry.date.format('MM/DD')}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>${entry.drawer}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium text-right">
+									{sixRecentEntries.slice(1, 5).map((entry, index) => {
+										let differenceInt: number = sixRecentEntries[index + 2].drawer - sixRecentEntries[index + 1].drawer;
+										let color: string = differenceInt < 0 ? "text-green" : "text-red";
+										let differenceStr: string = '\u00A0';
+										if (differenceInt != 0) {
+											differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
+										}
+										return <span class={color}>{differenceStr}</span>;
+									})}
+								</div>
+							</div>
 						</div>
-						<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].tips}</span>
+						{/* display of recent tips */}
+						<div class="grid grid-cols-[200px_auto] border-b border-border-gray">
+							<div class="flex flex-col p-6 w-full">
+								<div class="flex justify-between items-center w-full">
+									<span class="font-medium">Tips</span>
+									<svg
+										class="fill-icon-gray stroke-icon-gray"
+										stroke-width='0'
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 640 512'
+										height='1.2em'
+										width='1.2em'
+										style='overflow: visible; color: currentcolor;'
+									>
+										<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
+									</svg>
+								</div>
+								<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].tips}</span>
+							</div>
+							<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
+								<div class="flex flex-col font-medium text-content-gray">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>{entry.date.format('MM/DD')}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>${entry.tips}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium text-right">
+									{sixRecentEntries.slice(1, 5).map((entry, index) => {
+										let differenceInt: number = sixRecentEntries[index + 2].tips - sixRecentEntries[index + 1].tips;
+										let color: string = differenceInt < 0 ? "text-green" : "text-red"
+										let differenceStr: string = '\u00A0';
+										if (differenceInt != 0) {
+											differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
+										}
+										return <span class={color}>{differenceStr}</span>
+									})}
+								</div>
+							</div>
+						</div>
+						{/* display of recent final values*/}
+						<div class="grid grid-cols-[200px_auto] border-b border-border-gray">
+							<div class="flex flex-col p-6 w-full">
+								<div class="flex justify-between items-center w-full">
+									<span class="font-medium">Final</span>
+									<svg
+										class="fill-icon-gray stroke-icon-gray"
+										stroke-width='0'
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 1024 1024'
+										height='1.2em'
+										width='1.2em'
+										style='overflow: visible; color: currentcolor;'
+									>
+										<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
+									</svg>
+								</div>
+								<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].final}</span>
+							</div>
+							<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
+								<div class="flex flex-col font-medium text-content-gray">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>{entry.date.format('MM/DD')}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>${entry.final}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium text-right">
+									{sixRecentEntries.slice(1, 5).map((entry, index) => {
+										let differenceInt: number = sixRecentEntries[index + 2].final - sixRecentEntries[index + 1].final;
+										let color: string = differenceInt < 0 ? "text-green" : "text-red"
+										let differenceStr: string = '\u00A0';
+										if (differenceInt != 0) {
+											differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
+										}
+										return <span class={color}>{differenceStr}</span>
+									})}
+								</div>
+							</div>
+						</div>
+						{/* display of recent tip rates */}
+						<div class="grid grid-cols-[200px_auto]">
+							<div class="flex flex-col p-6 w-full">
+								<div class="flex justify-between items-center w-full">
+									<span class="font-medium">Tip Rate</span>
+									<svg
+										class="fill-none stroke-icon-gray"
+										stroke-width="2"
+										xmlns="http://www.w3.org/2000/svg"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										viewBox="0 0 24 24"
+										height="1em"
+										width="1em"
+										style="overflow: visible; color: currentcolor;"
+									>
+										<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+								</div>
+								<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].tipRate}</span>
+							</div>
+							<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
+								<div class="flex flex-col font-medium text-content-gray">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>{entry.date.format('MM/DD')}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium">
+									{sixRecentEntries.slice(1, 5).map((entry) => (
+										<span>${entry.tipRate}</span>
+									))}
+								</div>
+								<div class="pl-4 flex flex-col font-medium text-right">
+									{sixRecentEntries.slice(1, 5).map((entry, index) => {
+										let differenceInt: number = sixRecentEntries[index + 2].tipRate - sixRecentEntries[index + 1].tipRate;
+										let color: string = differenceInt < 0 ? "text-green" : "text-red"
+										let differenceStr: string = '\u00A0';
+										if (differenceInt != 0) {
+											differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
+										}
+										return <span class={color}>{differenceStr}</span>
+									})}
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
-						<div class="flex flex-col font-medium text-content-gray">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>{entry.date.format('MM/DD')}</span>
-							))}
+				</Show>
+				<Show when={tabSwitch()}>
+					<div class="mt-3 p-2.5 h-[453px] flex flex-col overflow-auto gap-2 border border-border-gray rounded-md">
+						<div class="p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md">
+							<div class="font-medium text-table-header-gray">
+								1
+							</div>
+							<div class="flex flex-col">
+								<div class="flex justify-between items-center">
+									<span class="font-semibold">Spongebob Squarepants</span>
+									<span class="px-2 bg-white rounded-md font-medium text-black">Cook</span>
+								</div>
+								<div class="mt-6 grid grid-cols-4 items-center font-medium">
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Hours</span>
+										<span>8</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
+										<span>30</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
+										<span>25</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
+										<span>55</span>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="pl-4 flex flex-col font-medium">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>${entry.tips}</span>
-							))}
+						<div class="p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md">
+							<div class="font-medium text-table-header-gray">
+								2
+							</div>
+							<div class="flex flex-col">
+								<div class="flex justify-between">
+									<span class="font-semibold">Patrick Star</span>
+									<span class="px-2 bg-white rounded-md font-medium text-black">Dishwasher</span>
+								</div>
+								<div class="mt-6 grid grid-cols-4 items-center font-medium">
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Hours</span>
+										<span>8</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
+										<span>30</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
+										<span>25</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
+										<span>55</span>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="pl-4 flex flex-col font-medium text-right">
-							{sixRecentEntries.slice(1, 5).map((entry, index) => {
-								let differenceInt: number = sixRecentEntries[index + 2].tips - sixRecentEntries[index + 1].tips;
-								let color: string = differenceInt < 0 ? "text-green" : "text-red"
-
-								let differenceStr: string = '\u00A0';
-								if (differenceInt != 0) {
-									differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
-								}
-								return <span class={color}>{differenceStr}</span>
-							})}
+						<div class="p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md">
+							<div class="font-medium text-table-header-gray">
+								3
+							</div>
+							<div class="flex flex-col">
+								<div class="flex justify-between items-center">
+									<span class="font-semibold">Squidward Tentacles</span>
+									<span class="px-2 bg-white rounded-md font-medium text-black">Server</span>
+								</div>
+								<div class="mt-6 grid grid-cols-4 items-center font-medium">
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Hours</span>
+										<span>8</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
+										<span>30</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
+										<span>25</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
+										<span>55</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md">
+							<div class="font-medium text-table-header-gray">
+								4
+							</div>
+							<div class="flex flex-col">
+								<div class="flex justify-between items-center">
+									<span class="font-semibold">Eugene Harold Krabs</span>
+									<span class="px-2 bg-white rounded-md font-medium text-black">Baker</span>
+								</div>
+								<div class="mt-6 grid grid-cols-4 items-center font-medium">
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Hours</span>
+										<span>8</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Initital</span>
+										<span>30</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Tips</span>
+										<span>25</span>
+									</div>
+									<div class="flex flex-col gap-2">
+										<span class="pb-2 text-table-header-gray border-b border-border-gray">Total</span>
+										<span>55</span>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-
-				{/* display of recent final values*/}
-				<div class="mt-4 grid grid-cols-[200px_auto] border border-border-gray rounded-md">
-					<div class="flex flex-col p-6 w-full">
-						<div class="flex justify-between items-center w-full">
-							<span class="font-medium">Final</span>
-							<svg
-								class="fill-icon-gray stroke-icon-gray"
-								stroke-width='0'
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 1024 1024'
-								height='1.2em'
-								width='1.2em'
-								style='overflow: visible; color: currentcolor;'
-							>
-								<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
-							</svg>
-						</div>
-						<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].final}</span>
-					</div>
-					<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
-						<div class="flex flex-col font-medium text-content-gray">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>{entry.date.format('MM/DD')}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>${entry.final}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium text-right">
-							{sixRecentEntries.slice(1, 5).map((entry, index) => {
-								let differenceInt: number = sixRecentEntries[index + 2].final - sixRecentEntries[index + 1].final;
-								let color: string = differenceInt < 0 ? "text-green" : "text-red"
-
-								let differenceStr: string = '\u00A0';
-								if (differenceInt != 0) {
-									differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
-								}
-								return <span class={color}>{differenceStr}</span>
-							})}
-						</div>
-					</div>
-				</div>
-				{/* display of recent tip rates */}
-				<div class="mt-4 grid grid-cols-[200px_auto] border border-border-gray rounded-md">
-					<div class="flex flex-col p-6 w-full">
-						<div class="flex justify-between items-center w-full">
-							<span class="font-medium">Tip Rate</span>
-							<svg
-								class="fill-none stroke-icon-gray"
-								stroke-width="2"
-								xmlns="http://www.w3.org/2000/svg"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								viewBox="0 0 24 24"
-								height="1em"
-								width="1em"
-								style="overflow: visible; color: currentcolor;"
-							>
-								<path d="M12 1 12 23"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-						</div>
-						<span class="pt-3 font-bold text-2xl">${sixRecentEntries[0].tipRate}</span>
-					</div>
-					<div class="my-4 px-4 grid grid-cols-3 border-l border-border-gray">
-						<div class="flex flex-col font-medium text-content-gray">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>{entry.date.format('MM/DD')}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium">
-							{sixRecentEntries.slice(1, 5).map((entry) => (
-								<span>${entry.tipRate}</span>
-							))}
-						</div>
-						<div class="pl-4 flex flex-col font-medium text-right">
-							{sixRecentEntries.slice(1, 5).map((entry, index) => {
-								let differenceInt: number = sixRecentEntries[index + 2].tipRate - sixRecentEntries[index + 1].tipRate;
-								let color: string = differenceInt < 0 ? "text-green" : "text-red"
-
-								let differenceStr: string = '\u00A0';
-								if (differenceInt != 0) {
-									differenceStr = differenceInt < 0 ? `+${-differenceInt}` : `-${differenceInt}`;
-								}
-								return <span class={color}>{differenceStr}</span>
-							})}
-						</div>
-					</div>
-				</div>
+				</Show>
 			</Show>
 		</div>
 	);
