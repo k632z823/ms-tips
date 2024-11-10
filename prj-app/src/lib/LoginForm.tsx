@@ -24,7 +24,7 @@ const Login = () => {
 
 			if (response.success) {
 				localStorage.setItem("isLoggedIn", "true");
-				navigate("/overview");
+				navigate("/Overview");
 			} else {
 				setError("Invalid credentials");
 			}

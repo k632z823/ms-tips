@@ -29,7 +29,7 @@ const root = document.getElementById("root");
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 	throw new Error(
-		"Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?"
+		"Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?",
 	);
 }
 
@@ -46,8 +46,16 @@ function RedirectToLogin() {
 }
 
 // If not logged in, prevent other pages from rendering
-function ProtectedRoute({ component: Component }: { component: (props: any) => JSX.Element }) {
+function ProtectedRoute({
+	component: Component,
+}: {
+	component: (props: any) => JSX.Element;
+}) {
 	const navigate = useNavigate();
+
+	if (checkLoginStatus()) {
+		setIsAuthenticated(true);
+	}
 
 	if (!isAuthenticated()) {
 		navigate("/login");
@@ -61,7 +69,7 @@ render(
 	() => (
 		<Router root={App}>
 			<Route
-				path="/"
+				path='/'
 				component={RedirectToLogin}
 			/>
 			<Route
@@ -87,5 +95,5 @@ render(
 			/>
 		</Router>
 	),
-	root!
+	root!,
 );
