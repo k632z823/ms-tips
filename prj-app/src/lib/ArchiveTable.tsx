@@ -423,7 +423,13 @@ const ArchiveTable: Component = () => {
 									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
-								onClick={() => prevPage(true)}
+								onClick={() => {
+									prevPage(true)
+									setEntry(selectedEntry(), (row) => ({
+										...row,
+										dropDownShown: false,
+									}));
+								}}
 								disabled={currentPage() === 1}
 							>
 								<svg
@@ -449,7 +455,13 @@ const ArchiveTable: Component = () => {
 									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
-								onClick={() => prevPage()}
+								onClick={() => {
+									prevPage()
+									setEntry(selectedEntry(), (row) => ({
+										...row,
+										dropDownShown: false,
+									}));
+								}}
 								disabled={currentPage() === 1}
 							>
 								<svg
@@ -475,7 +487,13 @@ const ArchiveTable: Component = () => {
 									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
-								onClick={() => nextPage()}
+								onClick={() => {
+									nextPage()
+									setEntry(selectedEntry(), (row) => ({
+										...row,
+										dropDownShown: false,
+									}));
+								}}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
@@ -501,7 +519,13 @@ const ArchiveTable: Component = () => {
 									? 'bg-black'
 									: 'hover:bg-border-gray'
 									}`}
-								onClick={() => nextPage(true)}
+								onClick={() => {
+									nextPage(true)
+									setEntry(selectedEntry(), (row) => ({
+										...row,
+										dropDownShown: false,
+									}));
+								}}
 								disabled={currentPage() === Math.ceil(sortedEntryRows.length / 15)}
 							>
 								<svg
