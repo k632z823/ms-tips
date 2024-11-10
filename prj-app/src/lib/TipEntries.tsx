@@ -199,6 +199,8 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 		setTipTotal(total());
 		calcTotals(entry.final);
 		setAllTotals("final", total());
+		calcTotals(entry[entryType()]);
+		setAllTotals(entryType(), total());
 	});
 
 	createEffect(() => {
