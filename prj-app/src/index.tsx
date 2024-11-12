@@ -15,12 +15,12 @@ const [isAuthenticated, setIsAuthenticated] = createSignal(false);
 
 // Fake login check
 function checkLoginStatus() {
-	return localStorage.getItem("isLoggedIn") === "true";
+	return localStorage.getItem("isLoggedIn") === "false";
 }
 
 // Initialize login status on mount
 onMount(() => {
-	if (checkLoginStatus()) {
+	if (!checkLoginStatus()) {
 		setIsAuthenticated(true);
 	}
 });

@@ -89,7 +89,7 @@ const OverviewEntries: Component = () => {
 			<Show when={rendered()}>
 				<div class="mt-2 mb-7 flex flex-col">
 					<div class="font-bold text-2xl">Welcome, Mustard Seed</div>
-					<div class="font-medium text-table-header-gray text-lg">Here's an overview of your most recent entry</div>
+					<div class="font-medium text-content-gray text-lg">Here's an overview of your most recent entry</div>
 				</div>
 				<Show when={showCreateToday()}>
 					<button
@@ -122,7 +122,7 @@ const OverviewEntries: Component = () => {
 						</div>
 					</button>
 				</Show>
-				<div class="mb-3 p-1 flex justify-between items-center border bg-menu-gray border-border-gray rounded-md">
+				<div class="mb-3 p-1 flex justify-between items-center bg-menu-gray border border-border-gray rounded-md">
 					<span class="pl-2 font-normal">
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}
 					</span>
@@ -352,7 +352,7 @@ const OverviewEntries: Component = () => {
 							</div>
 							<div class="flex flex-col">
 								<div class="flex justify-between items-center">
-									<span class="font-semibold">Spongebob Squarepants</span>
+									<span class="font-medium">Spongebob Squarepants</span>
 									<span class="px-2 bg-white rounded-md font-medium text-black">Cook</span>
 								</div>
 								<div class="mt-6 grid grid-cols-4 items-center font-medium">
@@ -381,7 +381,7 @@ const OverviewEntries: Component = () => {
 							</div>
 							<div class="flex flex-col">
 								<div class="flex justify-between">
-									<span class="font-semibold">Patrick Star</span>
+									<span class="font-medium">Patrick Star</span>
 									<span class="px-2 bg-white rounded-md font-medium text-black">Dishwasher</span>
 								</div>
 								<div class="mt-6 grid grid-cols-4 items-center font-medium">
@@ -410,7 +410,7 @@ const OverviewEntries: Component = () => {
 							</div>
 							<div class="flex flex-col">
 								<div class="flex justify-between items-center">
-									<span class="font-semibold">Squidward Tentacles</span>
+									<span class="font-medium">Squidward Tentacles</span>
 									<span class="px-2 bg-white rounded-md font-medium text-black">Server</span>
 								</div>
 								<div class="mt-6 grid grid-cols-4 items-center font-medium">
@@ -439,7 +439,7 @@ const OverviewEntries: Component = () => {
 							</div>
 							<div class="flex flex-col">
 								<div class="flex justify-between items-center">
-									<span class="font-semibold">Eugene Harold Krabs</span>
+									<span class="font-medium">Eugene Harold Krabs</span>
 									<span class="px-2 bg-white rounded-md font-medium text-black">Baker</span>
 								</div>
 								<div class="mt-6 grid grid-cols-4 items-center font-medium">

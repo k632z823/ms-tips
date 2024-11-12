@@ -556,6 +556,92 @@ const ArchiveTable: Component = () => {
 						<Portal>
 							<div class='fixed top-[4.5rem] w-full'>
 								<div class='flex flex-col justify-center px-5'>
+									{/* <div class="p-1 grid grid-cols-3 bg-menu-gray border border-border-gray rounded-md">
+										<div class="justify-self-start">
+											<button
+												class='p-2 inline-flex justify-between items-center rounded-md hover:bg-border-gray text-sm'
+												onclick={() => {
+													setTableShown(true);
+													setPageButtonsShown(true);
+													setSortedEntryRows(selectedEntry(), (entry) => ({
+														...entry,
+														viewShown: false,
+													}));
+												}}
+											>
+												<svg
+													class="fill-icon-gray stroke-icon-gray"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 512 512"
+													height="1.2em"
+													width="1.2em"
+													style="overflow: visible; color: currentcolor;">
+													<path
+														class="stroke-icon-gray"
+														fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 160 48 224 112 288"></path>
+													<path
+														class="stroke-icon-gray"
+														fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M64 224h294c58.76 0 106 49.33 106 108v20"></path>
+												</svg>
+											</button>
+										</div>
+										<div class="p-1 justify-self-center">
+											{entryRows[selectedEntry()].momentDate
+												.format("L")
+												.toString()}
+										</div>
+										<div class="flex flex-row justify-self-end">
+											<button
+												class='mr-1 p-2 rounded-md hover:bg-border-gray'
+												onClick={() => {
+													navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
+														replace: true,
+													});
+												}}
+											>
+												<svg
+													class="fill-icon-gray"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 1024 1024"
+													height="1em"
+													width="1em"
+													style="overflow: visible; color: currentcolor;">
+													<path
+														d="M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"></path>
+												</svg>
+											</button>
+											<button
+												class='p-2 rounded-md hover:bg-select-red'
+												onclick={() => {
+													setConfirmDeleteShown(true);
+													setEntry(
+														selectedEntry(),
+														(row) => ({
+															...row,
+															dropDownShown: false,
+														}),
+													);
+												}}
+											>
+												<svg
+													class="stroke-red"
+													fill="none"
+													stroke-width="2"
+													xmlns="http://www.w3.org/2000/svg"
+													stroke="currentcolor"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													viewBox="0 0 24 24"
+													height="1em"
+													width="1em"
+													style="overflow: visible; color: currentcolor;">
+													<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
+												</svg>
+											</button>
+										</div>
+									</div> */}
 									<div class="flex flex-row justify-between items-center">
 										<button
 											class='py-1.5 px-3 inline-flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray text-sm'
@@ -635,74 +721,273 @@ const ArchiveTable: Component = () => {
 												</svg>
 											</button>
 										</div>
-										{/* <span class="font-semibold text-content-gray text-xs">Last updated 2 hours ago.</span> */}
 									</div>
-									<div class="flex flex-col py-8">
+									<div class="mt-4 p-3 flex flex-col border border-border-gray rounded-md">
 										<div class='text-2xl font-bold text-white'>
 											{entryRows[selectedEntry()].momentDate
 												.format("L")
 												.toString()}
 										</div>
-										<div class="font-medium text-table-header-gray text-lg">
+										<div class="font-medium text-content-gray text-lg">
 											{entryRows[selectedEntry()].momentDate
 												.format("dddd, D MMMM YYYY")
 												.toString()}
 										</div>
 									</div>
-									<div class=''>
-										<div class=''>
-											<table class='table-fixed w-full text-sm font-medium'>
+									<div class='mt-3 border border-border-gray rounded-md'>
+										<table class='table-fixed w-full text-sm'>
+											<tbody>
+												<tr class="border-b border-border-gray font-medium text-table-header-gray">
+													<td class='p-3 w-1/2'>
+														Classification
+													</td>
+													<td class='p-3'>
+														Amount
+													</td>
+												</tr>
+												<tr class="border-b border-border-gray">
+													<td class='p-3'>
+														Drawer
+													</td>
+													<td class='p-3'>
+														${entryRows[selectedEntry()].entry.drawer}
+													</td>
+												</tr>
+												<tr class="border-b border-border-gray">
+													<td class='p-3'>
+														Tips
+													</td>
+													<td class='p-3'>
+														${entryRows[selectedEntry()].entry.tips}
+													</td>
+												</tr>
+												<tr class="border-b border-border-gray">
+													<td class='p-3'>
+														Final
+													</td>
+													<td class='p-3'>
+														${entryRows[selectedEntry()].entry.final}
+													</td>
+												</tr>
+												<tr class="border-b border-border-gray">
+													<td class='p-3'>
+														Tip Rate
+													</td>
+													<td class='p-3'>
+														${entryRows[selectedEntry()].entry.tipRate}
+													</td>
+												</tr>
+												<tr class="">
+													<td class='p-3'>
+														Tags
+													</td>
+													<td class='p-3'>
+														<div class='text-nowrap overflow-x-auto'>
+															{entryRows[selectedEntry()].entry.tags.length > 0
+																? entryRows[selectedEntry()].entry.tags
+																: 'None'}
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="mt-3 h-[350px] flex flex-col overflow-auto border border-border-gray rounded-md text-sm">
+										<div class="border-b border-border-gray">
+											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
+												<div class="font-medium text-table-header-gray">
+													1
+												</div>
+												<div class="flex flex-col">
+													<div class="flex justify-between items-center">
+														<span class="font-medium">Spongebob Squarepants</span>
+													</div>
+												</div>
+											</div>
+											<table class="table-fixed w-full text-sm">
 												<tbody>
-													<tr class="border-b border-border-gray font-bold text-content-gray">
-														<td class='p-3 w-1/2'>
-															Classification
+													<tr class="border-b border-border-gray font-medium text-table-header-gray">
+														<td class="p-3 w-1/4">
+															Title
 														</td>
-														<td class='p-3'>
-															Amount
+														<td class="p-3">
+															Hours
 														</td>
-													</tr>
-													<tr class="border-b border-border-gray">
-														<td class='p-3'>
-															Drawer
+														<td class="p-3">
+															Initial
 														</td>
-														<td class='p-3'>
-															${entryRows[selectedEntry()].entry.drawer}
-														</td>
-													</tr>
-													<tr class="border-b border-border-gray">
-														<td class='p-3'>
+														<td class="p-3">
 															Tips
 														</td>
-														<td class='p-3'>
-															${entryRows[selectedEntry()].entry.tips}
+														<td class="p-3">
+															Total
 														</td>
 													</tr>
-													<tr class="border-b border-border-gray">
-														<td class='p-3'>
-															Final
+													<tr>
+														<td class="p-3">
+															Cook
 														</td>
-														<td class='p-3'>
-															${entryRows[selectedEntry()].entry.final}
+														<td class="p-3">
+															8
+														</td>
+														<td class="p-3">
+															$30
+														</td>
+														<td class="p-3">
+															$25
+														</td>
+														<td class="p-3">
+															$55
 														</td>
 													</tr>
-													<tr class="border-b border-border-gray">
-														<td class='p-3'>
-															Tip Rate
+												</tbody>
+											</table>
+										</div>
+										<div class="border-b border-border-gray">
+											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
+												<div class="font-medium text-table-header-gray">
+													2
+												</div>
+												<div class="flex flex-col">
+													<div class="flex justify-between items-center">
+														<span class="font-medium">Patrick Star</span>
+													</div>
+												</div>
+											</div>
+											<table class="table-fixed w-full text-sm">
+												<tbody>
+													<tr class="border-b border-border-gray font-medium text-table-header-gray">
+														<td class="p-3 w-1/4">
+															Title
 														</td>
-														<td class='p-3'>
-															${entryRows[selectedEntry()].entry.tipRate}
+														<td class="p-3">
+															Hours
+														</td>
+														<td class="p-3">
+															Initial
+														</td>
+														<td class="p-3">
+															Tips
+														</td>
+														<td class="p-3">
+															Total
 														</td>
 													</tr>
-													<tr class="border-b border-border-gray">
-														<td class='p-3'>
-															Tags
+													<tr>
+														<td class="p-3">
+															Dishwasher
 														</td>
-														<td class='p-3'>
-															<div class='text-nowrap overflow-x-auto'>
-																{entryRows[selectedEntry()].entry.tags.length > 0
-																	? entryRows[selectedEntry()].entry.tags
-																	: 'None'}
-															</div>
+														<td class="p-3">
+															8
+														</td>
+														<td class="p-3">
+															$30
+														</td>
+														<td class="p-3">
+															$25
+														</td>
+														<td class="p-3">
+															$55
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="border-b border-border-gray">
+											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
+												<div class="font-medium text-table-header-gray">
+													3
+												</div>
+												<div class="flex flex-col">
+													<div class="flex justify-between items-center">
+														<span class="font-medium">Squidward Tentacles</span>
+													</div>
+												</div>
+											</div>
+											<table class="table-fixed w-full text-sm">
+												<tbody>
+													<tr class="border-b border-border-gray font-medium text-table-header-gray">
+														<td class="p-3 w-1/4">
+															Title
+														</td>
+														<td class="p-3">
+															Hours
+														</td>
+														<td class="p-3">
+															Initial
+														</td>
+														<td class="p-3">
+															Tips
+														</td>
+														<td class="p-3">
+															Total
+														</td>
+													</tr>
+													<tr>
+														<td class="p-3">
+															Server
+														</td>
+														<td class="p-3">
+															8
+														</td>
+														<td class="p-3">
+															$30
+														</td>
+														<td class="p-3">
+															$25
+														</td>
+														<td class="p-3">
+															$55
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="border-b border-border-gray">
+											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
+												<div class="font-medium text-table-header-gray">
+													4
+												</div>
+												<div class="flex flex-col">
+													<div class="flex justify-between items-center">
+														<span class="font-medium">Eugene Harold Krabs</span>
+													</div>
+												</div>
+											</div>
+											<table class="table-fixed w-full text-sm">
+												<tbody>
+													<tr class="border-b border-border-gray font-medium text-table-header-gray">
+														<td class="p-3 w-1/4">
+															Title
+														</td>
+														<td class="p-3">
+															Hours
+														</td>
+														<td class="p-3">
+															Initial
+														</td>
+														<td class="p-3">
+															Tips
+														</td>
+														<td class="p-3">
+															Total
+														</td>
+													</tr>
+													<tr>
+														<td class="p-3">
+															Baker
+														</td>
+														<td class="p-3">
+															8
+														</td>
+														<td class="p-3">
+															$30
+														</td>
+														<td class="p-3">
+															$25
+														</td>
+														<td class="p-3">
+															$55
 														</td>
 													</tr>
 												</tbody>
