@@ -621,10 +621,13 @@ const ArchiveTable: Component = () => {
 												</svg>
 											</button>
 										</div>
-										<div class="justify-self-center inline-flex items-center gap-2 rounded-md ">
+										<div class="justify-self-center inline-flex items-center rounded-md ">
 											{/* button to go to previous date's entry in view portal*/}
 											<button
-												class={`p-2 rounded-md ${selectedEntry() == 0 ? 'bg-red' : 'hover:bg-border-gray'}`}
+												class={`p-2 rounded-md ${selectedEntry() == 0 
+														? ''
+														: 'hover:bg-border-gray'
+														}`}
 												onclick={() => {
 														setSortedEntryRows(selectedEntry(), (entry) => ({
 															...entry,
@@ -639,7 +642,10 @@ const ArchiveTable: Component = () => {
 												disabled={selectedEntry() == 0}
 											>
 												<svg
-													class="fill-white"
+													class={`${selectedEntry() == 0 
+														? 'fill-icon-gray'
+														: 'fill-white'
+														}`}
 													stroke-width="0"
 													xmlns="http://www.w3.org/2000/svg"
 													viewBox="0 0 24 24"
@@ -649,14 +655,17 @@ const ArchiveTable: Component = () => {
 													<path d="M13.939 4.939 6.879 12l7.06 7.061 2.122-2.122L11.121 12l4.94-4.939z"></path>
 												</svg>
 											</button>
-											<span class="">
+											<span class="w-[6rem] text-center">
 												{entryRows[selectedEntry()].momentDate
 													.format("L")
 													.toString()}
 											</span>
 											{/* button to go to next date's entry in view portal*/}
 											<button 
-												class={`p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1 ? 'bg-red' : 'hover:bg-border-gray'}`}
+												class={`ml-2 p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1
+														? ''
+														: 'hover:bg-border-gray'
+														}`}
 												onclick={() => {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
@@ -672,7 +681,10 @@ const ArchiveTable: Component = () => {
 
 											>
 												<svg
-													class="fill-white"
+													class={`${selectedEntry() == sortedEntryRows.length - 1
+														? 'fill-icon-gray'
+														: 'fill-white'
+														}`}
 													stroke-width="0"
 													xmlns="http://www.w3.org/2000/svg"
 													viewBox="0 0 24 24"
@@ -685,7 +697,7 @@ const ArchiveTable: Component = () => {
 										</div>
 										<div class="justify-self-end">
 											<button
-												class='mr-2 p-2 rounded-md hover:bg-border-gray'
+												class='mr-1 p-2 rounded-md hover:bg-border-gray'
 												onClick={() => {
 													navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
 														replace: true,
@@ -705,7 +717,7 @@ const ArchiveTable: Component = () => {
 												</svg>
 											</button>
 											<button
-												class='p-2 rounded-md hover:bg-border-gray'
+												class='p-2 rounded-md hover:bg-select-red'
 												onclick={() => {
 													setConfirmDeleteShown(true);
 													setEntry(
@@ -718,7 +730,7 @@ const ArchiveTable: Component = () => {
 												}}
 											>
 												<svg
-													class="stroke-white"
+													class="stroke-red"
 													fill="none"
 													stroke-width="2"
 													xmlns="http://www.w3.org/2000/svg"
@@ -940,8 +952,8 @@ const ArchiveTable: Component = () => {
 												.toString()}
 										</div>
 									</div> */}
-									<div class="mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md font-semibold text-sm text-content-gray bg-input-gray">
-										Entry details
+									<div class="mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm bg-menu-gray">
+										Entry
 									</div>
 									<div class='border border-border-gray rounded-b-md'>
 										<table class='table-fixed w-full text-sm'>
@@ -1001,12 +1013,12 @@ const ArchiveTable: Component = () => {
 											</tbody>
 										</table>
 									</div>
-									<div class="mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md font-semibold text-sm text-content-gray bg-input-gray">
-										Employee details
+									<div class="mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm bg-menu-gray">
+										Staff
 									</div>
-									<div class="h-[405px] flex flex-col overflow-auto border border-border-gray rounded-b-md text-sm">
-										<div class="border-b border-border-gray">
-											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
+									<div class="h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm">
+										<div class="border-b border-border-gray w-full">
+											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray w-full">
 												<div class="font-medium text-table-header-gray">
 													1
 												</div>
@@ -1055,7 +1067,7 @@ const ArchiveTable: Component = () => {
 												</tbody>
 											</table>
 										</div>
-										<div class="border-b border-border-gray">
+										<div class="border-b border-border-gray w-full">
 											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
 												<div class="font-medium text-table-header-gray">
 													2
@@ -1105,7 +1117,7 @@ const ArchiveTable: Component = () => {
 												</tbody>
 											</table>
 										</div>
-										<div class="border-b border-border-gray">
+										<div class="border-b border-border-gray w-full">
 											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
 												<div class="font-medium text-table-header-gray">
 													3
@@ -1155,7 +1167,7 @@ const ArchiveTable: Component = () => {
 												</tbody>
 											</table>
 										</div>
-										<div class="border-b border-border-gray">
+										<div class="border-b border-border-gray w-full">
 											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
 												<div class="font-medium text-table-header-gray">
 													4
