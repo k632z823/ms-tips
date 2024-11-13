@@ -582,8 +582,23 @@ const ArchiveTable: Component = () => {
 												</svg>
 											</button>
 										</div>
-										<div class="justify-self-center inline-flex items-center gap-2 rounded-md">
-											<button class="p-2 rounded-md hover:bg-border-gray">
+										<div class="justify-self-center inline-flex items-center gap-2 rounded-md ">
+											{/* button to go to previous date's entry in view portal*/}
+											<button
+												class={`p-2 rounded-md ${selectedEntry() == 0 ? 'bg-red' : 'hover:bg-border-gray'}`}
+												onclick={() => {
+														setSortedEntryRows(selectedEntry(), (entry) => ({
+															...entry,
+															viewShown: false,
+														}));
+														setSelectedEntry(selectedEntry() - 1);
+														setSortedEntryRows(selectedEntry(), (entry) => ({
+															...entry,
+															viewShown: true,
+														}));
+												}}
+												disabled={selectedEntry() == 0}
+											>
 												<svg
 													class="fill-white"
 													stroke-width="0"
@@ -600,7 +615,23 @@ const ArchiveTable: Component = () => {
 													.format("L")
 													.toString()}
 											</span>
-											<button class="p-2 rounded-md hover:bg-border-gray">
+											{/* button to go to next date's entry in view portal*/}
+											<button 
+												class={`p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1 ? 'bg-red' : 'hover:bg-border-gray'}`}
+												onclick={() => {
+													setSortedEntryRows(selectedEntry(), (entry) => ({
+														...entry,
+														viewShown: false,
+													}));
+													setSelectedEntry(selectedEntry() + 1);
+													setSortedEntryRows(selectedEntry(), (entry) => ({
+														...entry,
+														viewShown: true,
+													}));
+												}}
+												disabled={selectedEntry() == sortedEntryRows.length - 1}
+
+											>
 												<svg
 													class="fill-white"
 													stroke-width="0"
