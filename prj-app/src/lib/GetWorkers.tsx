@@ -8,6 +8,19 @@ export interface ShiftData {
 	tips: number;
 	total: number;
 	offset: number;
+	user_id: number;
+	position_id: number;
+}
+
+export interface Tip_Distribution_Entry {
+	date: string;
+	user_id: number;
+	group_id: number;
+	hours: number;
+	initial: number;
+	tips_received: number;
+	total: number;
+	offset: number;
 }
 
 // type Position = "Server" | "Cook";
