@@ -199,10 +199,12 @@ export class Sling {
                 name: this.users[user_id].name,
                 hours_worked: parseFloat((Math.round(hours * 4) / 4).toFixed(2)),
                 position: this.positions[position_id].name,
+                position_id: position_id,
                 initial_tip: 0,
                 tips: 0,
                 total: 0,
                 offset: 0,
+                user_id: user_id,
             })
 
         }
