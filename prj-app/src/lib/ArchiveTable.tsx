@@ -7,7 +7,7 @@ import Modal from "./Utilities/Modal";
 import ExportModal from "./Utilities/ExportModal";
 import { useNavigate } from "@solidjs/router";
 import { fromJSON } from "postcss";
-import { mkConfig, generateCsv, download } from "export-to-csv";
+import { mkConfig, generateCsv} from "export-to-csv";
 
 interface Entry {
 	id: number;
@@ -97,6 +97,45 @@ let entryRows: EntryRow[] = []; //await getEntries();
 const [sortedEntryRows, setSortedEntryRows] =
 	createStore<EntryRow[]>(entryRows);
 
+// used in Export modal to add an averages row at the bottom of the CSV
+const calculateEntryRowsAverages = (entries: Entry[]) => {
+	let sums: { tips: number; final: number; drawer: number } = {
+		tips: 0,
+		final: 0,
+		drawer: 0
+	};
+
+	let count = entries.length;
+
+	for (let entry of entries) {
+		sums.tips += Number(entry.tips);
+        sums.final += Number(entry.final);
+        sums.drawer += Number(entry.drawer);
+	}
+
+	let averages = {
+		date: "averages",
+		tips: parseFloat((sums.tips / count).toFixed(2)),
+		final: parseFloat((sums.final / count).toFixed(2)),
+		tags: "N/A",
+		drawer: parseFloat((sums.drawer / count).toFixed(2))
+	};
+
+	return averages;
+}
+
+// used to export/download and name CSV files
+let download = (config: any) => {
+    return function(csvContent: any, fileName: string) {
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;  // Set the filename here
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+};
 
 // let sortedEntryRows: entryRow[] = [...entryRows];
 const [currentPage, setCurrentPage] = createSignal<number>(1);
@@ -1211,7 +1250,7 @@ const ArchiveTable: Component = () => {
 				>
 				</Modal>
 			</Show>
-			{/* export modal */}
+			{/* export modal, appears when export button is clicked */}
 			<Show when={exportModalShown()}>
 				<ExportModal
 					header="Export Entries"
@@ -1302,9 +1341,11 @@ const ArchiveTable: Component = () => {
 							onclick={async function (e) {
 								if (validDateRange()) {
 									let entries = await getExportEntries(fromDate(), toDate());
+									entries.push(calculateEntryRowsAverages(entries));
 									const csvConfig = mkConfig({ useKeysAsHeaders: true });
 									const csv = generateCsv(csvConfig)(entries);
-									download(csvConfig)(csv);
+									const fileName = `${fromDate()}_to_${moment(toDate()).format("YYYY-MM-DD")}_tippyExport`;
+									download(csvConfig)(csv, fileName);
 								} else if (!validDateRange()) {
 
 								}
