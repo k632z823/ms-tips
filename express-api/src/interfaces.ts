@@ -80,6 +80,8 @@ export interface ShiftData {
 	tips: number;
 	total: number;
 	offset: number;
+    user_id: number;
+    position_id: number;
 }
 
 export enum Entry_type {
