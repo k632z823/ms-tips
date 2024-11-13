@@ -209,8 +209,18 @@ let sling_api = new Sling();
     response.json({success: true, entries: entries})
   })
 
-  app.get("/add-archive-entry", async function(request, response) {
+  app.post("/add-archive-entry", async function(request, response) {
+    console.log("Request Recieved: INSERT record for archive_entries on " + request.body.date);
+    let entry = request.body.entry;
+    await addArchiveEntry(entry);
+    response.json({success: true});
+  })
 
+  app.post("/add-tip-distribtion-records", async function(request, response) {
+    console.log("Request Recieved: UPSERT record for tip_distribution_records on " + request.body.date);
+    let tip_distribution = request.body.tip_distribution;
+    await addTipDistributionEntry(tip_distribution);
+    response.json({success: true})
   })
 
   app.delete("/delete-entry", async function(request, response) {
@@ -364,6 +374,21 @@ let sling_api = new Sling();
       await db.withSchema("public").insert(entry).into('entries');
     }
     
+  }
+
+  async function addArchiveEntry(archive_entry:any) {
+    //checks if an entry already exists in the archive, if not creates a new one
+    let existingEntry = await db.withSchema("public").from('archive_entries').select('*').where('date', archive_entry.date);
+
+    if (existingEntry.length !=0) {
+      await db.withSchema("public").update(archive_entry).where('date', archive_entry.date).into('archive_entries');
+    } else {
+      await db.withSchema("public").insert(archive_entry).into('archive_entries');
+    }
+  }
+
+  async function addTipDistributionEntry(tip_distribution_entry: any) {
+    await db.withSchema("public").insert(tip_distribution_entry).into("tip_distribution_records").onConflict(['date', 'user_id', 'group_id']).merge();
   }
 
   async function getEntriesToExport(fromDate: string, toDate: string) {
