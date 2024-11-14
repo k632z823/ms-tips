@@ -21,7 +21,7 @@ const Modal: Component<ModalProps> = (props) => {
                                 <div class='flex justify-center pt-5 font-semibold'>
                                     {header}
                                 </div>
-                                <div class='flex justify-center pt-1 pb-5 px-5 text-content-gray text-sm font-medium text-center'>
+                                <div class='flex justify-center pt-1 pb-5 px-5 text-table-header-gray text-sm font-medium text-center'>
                                     {body}
                                 </div>
                                 <div class='px-5'>

@@ -21,7 +21,7 @@ const ExportModal: Component<ModalProps> = (props) => {
                                 <div class='flex px-6 pt-6 font-semibold'>
                                     {header}
                                 </div>
-                                <div class='flex justify-center pt-1 pb-6 px-6 text-content-gray text-sm font-medium'>
+                                <div class='flex justify-center pt-1 pb-6 px-6 text-table-header-gray text-sm font-medium'>
                                     {body}
                                 </div>
                                 <div class='px-6 flex flex-col'>

@@ -89,7 +89,7 @@ const OverviewEntries: Component = () => {
 			<Show when={rendered()}>
 				<div class="mt-2 mb-7 flex flex-col">
 					<div class="font-bold text-2xl">Welcome, Mustard Seed</div>
-					<div class="font-medium text-content-gray text-lg">Here's an overview of your most recent entry</div>
+					<div class="font-medium text-table-header-gray text-lg">Here's an overview of your most recent entry</div>
 				</div>
 				<Show when={showCreateToday()}>
 					<button

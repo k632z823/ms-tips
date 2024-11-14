@@ -20,7 +20,7 @@ module.exports = {
 			'white': '#FFFFFF',
 			'black': '#000000',
 			'menu-gray': '#070707',
-			'border-gray': '#151515',
+			'border-gray': '#181818',
 			'content-gray': '#606060',
 			'table-header-gray': '#A3A3A3',
 			'dialog-bg-gray': '#050505',
