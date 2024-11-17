@@ -267,10 +267,62 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 		<>
 			<Show when={viewEntries()}>
 				<div
-					class='px-5 flex justify-center'
+					class='px-5 flex justify-center text-sm'
 					id='entry-info'
 				>
-					<div class='border border-border-gray rounded-md w-full'>
+					<div class="w-full grid grid-cols-3 gap-2">
+						<div class="flex flex-col w-full border border-border-gray rounded-md">
+							<div class="p-2 flex justify-between items-center border-b border-border-gray">
+								<span class="font-medium text-table-header-gray">Drawer</span>
+								{/* <svg
+									class="fill-icon-gray stroke-icon-gray"
+									stroke-width="0"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 16 16"
+									height="1em"
+									width="1em"
+									style="overflow: visible; color: currentcolor;">
+									<path d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
+								</svg> */}
+							</div>
+							<span class="p-2 font-semibold">${allTotals.drawer}</span>
+						</div>
+						<div class="flex flex-col w-full border border-border-gray rounded-md">
+							<div class="p-2 flex justify-between items-center border-b border-border-gray">
+								<span class="font-medium text-table-header-gray">Tips</span>
+								{/* <svg
+									class="fill-icon-gray stroke-icon-gray"
+									stroke-width='0'
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 640 512'
+									height='1.2em'
+									width='1.2em'
+									style='overflow: visible; color: currentcolor;'
+								>
+									<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
+								</svg> */}
+							</div>
+							<span class="p-2 font-semibold">${allTotals.tips}</span>
+						</div>
+						<div class="flex flex-col w-full border border-border-gray rounded-md">
+							<div class="p-2 flex justify-between items-center border-b border-border-gray">
+								<span class="font-medium text-table-header-gray">Final</span>
+								{/* <svg
+									class="fill-icon-gray stroke-icon-gray"
+									stroke-width='0'
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 1024 1024'
+									height='1.2em'
+									width='1.2em'
+									style='overflow: visible; color: currentcolor;'
+								>
+									<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
+								</svg> */}
+							</div>
+							<span class="p-2 font-semibold">${allTotals.final}</span>
+						</div>
+					</div>
+					{/* <div class='border border-border-gray rounded-md w-full'>
 						<table class='table-auto w-full'>
 							<tbody>
 								<tr class='border-border-gray font-medium'>
@@ -295,7 +347,7 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> */}
 				</div>
 				{/* TODO: this is the datepicker for the entries, format/move it however u want chief */}
 				<div
@@ -517,28 +569,24 @@ but format it, style it, whatever u feel looks best
 												{(item) => (
 													<tr class='text-center'>
 														<td
-															class={`p-4 w-1/6 ${
-																item.id === 0
-																	? "rounded-tl-md border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-1/6 ${item.id === 0
+																? "rounded-tl-md border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "rounded-bl-md border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-r border-border-gray bg-input-gray`}
+																} border-r border-border-gray bg-input-gray`}
 														>
 															{labels[item.id].bill_label}
 														</td>
 														<td
-															class={`p-2 w-2/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 w-2/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
@@ -571,28 +619,24 @@ but format it, style it, whatever u feel looks best
 															></input>
 														</td>
 														<td
-															class={`p-4 w-1/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-1/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-x border-border-gray bg-input-gray`}
+																} border-x border-border-gray bg-input-gray`}
 														>
 															{labels[item.id].change_label}
 														</td>
 														<td
-															class={`p-2 w-2/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 w-2/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
@@ -721,7 +765,7 @@ but format it, style it, whatever u feel looks best
 				</button>
 				<button
 					class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-					onClick={() => {}}
+					onClick={() => { }}
 				>
 					Override Tip Rate
 				</button>

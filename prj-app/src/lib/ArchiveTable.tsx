@@ -624,7 +624,7 @@ const ArchiveTable: Component = () => {
 										<div class="justify-self-center inline-flex items-center rounded-md ">
 											{/* button to go to previous date's entry in view portal*/}
 											<button
-												class={`p-2 rounded-md ${selectedEntry() == 0 
+												class={`mr-1 p-2 rounded-md ${selectedEntry() == 0 
 														? ''
 														: 'hover:bg-border-gray'
 														}`}
@@ -662,7 +662,7 @@ const ArchiveTable: Component = () => {
 											</span>
 											{/* button to go to next date's entry in view portal*/}
 											<button 
-												class={`ml-2 p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1
+												class={`ml-1 p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1
 														? ''
 														: 'hover:bg-border-gray'
 														}`}
@@ -840,9 +840,9 @@ const ArchiveTable: Component = () => {
 												.toString()}
 										</div>
 									</div> */}
-									<div class="inline-flex justify-between items-center mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm bg-menu-gray">
-										Entry
-										<svg
+									<div class="inline-flex justify-between items-center mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm font-medium bg-menu-gray">
+										Entry details
+										{/* <svg
 											class="fill-border-gray"
 											stroke-width="0"
 											xmlns="http://www.w3.org/2000/svg"
@@ -851,7 +851,7 @@ const ArchiveTable: Component = () => {
 											width="1.3em"
 											style="overflow: visible; color: currentcolor;">
 											<path class="fill-none stroke-border-gray" stroke-linejoin="round" stroke-width="40" d="M416 221.25V416a48 48 0 0 1-48 48H144a48 48 0 0 1-48-48V96a48 48 0 0 1 48-48h98.75a32 32 0 0 1 22.62 9.37l141.26 141.26a32 32 0 0 1 9.37 22.62Z"></path><path class="fill-none stroke-border-gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="40" d="M256 56v120a32 32 0 0 0 32 32h120"></path>
-										</svg>
+										</svg> */}
 									</div>
 									<div class='border border-border-gray rounded-b-md'>
 										<table class='table-fixed w-full text-sm'>
@@ -911,9 +911,9 @@ const ArchiveTable: Component = () => {
 											</tbody>
 										</table>
 									</div>
-									<div class="mt-3 py-2 px-3 inline-flex justify-between items-center border-x border-t border-border-gray rounded-t-md text-sm bg-menu-gray">
-										Staff
-										<svg
+									<div class="mt-3 py-2 px-3 inline-flex justify-between items-center border-x border-t border-border-gray rounded-t-md text-sm font-medium bg-menu-gray">
+										Employee details
+										{/* <svg
 											class="fill-border-gray"
 											stroke-width="0"
 											xmlns="http://www.w3.org/2000/svg"
@@ -922,7 +922,7 @@ const ArchiveTable: Component = () => {
 											width="1.4em"
 											style="overflow: visible; color: currentcolor;">
 											<path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"></path>
-										</svg>
+										</svg> */}
 									</div>
 									<div class="h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm">
 										<div class="border-b border-border-gray w-full">
@@ -932,7 +932,7 @@ const ArchiveTable: Component = () => {
 												</div>
 												<div class="flex flex-col">
 													<div class="flex justify-between items-center">
-														<span class="font-medium">Spongebob Squarepants</span>
+														<span class="font-normal">Spongebob Squarepants</span>
 													</div>
 												</div>
 											</div>
@@ -982,7 +982,7 @@ const ArchiveTable: Component = () => {
 												</div>
 												<div class="flex flex-col">
 													<div class="flex justify-between items-center">
-														<span class="font-medium">Patrick Star</span>
+														<span class="font-normal">Patrick Star</span>
 													</div>
 												</div>
 											</div>
@@ -1032,7 +1032,7 @@ const ArchiveTable: Component = () => {
 												</div>
 												<div class="flex flex-col">
 													<div class="flex justify-between items-center">
-														<span class="font-medium">Squidward Tentacles</span>
+														<span class="font-normal">Squidward Tentacles</span>
 													</div>
 												</div>
 											</div>
@@ -1082,7 +1082,7 @@ const ArchiveTable: Component = () => {
 												</div>
 												<div class="flex flex-col">
 													<div class="flex justify-between items-center">
-														<span class="font-medium">Eugene Harold Krabs</span>
+														<span class="font-normal">Eugene Harold Krabs</span>
 													</div>
 												</div>
 											</div>

@@ -148,7 +148,7 @@ const OverviewEntries: Component = () => {
 						Edit entry
 					</button>
 				</div>
-				<div class="p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-md font-semibold">
+				<div class="p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-lg font-semibold">
 					<button
 						class={`py-1.5 px-3 items-center rounded-md ${!tabSwitch() ? 'bg-border-gray text-white' : ''
 							}`}
