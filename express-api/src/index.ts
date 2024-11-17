@@ -68,7 +68,7 @@ let sling_api = new Sling();
 
   app.post("/add-entry", async function(request, response) {
     let entry = request.body.entry;
-    await addEntry(entry);
+    await addEntry(entry, request.body.entry_no);
 
     response.json({success: true})
   })
@@ -212,7 +212,7 @@ let sling_api = new Sling();
   app.post("/add-archive-entry", async function(request, response) {
     console.log("Request Recieved: INSERT record for archive_entries on " + request.body.date);
     let entry = request.body.entry;
-    await addArchiveEntry(entry);
+    await addArchiveEntry(entry, request.body.entry_no);
     response.json({success: true});
   })
 
@@ -254,7 +254,7 @@ let sling_api = new Sling();
   }
 
   async function getEntries(date: string) {
-    let currentArchiveEntries = await db.withSchema('public').from('entries').select('*').where('entry_date', date);
+    let currentArchiveEntries = await db.withSchema('public').from('archive_entries').select('*').where('date', date);
 
     let entries: {
       tips: Entry[];
@@ -373,7 +373,8 @@ let sling_api = new Sling();
     return entries;
   }
 
-  async function addEntry(entry: any) {
+  async function addEntry(entry: any, entry_no: number) {
+    let archiveEntry = await db.withSchema('public').from('archive_entries').select('*').where('date', entry.entry_date).andWhere('entry_no', entry_no);
     let existingEntry = await db.withSchema("public").from('entries').select("*").where('entry_date', entry.entry_date).andWhere('type', entry.type);
 
     if (existingEntry.length != 0) {
@@ -390,19 +391,24 @@ let sling_api = new Sling();
         bill_20: entry.bill_20,
         bill_50: entry.bill_50,
         bill_100: entry.bill_100
-      }).where('entry_date', entry.entry_date).andWhere('type', entry.type);
+      }).where('entry_date', entry.entry_date).andWhere('type', entry.type).andWhere('archive_entry_id', archiveEntry[0].id);
     } else {
+      entry.archive_entry_id = archiveEntry[0].id;
       await db.withSchema("public").insert(entry).into('entries');
     }
     
   }
 
-  async function addArchiveEntry(archive_entry:any) {
+  async function addArchiveEntry(archive_entry:any, entry_no: number) {
     //checks if an entry already exists in the archive, if not creates a new one
-    let existingEntry = await db.withSchema("public").from('archive_entries').select('*').where('date', archive_entry.date);
+    let existingEntry = await db.withSchema("public").from('archive_entries').select('*').where('date', archive_entry.date).andWhere('entry_no', entry_no);
 
     if (existingEntry.length !=0) {
-      await db.withSchema("public").update(archive_entry).where('date', archive_entry.date).into('archive_entries');
+      if (archive_entry.tip_rate === 0 && existingEntry[0].tip_rate !=0) {
+        delete archive_entry.tip_rate;
+
+      }
+      await db.withSchema("public").update(archive_entry).where('date', archive_entry.date).andWhere('entry_no', entry_no).into('archive_entries');
     } else {
       await db.withSchema("public").insert(archive_entry).into('archive_entries');
     }
