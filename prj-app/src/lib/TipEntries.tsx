@@ -177,9 +177,9 @@ async function requestEntryData(date: string) {
 			return await response.data.entries;
 		});
 
-	setEntry("drawer", entries.drawer);
-	setEntry("tips", entries.tips);
-	setEntry("final", entries.final);
+	setEntry("drawer", entries[0].drawer);
+	setEntry("tips", entries[0].tips);
+	setEntry("final", entries[0].final);
 }
 
 async function addEntry(entryDate: string) {

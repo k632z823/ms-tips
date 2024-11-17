@@ -254,6 +254,27 @@ let sling_api = new Sling();
   }
 
   async function getEntries(date: string) {
+    let currentArchiveEntries = await db.withSchema('public').from('entries').select('*').where('entry_date', date);
+
+    let entries: {
+      tips: Entry[];
+      drawer: Entry[];
+      final: Entry[];
+    }[] = [];
+
+    if (currentArchiveEntries.length === 0) {
+      entries.push(await organizeEntries(date, 0));
+    } else {
+      for (let entry of currentArchiveEntries) {
+        entries.push(await organizeEntries(date, entry.id));
+      }
+    }
+
+    return entries;
+    
+  }
+
+  async function organizeEntries(date: string, entry_id: number) {
     const starter: Entry[] = [
       {
         id: 0,
@@ -295,12 +316,12 @@ let sling_api = new Sling();
       tips: [],
       drawer: [],
       final: []
-    }
+    };
 
     let dbRecords = {
-      tips: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.tips_label),
-      drawer: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.drawer_label),
-      final: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.final_label)
+      tips: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.tips_label).andWhere('archive_entry_id', entry_id),
+      drawer: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.drawer_label).andWhere('archive_entry_id', entry_id),
+      final: await db.withSchema('public').from('entries').select('*').where('entry_date', date).andWhere('type', Entry_type.final_label).andWhere('archive_entry_id', entry_id)
     }
 
     let keys = Object.keys(dbRecords);
