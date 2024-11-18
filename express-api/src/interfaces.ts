@@ -9,6 +9,7 @@ export interface Archive_Entry {
     final: number;
     tipRate: number;
     tags: string[];
+    entry_no: number;
 }
 
 export interface Archive_Entry_TagsNotArray {

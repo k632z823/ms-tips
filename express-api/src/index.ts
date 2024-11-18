@@ -86,7 +86,8 @@ let sling_api = new Sling();
         tips: item.tips,
         final: item.final,
         tipRate: item.tip_rate,
-        tags: item.tags
+        tags: item.tags,
+        entry_no: item.entry_no
       })
     }
     response.json({success: true, entries: formattedEntries})
@@ -104,7 +105,8 @@ let sling_api = new Sling();
         tips: data[0].tips,
         final: data[0].final,
         tipRate: data[0].tip_rate,
-        tags: data[0].tags
+        tags: data[0].tags,
+        entry_no: data[0].entry_no
       }
     } else {
       todaysEntry = {
@@ -114,7 +116,8 @@ let sling_api = new Sling();
         tips: 0,
         final: 0,
         tipRate: 0,
-        tags: []
+        tags: [],
+        entry_no: 0
       }
     }
     response.json({success: true, todaysEntry: todaysEntry});
@@ -131,7 +134,8 @@ let sling_api = new Sling();
         tips: data.tips,
         final: data.final,
         tipRate: data.tip_rate,
-        tags: data.tags
+        tags: data.tags,
+        entry_no: data.entry_no
       }
     } else {
       mostRecentEntry = {
@@ -141,7 +145,8 @@ let sling_api = new Sling();
         tips: 0,
         final: 0,
         tipRate: 0,
-        tags: []
+        tags: [],
+        entry_no: 0
       }
     }
     response.json({success: true, mostRecentEntry: mostRecentEntry});
@@ -159,7 +164,8 @@ let sling_api = new Sling();
         tips: item.tips,
         final: item.final,
         tipRate: item.tip_rate,
-        tags: item.tags
+        tags: item.tags,
+        entry_no: item.entry_no
       })
     }
     response.json({success: true, entries: formattedEntries})
@@ -227,7 +233,7 @@ let sling_api = new Sling();
     let id = request.query.id;
     console.log('Request Recieved: DELETE row from archive_entries on id ' + id);
     // @ts-ignore
-    await deleteArchiveEntry(parseInt(id));
+    await deleteEntry(parseInt(id));
     response.json({success: true});
   });
 
@@ -249,7 +255,9 @@ let sling_api = new Sling();
     return await db.withSchema("public").from("archive_entries").select("*");
   }
 
-  async function deleteArchiveEntry(idToDelete: number) {
+  async function deleteEntry(idToDelete: number) {
+    await db.withSchema("public").from("entries").where("archive_entry_id", idToDelete).del();
+    await db.withSchema("public").from("tip_distribution_records").where("archive_entry_id", idToDelete).del();
     await db.withSchema("public").from("archive_entries").where("id", idToDelete).del();
   }
 

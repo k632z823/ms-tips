@@ -1155,6 +1155,7 @@ const ArchiveTable: Component = () => {
 							class='w-full p-1.5 text-center text-red font-medium border border-border-red rounded-md bg-select-red hover:bg-border-red hover:text-white'
 							onclick={async function () {
 								await deleteEntry(entryRows[selectedEntry()].entry.id);
+								console.log(entryRows[selectedEntry()].entry.id)
 								setRendered(false);
 								entryRows = await getEntries();
 								setSortedEntryRows((entry) => [...entryRows]);
