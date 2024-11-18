@@ -17,6 +17,7 @@ interface Entry {
 	final: number;
 	tipRate: number;
 	tags: string;
+	entry_no: number;
 }
 
 interface EntryRow {
@@ -49,6 +50,7 @@ async function getEntries() {
 				tipRate: item.tipRate,
 				tags: tags,
 				drawer: item.drawer,
+				entry_no: item.entry_no
 			},
 			number: responseData.indexOf(item),
 			momentDate: moment(item.date),
@@ -80,17 +82,25 @@ async function getExportEntries(fromDate: string, toDate: string) {
 
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
-	if (sortByDesc) {
-		copyEntryRowsToSort.sort(
-			(a, b) => b.momentDate.valueOf() - a.momentDate.valueOf(),
-		);
-	} else {
-		copyEntryRowsToSort.sort(
-			(a, b) => a.momentDate.valueOf() - b.momentDate.valueOf(),
-		);
-	}
+	
+	copyEntryRowsToSort.sort((a, b) => {
+	  // sort by the date of the entry first
+	  const dateComparison = sortByDesc 
+		? b.momentDate.valueOf() - a.momentDate.valueOf()
+		: a.momentDate.valueOf() - b.momentDate.valueOf();
+	  
+	  // if entries have the same date, order by entry_no
+	  if (dateComparison === 0) {
+		return sortByDesc 
+		  ? b.entry.entry_no - a.entry.entry_no // Descending: 2, 1, 0
+		  : a.entry.entry_no - b.entry.entry_no; // Ascending: 0, 1, 2
+	  }
+	  
+	  return dateComparison;
+	});
+  
 	setSortedEntryRows((rows) => (rows = [...copyEntryRowsToSort]));
-};
+  };
 
 let entryRows: EntryRow[] = []; //await getEntries();
 
