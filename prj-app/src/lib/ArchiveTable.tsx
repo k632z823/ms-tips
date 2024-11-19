@@ -8,6 +8,7 @@ import ExportModal from "./Utilities/ExportModal";
 import { useNavigate } from "@solidjs/router";
 import { fromJSON } from "postcss";
 import { mkConfig, generateCsv} from "export-to-csv";
+import { EmployeeTipDistribution as EmployeeTipDistribution, getTipDistributions as getTipDistributions} from "./GetTipEntries"
 
 interface Entry {
 	id: number;
@@ -75,10 +76,12 @@ async function getExportEntries(fromDate: string, toDate: string) {
 			fromDate: fromDate,
 			toDate: toDate,
 		}
-	})
+	});
 	let entries: any = response.data.entries;
 	return entries;
 }
+
+
 
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
@@ -194,7 +197,7 @@ const ArchiveTable: Component = () => {
 				viewShown: false,
 			}));
 		}
-
+		getTipDistributions(145)
 		setRendered(true);
 	});
 
@@ -209,6 +212,7 @@ const ArchiveTable: Component = () => {
 	const [toDate, setToDate] = createSignal<string>(moment().format("L"));
 	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
 	const [pageButtonsShown, setPageButtonsShown] = createSignal<boolean>(true);
+	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
 
 	const navigate = useNavigate();
 
@@ -327,7 +331,7 @@ const ArchiveTable: Component = () => {
 											<td class='text-center font-normal'>
 												<button
 													class='m-1 rounded-md items-center hover:bg-border-gray'
-													onClick={() => {
+													onClick={ async function() {
 														if (selectedEntry() != entryRow.number) {
 															setEntry(selectedEntry(), (row) => ({
 																...row,
@@ -335,6 +339,8 @@ const ArchiveTable: Component = () => {
 															}));
 															setSelectedEntry(entryRow.number);
 															setConfirmDeleteShown(false);
+															// get the tip distributions based on the selected row's ID in the database
+															setTipDistributions(await getTipDistributions(entryRow.entry.id));
 														}
 
 														setEntry(selectedEntry(), (row) => ({
@@ -935,206 +941,66 @@ const ArchiveTable: Component = () => {
 										</svg> */}
 									</div>
 									<div class="h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm">
-										<div class="border-b border-border-gray w-full">
-											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray w-full">
-												<div class="font-medium text-table-header-gray">
-													1
-												</div>
-												<div class="flex flex-col">
-													<div class="flex justify-between items-center">
-														<span class="font-normal">Spongebob Squarepants</span>
+										<For each={tipDistributions}>
+											{(distribution, index) => (
+												<div class="border-b border-border-gray w-full">
+													<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray w-full">
+														<div class="font-medium text-table-header-gray">
+															{index() + 1}
+														</div>
+														<div class="flex flex-col">
+															<div class="flex justify-between items-center">
+																<span class="font-normal">{distribution.name}</span>
+															</div>
+														</div>  
 													</div>
-												</div>
-											</div>
-											<table class="table-fixed w-full text-sm">
-												<tbody>
-													<tr class="border-b border-border-gray font-medium text-table-header-gray">
-														<td class="p-3 w-1/4">
-															Title
-														</td>
-														<td class="p-3">
-															Hours
-														</td>
-														<td class="p-3">
-															Initial
-														</td>
-														<td class="p-3">
-															Tips
-														</td>
-														<td class="p-3">
-															Total
-														</td>
-													</tr>
-													<tr>
-														<td class="p-3">
-															Cook
-														</td>
-														<td class="p-3">
-															8
-														</td>
-														<td class="p-3">
-															$30
-														</td>
-														<td class="p-3">
-															$25
-														</td>
-														<td class="p-3">
-															$55
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="border-b border-border-gray w-full">
-											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
-												<div class="font-medium text-table-header-gray">
-													2
-												</div>
-												<div class="flex flex-col">
-													<div class="flex justify-between items-center">
-														<span class="font-normal">Patrick Star</span>
-													</div>
-												</div>
-											</div>
-											<table class="table-fixed w-full text-sm">
-												<tbody>
-													<tr class="border-b border-border-gray font-medium text-table-header-gray">
-														<td class="p-3 w-1/4">
-															Title
-														</td>
-														<td class="p-3">
-															Hours
-														</td>
-														<td class="p-3">
-															Initial
-														</td>
-														<td class="p-3">
-															Tips
-														</td>
-														<td class="p-3">
-															Total
-														</td>
-													</tr>
-													<tr>
-														<td class="p-3">
-															Dishwasher
-														</td>
-														<td class="p-3">
-															8
-														</td>
-														<td class="p-3">
-															$30
-														</td>
-														<td class="p-3">
-															$25
-														</td>
-														<td class="p-3">
-															$55
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="border-b border-border-gray w-full">
-											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
-												<div class="font-medium text-table-header-gray">
-													3
-												</div>
-												<div class="flex flex-col">
-													<div class="flex justify-between items-center">
-														<span class="font-normal">Squidward Tentacles</span>
-													</div>
-												</div>
-											</div>
-											<table class="table-fixed w-full text-sm">
-												<tbody>
-													<tr class="border-b border-border-gray font-medium text-table-header-gray">
-														<td class="p-3 w-1/4">
-															Title
-														</td>
-														<td class="p-3">
-															Hours
-														</td>
-														<td class="p-3">
-															Initial
-														</td>
-														<td class="p-3">
-															Tips
-														</td>
-														<td class="p-3">
-															Total
-														</td>
-													</tr>
-													<tr>
-														<td class="p-3">
-															Server
-														</td>
-														<td class="p-3">
-															8
-														</td>
-														<td class="p-3">
-															$30
-														</td>
-														<td class="p-3">
-															$25
-														</td>
-														<td class="p-3">
-															$55
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="border-b border-border-gray w-full">
-											<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray">
-												<div class="font-medium text-table-header-gray">
-													4
-												</div>
-												<div class="flex flex-col">
-													<div class="flex justify-between items-center">
-														<span class="font-normal">Eugene Harold Krabs</span>
-													</div>
-												</div>
-											</div>
-											<table class="table-fixed w-full text-sm">
-												<tbody>
-													<tr class="border-b border-border-gray font-medium text-table-header-gray">
-														<td class="p-3 w-1/4">
-															Title
-														</td>
-														<td class="p-3">
-															Hours
-														</td>
-														<td class="p-3">
-															Initial
-														</td>
-														<td class="p-3">
-															Tips
-														</td>
-														<td class="p-3">
-															Total
-														</td>
-													</tr>
-													<tr>
-														<td class="p-3">
-															Baker
-														</td>
-														<td class="p-3">
-															8
-														</td>
-														<td class="p-3">
-															$30
-														</td>
-														<td class="p-3">
-															$25
-														</td>
-														<td class="p-3">
-															$55
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
+													<table class="table-fixed w-full text-sm">
+														<tbody>
+															<tr class="border-b border-border-gray font-medium text-table-header-gray">
+																<td class="p-3 w-1/4">
+																	Title
+																</td>
+																<td class="p-3">
+																	Hours
+																</td>
+																<td class="p-3">
+																	Initial
+																</td>
+																<td class="p-3">
+																	Tips
+																</td>
+																<td class="p-3">
+																	Total
+																</td>
+																<td class="p-3">
+																	Offset
+																</td>
+															</tr>
+															<tr>
+																<td class="p-3">
+																	{distribution.title}
+																</td>
+																<td class="p-3">
+																	{distribution.hours}
+																</td>
+																<td class="p-3">
+																	${distribution.initial}
+																</td>
+																<td class="p-3">
+																	${distribution.tips_received}
+																</td>
+																<td class="p-3">
+																	${distribution.total}
+																</td>
+																<td class="p-3">
+																	${distribution.offset}
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>			
+											)}											
+										</For>					
 									</div>
 								</div>
 							</div>
