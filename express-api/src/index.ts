@@ -66,11 +66,52 @@ let sling_api = new Sling();
 
   });
 
-  app.post("/add-entry", async function(request, response) {
+  app.post("/update-entry", async function(request, response) {
     let entry = request.body.entry;
     await addEntry(entry, request.body.entry_no);
 
     response.json({success: true})
+  })
+
+  app.get("/new-entry", async function (request, response) {
+    const starter: Entry[] = [
+      {
+        id: 0,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+      {
+        id: 1,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+      {
+        id: 2,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+      {
+        id: 3,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+      {
+        id: 4,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+      {
+        id: 5,
+        bill_amount: 0,
+        change_amount: 0,
+      },
+    ];
+
+    response.json({success: true, entry: {
+      tips: [...starter],
+      drawer: [...starter],
+      final: [...starter]
+    }})
   })
 
   //gets all rows from archive_entries db table
@@ -383,7 +424,7 @@ let sling_api = new Sling();
 
   async function addEntry(entry: any, entry_no: number) {
     let archiveEntry = await db.withSchema('public').from('archive_entries').select('*').where('date', entry.entry_date).andWhere('entry_no', entry_no);
-    let existingEntry = await db.withSchema("public").from('entries').select("*").where('entry_date', entry.entry_date).andWhere('type', entry.type);
+    let existingEntry = await db.withSchema("public").from('entries').select("*").where('entry_date', entry.entry_date).andWhere('type', entry.type).andWhere('archive_entry_id', archiveEntry[0].id);
 
     if (existingEntry.length != 0) {
       await db('public.entries').update({
