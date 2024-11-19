@@ -652,7 +652,7 @@ const ArchiveTable: Component = () => {
 												class={`mr-1 p-2 rounded-md ${
 													selectedEntry() == 0 ? "" : "hover:bg-border-gray"
 												}`}
-												onclick={() => {
+												onclick={async function() {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
 														viewShown: false,
@@ -662,6 +662,7 @@ const ArchiveTable: Component = () => {
 														...entry,
 														viewShown: true,
 													}));
+													setTipDistributions(await getTipDistributions(entryRows[selectedEntry()].entry.id))
 												}}
 												disabled={selectedEntry() == 0}
 											>
@@ -693,7 +694,7 @@ const ArchiveTable: Component = () => {
 														? ""
 														: "hover:bg-border-gray"
 												}`}
-												onclick={() => {
+												onclick={async function() {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
 														viewShown: false,
@@ -703,6 +704,7 @@ const ArchiveTable: Component = () => {
 														...entry,
 														viewShown: true,
 													}));
+													setTipDistributions(await getTipDistributions(entryRows[selectedEntry()].entry.id))
 												}}
 												disabled={selectedEntry() == sortedEntryRows.length - 1}
 											>
