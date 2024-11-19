@@ -213,9 +213,9 @@ let sling_api = new Sling();
   });
 
   // get the tip distrubtions for a shift
-  app.get("/get-employee-tip-distribution/:archiveEntryId", async function(request, response) {
-    const archiveEntryId = request.params.archiveEntryId;
-
+  app.get("/get-employee-tip-distribution", async function(request, response) {
+    let archiveEntryId = request.query.archiveEntryId;
+    // @ts-ignore
     let data = await getEmployeeTipDistribution(parseInt(archiveEntryId));
     let tipDistributions: EmployeeTipDistribution[] = [];
 
