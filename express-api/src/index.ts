@@ -212,11 +212,13 @@ let sling_api = new Sling();
     response.json({success: true, entries: formattedEntries})
   });
 
+  // get the tip distrubtions for a shift
   app.get("/get-employee-tip-distribution/:archiveEntryId", async function(request, response) {
     const archiveEntryId = request.params.archiveEntryId;
+
     let data = await getEmployeeTipDistribution(parseInt(archiveEntryId));
-    console.log(data);
     let tipDistributions: EmployeeTipDistribution[] = [];
+
     for (let item of data) {
       tipDistributions.push({
         hours: item.hours,
