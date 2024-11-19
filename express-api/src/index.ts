@@ -8,7 +8,7 @@ import cors from "cors";
 import axios from "axios";
 import moment, { now } from "moment";
 
-import { Archive_Entry, ShiftData, Entry_type, Entry, Archive_Entry_TagsNotArray, Archive_Entry_TagsNotArray_DateString } from "./interfaces" 
+import { Archive_Entry, ShiftData, Entry_type, Entry, Archive_Entry_TagsNotArray, Archive_Entry_TagsNotArray_DateString, EmployeeTipDistribution } from "./interfaces" 
 import {Sling} from "./sling";
 
 const db = Knex({
@@ -212,6 +212,27 @@ let sling_api = new Sling();
     response.json({success: true, entries: formattedEntries})
   });
 
+  // get the tip distrubtions for a shift
+  app.get("/get-employee-tip-distribution", async function(request, response) {
+    let archiveEntryId = request.query.archiveEntryId;
+    // @ts-ignore
+    let data = await getEmployeeTipDistribution(parseInt(archiveEntryId));
+    let tipDistributions: EmployeeTipDistribution[] = [];
+
+    for (let item of data) {
+      tipDistributions.push({
+        hours: item.hours,
+        initial: item.initial,
+        tips_received: item.tips_received,
+        total: item.total,
+        offset: item.offset,
+        name: item.user_name,
+        title: item.group_name
+      })
+    }
+    response.json({success: true, tipDistributions: tipDistributions});
+  })
+
   app.get("/get-export-entries", async function(request, response) {
     console.log("Request Recieved: GET export entries from archive_entries");
     let fromDate = request.query.fromDate;
@@ -287,8 +308,10 @@ let sling_api = new Sling();
 
     let shiftSummary: ShiftData[] =  await sling_api.getTimeSheet(`${date}T00:00:00Z/${date}T23:00:00Z`); 
 
-    response.json({succes: true, shift_data: shiftSummary})
+    response.json({success: true, shift_data: shiftSummary})
   })
+
+
 
   app.listen(process.env.HOST_PORT);
 
@@ -481,4 +504,22 @@ let sling_api = new Sling();
 
   async function getSixRecentEntries() {
     return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").limit(6);
+  }
+  
+  async function getEmployeeTipDistribution(archiveEntryId: number) {
+    return await db
+      .withSchema("public")
+      .from("tip_distribution_records")
+      .select(
+        "tip_distribution_records.hours",
+        "tip_distribution_records.initial",
+        "tip_distribution_records.tips_received",
+        "tip_distribution_records.total",
+        "tip_distribution_records.offset",
+        db.raw("CONCAT(users.name, ' ', users.lastname) AS user_name"),
+        "groups.name AS group_name"
+      )
+      .join("users", "tip_distribution_records.user_id", "=", "users.id")
+      .join("groups", "tip_distribution_records.group_id", "=", "groups.id")
+      .where("tip_distribution_records.archive_entry_id", archiveEntryId);
   }
