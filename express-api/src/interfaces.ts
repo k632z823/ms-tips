@@ -103,6 +103,6 @@ export interface EmployeeTipDistribution {
     tips_received: number;
     total: number;
     offset: number;
-    user_name: string;  // Concatenated first and last name
-    group_name: string; // Name of the group
+    name: string;
+    title: string; 
   }
