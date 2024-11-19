@@ -111,7 +111,7 @@ const [total, setTotal] = createSignal<number>(0); // total of all inputed chang
 //const [showConfig, setShowConfig] = createSignal<boolean>(false);
 const [tipTotal, setTipTotal] = createSignal<number>(0); //creates a store for tip total to pass on to other components (like the tip config for distribution calculations)
 const [entryType, setEntryType] = createSignal<entryTypes>("drawer"); //determine what type of entry this is (ie. drawer, tips, or final)
-const [viewEntries, setViewEntries] = createSignal<boolean>(true);
+const [viewEntries, setViewEntries] = createSignal<boolean>(false);
 const [viewConfig, setViewConfig] = createSignal<boolean>(false); //toggles the view of the tip config table
 const [tipsSubmitted, setTipsSubmitted] = createSignal<boolean>(false);
 const [rendered, setRendered] = createSignal<boolean>(false);
@@ -184,12 +184,12 @@ async function requestEntryData(date: string) {
 
 	//creates a store to hold all entries for this day
 	setAllEntries(entries);
-	console.log(allEntries);
+	//console.log(allEntries);
 
 	//selects the first entry to display by default
-	setEntry("drawer", entries[0].drawer);
-	setEntry("tips", entries[0].tips);
-	setEntry("final", entries[0].final);
+	setEntry("drawer", entries[entryNo()].drawer);
+	setEntry("tips", entries[entryNo()].tips);
+	setEntry("final", entries[entryNo()].final);
 }
 
 async function saveEntry(entryDate: string) {
@@ -256,10 +256,16 @@ async function createNewEntry() {
 	//console.log(allEntries);
 }
 
-const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
+const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
+	props: any,
+) => {
 	const navigate = useNavigate();
-	let { entryDate } = props;
+	let { entryDate, entryNoProp } = props;
 	let entries;
+
+	console.log(entryNoProp);
+
+	setEntryNo(parseInt(entryNoProp));
 
 	const [dropDown, setDropDown] = createSignal<boolean>(false);
 
@@ -282,7 +288,7 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 		setAllTotals("final", total());
 		calcTotals(entry[entryType()]);
 		setAllTotals(entryType(), total());
-		//setRendered(true);
+		setViewEntries(true);
 	});
 
 	createEffect(() => {

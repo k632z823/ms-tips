@@ -96,7 +96,7 @@ const OverviewEntries: Component = () => {
 					<button
 						class='mb-3 flex justify-center'
 						onClick={() => {
-							navigate(`/Entries/${moment().format("MM-DD-YYYY")}`, {
+							navigate(`/Entries/${moment().format("MM-DD-YYYY")}/0`, {
 								replace: true,
 							});
 						}}
@@ -143,7 +143,9 @@ const OverviewEntries: Component = () => {
 						class='py-1.5 px-3 inline-flex justify-between items-center rounded-md hover:bg-border-gray font-normal'
 						onClick={() => {
 							navigate(
-								"/Entries/" + sixRecentEntries[0].date.format("MM-DD-YYYY"),
+								"/Entries/" +
+									sixRecentEntries[0].date.format("MM-DD-YYYY") +
+									"/0",
 								{
 									replace: true,
 								},

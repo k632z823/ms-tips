@@ -82,7 +82,7 @@ render(
 				component={() => <ProtectedRoute component={Overview} />}
 			/>
 			<Route
-				path='/Entries/:date'
+				path='/Entries/:date/:entry_no'
 				component={() => <ProtectedRoute component={Entries} />}
 			/>
 			<Route
