@@ -118,6 +118,7 @@ const [rendered, setRendered] = createSignal<boolean>(false);
 const [events, setEvents] = createStore<Event[]>([]);
 const [inputEvent, setInputEvent] = createSignal<string>("");
 const [eventId, setEventId] = createSignal<number>(0);
+const [entryNo, setEntryNo] = createSignal<number>(0); //keeps track on what entry_no is currently selected
 
 const [allTotals, setAllTotals] = createStore({
 	drawer: 0,
@@ -152,6 +153,8 @@ const [entry, setEntry] = createStore({
 	],
 });
 
+const [allEntries, setAllEntries] = createStore<EntryProps[]>([]);
+
 function calcTotals(entry: Entry[]) {
 	setBillTotal(() => {
 		let sum = 0;
@@ -169,6 +172,8 @@ function calcTotals(entry: Entry[]) {
 }
 
 async function requestEntryData(date: string) {
+	//pulls all entries from the entries table in the db entries
+	//will hold all inputed bill and change amounts for all input types ie (drawer, tips, final)
 	let entries = await axios
 		.get("http://localhost:3001/get-entries", {
 			params: { date: date },
@@ -177,15 +182,35 @@ async function requestEntryData(date: string) {
 			return await response.data.entries;
 		});
 
+	//creates a store to hold all entries for this day
+	setAllEntries(entries);
+	console.log(allEntries);
+
+	//selects the first entry to display by default
 	setEntry("drawer", entries[0].drawer);
 	setEntry("tips", entries[0].tips);
 	setEntry("final", entries[0].final);
 }
 
-async function addEntry(entryDate: string) {
+async function saveEntry(entryDate: string) {
 	let date = entryDate == "default" ? moment().format("L") : entryDate;
 
-	await axios.post("http://localhost:3001/add-entry", {
+	await axios.post("http://localhost:3001/add-archive-entry", {
+		date: entryDate,
+		entry_no: entryNo(),
+		entry: {
+			date: entryDate,
+			tips: allTotals.tips,
+			final: allTotals.final,
+			tip_rate: 0,
+			tags: events,
+			drawer: allTotals.drawer,
+			entry_no: entryNo(),
+		},
+	});
+
+	await axios.post("http://localhost:3001/update-entry", {
+		entry_no: entryNo(),
 		entry: {
 			entry_date: date,
 			type: entryType(),
@@ -204,16 +229,31 @@ async function addEntry(entryDate: string) {
 		},
 	});
 
-	await axios.post("http://localhost:3001/add-archive-entry", {
-		date: entryDate,
-		entry: {
-			date: entryDate,
-			tips: allTotals.tips,
-			final: allTotals.final,
-			tags: events,
-			drawer: allTotals.drawer,
-		},
-	});
+	// let test = {
+	// 	entry_no: entryNo(),
+	// 	entry: {
+	// 		date: entryDate,
+	// 		tips: allTotals.tips,
+	// 		final: allTotals.final,
+	// 		tip_rate: 0,
+	// 		tags: events,
+	// 		drawer: allTotals.drawer,
+	// 		entry_no: entryNo(),
+	// 	},
+	// };
+
+	// console.log(test);
+}
+
+async function createNewEntry() {
+	let newEntry: EntryProps = await axios
+		.get("http://localhost:3001/new-entry")
+		.then(async function (response) {
+			return await response.data.entry;
+		});
+
+	setAllEntries((entries) => [...entries, newEntry]);
+	//console.log(allEntries);
 }
 
 const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
@@ -379,6 +419,69 @@ const EntryDisplay: Component<{ entryDate: string }> = (props: any) => {
 					</div>
 				</div>
 
+				<div
+					class='px-5 jusitfy-center '
+					id='entry-select-input'
+				>
+					<div>
+						<label for='entry-select'>Select Entry </label>
+						<select
+							class='text-black'
+							name='entry-select'
+							id='entry-select'
+							value={entryNo()}
+							onChange={async (event) => {
+								let currentValue = event.target.value;
+
+								if (currentValue === "add-new-entry") {
+									await createNewEntry();
+									let index = allEntries.length - 1;
+									setEntry("drawer", allEntries[index].drawer);
+									setEntry("tips", allEntries[index].tips);
+									setEntry("final", allEntries[index].final);
+									calcTotals(entry[entryType()]);
+									setAllTotals(entryType(), total());
+									setEntryNo(index);
+								} else {
+									let index = parseInt(currentValue);
+									setEntry("drawer", allEntries[index].drawer);
+									setEntry("tips", allEntries[index].tips);
+									setEntry("final", allEntries[index].final);
+									calcTotals(entry[entryType()]);
+									setAllTotals(entryType(), total());
+									setEntryNo(index);
+								}
+							}}
+						>
+							<For each={allEntries}>
+								{(entry, index) => (
+									<option value={index()}>Entry {index() + 1}</option>
+								)}
+							</For>
+							<option value='add-new-entry'>...Add Entry </option>
+						</select>
+					</div>
+					{/* This is the div that will show the tags*/}
+					<Show when={events.length > 0}>
+						<div class='flex'>
+							<For each={events}>
+								{(event) => (
+									<div
+										class='border border-green'
+										onclick={() => {
+											setEvents(events.filter((item) => item.id !== event.id));
+
+											//console.log([...allEvents.splice(index, 1)]);
+										}}
+									>
+										{event.event} x
+									</div>
+								)}
+							</For>
+						</div>
+					</Show>
+				</div>
+
 				{/* TODO: this is the event input for the entries
 i basically made it so whenever he adds an event it appends to an array, and those values appear beneath the input box as tags
 he can click on the tags and they will be deleted
@@ -436,6 +539,7 @@ but format it, style it, whatever u feel looks best
 						</div>
 					</Show>
 				</div>
+
 				<div class='flex justify-center px-5 pt-4 pb-5'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<div id='entry-select'>
@@ -733,10 +837,10 @@ but format it, style it, whatever u feel looks best
 												setTipTotal(allTotals.tips);
 												setTipsSubmitted(true);
 											}
-											await addEntry(entryDate);
+											await saveEntry(entryDate);
 										}}
 									>
-										Submit{" "}
+										Save{" "}
 										{entryType().charAt(0).toUpperCase() + entryType().slice(1)}
 									</button>
 									<button
