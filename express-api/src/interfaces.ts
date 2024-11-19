@@ -97,3 +97,12 @@ export interface Entry {
     change_amount: number;
 }
 
+export interface EmployeeTipDistribution {
+    hours: number;
+    initial: number;
+    tips_received: number;
+    total: number;
+    offset: number;
+    user_name: string;  // Concatenated first and last name
+    group_name: string; // Name of the group
+  }
