@@ -9,7 +9,10 @@ const Entries: Component = () => {
 
 	return (
 		<>
-			<EntryDisplay entryDate={params.date}></EntryDisplay>
+			<EntryDisplay
+				entryDate={params.date}
+				entryNoProp={params.entry_no}
+			></EntryDisplay>
 		</>
 	);
 };
