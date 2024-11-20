@@ -306,7 +306,7 @@ let sling_api = new Sling();
     //@ts-ignore
     let date = request.query.date === 'default' ? moment().format("YYYY-MM-DD") : moment(request.query.date).format("YYYY-MM-DD");
 
-    let shiftSummary: ShiftData[] =  await sling_api.getTimeSheet(`${date}T00:00:00Z/${date}T23:00:00Z`); 
+    let shiftSummary: ShiftData[][] =  await sling_api.getTimeSheet(`${date}T00:00:00Z/${date}T23:00:00Z`); 
 
     response.json({success: true, shift_data: shiftSummary})
   })

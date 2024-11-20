@@ -150,11 +150,11 @@ export class Sling {
             return response.data;
         });
 
-        let shiftData: ShiftData[] = [];
+        let shiftData: ShiftData[][] = [];
 
         for (let entry of timeSheet) {
             //skips entries that don't have a p
-            if (entry.timesheetProjections.length == 0 || entry.timesheetProjections.length > 1) {
+            if (entry.timesheetProjections.length == 0) {
                 continue;
             } 
 
@@ -187,26 +187,35 @@ export class Sling {
 
             }
 
-            let hours = entry.timesheetProjections[0].paidMinutes / 60
+            for (let projection of entry.timesheetProjections) {
+                let index = entry.timesheetProjections.indexOf(projection);
+
+                if (!shiftData[index]) {
+                    shiftData[index] = []; // Initialize the sub-array
+                }
+                
+                let hours = projection.paidMinutes / 60;
+
+                shiftData[index].push({
+                    name: this.users[user_id].name,
+                    hours_worked: parseFloat((Math.round(hours * 4) / 4).toFixed(2)),
+                    position: this.positions[position_id].name,
+                    position_id: position_id,
+                    initial_tip: 0,
+                    tips: 0,
+                    total: 0,
+                    offset: 0,
+                    user_id: user_id,
+                })
+            }
+
+            
 
             // console.log(hours);
             // console.log(Math.round(hours * 4))
             // console.log(Math.round(hours * 4) / 4);
             // console.log((Math.round(hours * 4) / 4).toFixed(2));
             // console.log(parseFloat((Math.round(hours * 4) / 4).toFixed(2)));
-
-            shiftData.push({
-                name: this.users[user_id].name,
-                hours_worked: parseFloat((Math.round(hours * 4) / 4).toFixed(2)),
-                position: this.positions[position_id].name,
-                position_id: position_id,
-                initial_tip: 0,
-                tips: 0,
-                total: 0,
-                offset: 0,
-                user_id: user_id,
-            })
-
         }
 
         return shiftData

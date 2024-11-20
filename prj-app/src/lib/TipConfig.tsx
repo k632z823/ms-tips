@@ -18,6 +18,7 @@ import axios from "axios";
 export interface TipConfigProps {
 	tip_total: number;
 	date: string;
+	entry_no: number;
 }
 
 const [initialTipTotal, setInitialTipTotal] = createSignal<number>(0);
@@ -117,7 +118,10 @@ async function addTipDistribution(date: string) {
 
 const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 	onMount(async () => {
-		editEmployees(await pullSlingEmployeeData(props.date));
+		let employeesShiftData: ShiftData[][] = await pullSlingEmployeeData(
+			props.date,
+		);
+		editEmployees(employeesShiftData[props.entry_no]);
 		if (props.tip_total != 0 && employees.length > 0) {
 			calculateTipRate(props.tip_total, employees);
 			calculateTipDistribution(employees);
@@ -409,7 +413,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 					</table>
 				</div>
 			</div>
-{/*TODO: This is the reset and submit button for tip rate have */}
+			{/*TODO: This is the reset and submit button for tip rate have */}
 			<button
 				class='text-black font-medium rounded-md bg-green hover:bg-white/90'
 				onClick={async () => {

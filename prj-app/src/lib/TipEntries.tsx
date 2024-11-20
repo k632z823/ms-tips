@@ -435,7 +435,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 							class='text-black'
 							name='entry-select'
 							id='entry-select'
-							value={entryNo()}
+							value={entryNo() >= allEntries.length ? 0 : entryNo()} //if the entryNo exceeds what's available in all entries default it to 0 as it's just a issues with the url param
 							onChange={async (event) => {
 								let currentValue = event.target.value;
 
@@ -904,6 +904,7 @@ but format it, style it, whatever u feel looks best
 				<TipConfig
 					tip_total={tipTotal()}
 					date={entryDate}
+					entry_no={entryNo()}
 				></TipConfig>
 			</Show>
 		</>
