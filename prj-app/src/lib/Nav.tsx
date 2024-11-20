@@ -6,6 +6,8 @@ import archiveIcon from "../logos/archive-icon.svg";
 import settingsIcon from "../logos/settings-icon.svg";
 import logoutIcon from "../logos/logout-icon.svg";
 
+import moment from "moment";
+
 import Navbar from "./Navbar";
 
 const Nav: Component = () => {
@@ -22,7 +24,7 @@ const Nav: Component = () => {
 					group: "dropdown",
 					label: "Entries",
 					icon: entriesIcon,
-					path: "/Entries/default",
+					path: `/Entries/${moment().format("MM-DD-YYYY")}/0`,
 				},
 				{
 					group: "dropdown",
