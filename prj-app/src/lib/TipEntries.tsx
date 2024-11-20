@@ -445,16 +445,24 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									setEntry("drawer", allEntries[index].drawer);
 									setEntry("tips", allEntries[index].tips);
 									setEntry("final", allEntries[index].final);
-									calcTotals(entry[entryType()]);
-									setAllTotals(entryType(), total());
+									calcTotals(entry["drawer"]);
+									setAllTotals("drawer", total());
+									calcTotals(entry["tips"]);
+									setAllTotals("tips", total());
+									calcTotals(entry["final"]);
+									setAllTotals("final", total());
 									setEntryNo(index);
 								} else {
 									let index = parseInt(currentValue);
 									setEntry("drawer", allEntries[index].drawer);
 									setEntry("tips", allEntries[index].tips);
 									setEntry("final", allEntries[index].final);
-									calcTotals(entry[entryType()]);
-									setAllTotals(entryType(), total());
+									calcTotals(entry["drawer"]);
+									setAllTotals("drawer", total());
+									calcTotals(entry["tips"]);
+									setAllTotals("tips", total());
+									calcTotals(entry["final"]);
+									setAllTotals("final", total());
 									setEntryNo(index);
 								}
 							}}
