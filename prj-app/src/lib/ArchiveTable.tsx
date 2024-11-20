@@ -7,8 +7,11 @@ import Modal from "./Utilities/Modal";
 import ExportModal from "./Utilities/ExportModal";
 import { useNavigate } from "@solidjs/router";
 import { fromJSON } from "postcss";
-import { mkConfig, generateCsv} from "export-to-csv";
-import { EmployeeTipDistribution as EmployeeTipDistribution, getTipDistributions as getTipDistributions} from "./GetTipEntries"
+import { mkConfig, generateCsv } from "export-to-csv";
+import {
+	EmployeeTipDistribution as EmployeeTipDistribution,
+	getTipDistributions as getTipDistributions,
+} from "./GetTipEntries";
 
 interface Entry {
 	id: number;
@@ -75,7 +78,7 @@ async function getExportEntries(fromDate: string, toDate: string) {
 		params: {
 			fromDate: fromDate,
 			toDate: toDate,
-		}
+		},
 	});
 	let entries: any = response.data.entries;
 	return entries;
@@ -193,7 +196,7 @@ const ArchiveTable: Component = () => {
 				viewShown: false,
 			}));
 		}
-		getTipDistributions(145)
+		getTipDistributions(145);
 		setRendered(true);
 	});
 
@@ -209,7 +212,9 @@ const ArchiveTable: Component = () => {
 	const [toDate, setToDate] = createSignal<string>(moment().format("L"));
 	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
 	const [pageButtonsShown, setPageButtonsShown] = createSignal<boolean>(true);
-	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
+	const [tipDistributions, setTipDistributions] = createStore<
+		EmployeeTipDistribution[]
+	>([]);
 
 	const navigate = useNavigate();
 
@@ -325,7 +330,7 @@ const ArchiveTable: Component = () => {
 											<td class='text-center font-normal'>
 												<button
 													class='m-1 rounded-md items-center hover:bg-border-gray'
-													onClick={ async function() {
+													onClick={async function () {
 														if (selectedEntry() != entryRow.number) {
 															setEntry(selectedEntry(), (row) => ({
 																...row,
@@ -334,7 +339,9 @@ const ArchiveTable: Component = () => {
 															setSelectedEntry(entryRow.number);
 															setConfirmDeleteShown(false);
 															// get the tip distributions based on the selected row's ID in the database
-															setTipDistributions(await getTipDistributions(entryRow.entry.id));
+															setTipDistributions(
+																await getTipDistributions(entryRow.entry.id),
+															);
 														}
 
 														setEntry(selectedEntry(), (row) => ({
@@ -399,8 +406,9 @@ const ArchiveTable: Component = () => {
 																							].momentDate.format(
 																								"MM-DD-YYYY",
 																							) +
-																							"/0" +
-																							entryRows[selectedEntry()].entry.entry_no,
+																							"/" +
+																							entryRows[selectedEntry()].entry
+																								.entry_no,
 																						{
 																							replace: true,
 																						},
@@ -652,7 +660,7 @@ const ArchiveTable: Component = () => {
 												class={`mr-1 p-2 rounded-md ${
 													selectedEntry() == 0 ? "" : "hover:bg-border-gray"
 												}`}
-												onclick={async function() {
+												onclick={async function () {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
 														viewShown: false,
@@ -662,7 +670,11 @@ const ArchiveTable: Component = () => {
 														...entry,
 														viewShown: true,
 													}));
-													setTipDistributions(await getTipDistributions(entryRows[selectedEntry()].entry.id))
+													setTipDistributions(
+														await getTipDistributions(
+															entryRows[selectedEntry()].entry.id,
+														),
+													);
 												}}
 												disabled={selectedEntry() == 0}
 											>
@@ -694,7 +706,7 @@ const ArchiveTable: Component = () => {
 														? ""
 														: "hover:bg-border-gray"
 												}`}
-												onclick={async function() {
+												onclick={async function () {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
 														viewShown: false,
@@ -704,7 +716,11 @@ const ArchiveTable: Component = () => {
 														...entry,
 														viewShown: true,
 													}));
-													setTipDistributions(await getTipDistributions(entryRows[selectedEntry()].entry.id))
+													setTipDistributions(
+														await getTipDistributions(
+															entryRows[selectedEntry()].entry.id,
+														),
+													);
 												}}
 												disabled={selectedEntry() == sortedEntryRows.length - 1}
 											>
@@ -951,67 +967,47 @@ const ArchiveTable: Component = () => {
 											<path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"></path>
 										</svg> */}
 									</div>
-									<div class="h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm">
+									<div class='h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm'>
 										<For each={tipDistributions}>
 											{(distribution, index) => (
-												<div class="border-b border-border-gray w-full">
-													<div class="p-3 grid grid-cols-[30px_auto] border-b border-border-gray w-full">
-														<div class="font-medium text-table-header-gray">
+												<div class='border-b border-border-gray w-full'>
+													<div class='p-3 grid grid-cols-[30px_auto] border-b border-border-gray w-full'>
+														<div class='font-medium text-table-header-gray'>
 															{index() + 1}
 														</div>
-														<div class="flex flex-col">
-															<div class="flex justify-between items-center">
-																<span class="font-normal">{distribution.name}</span>
+														<div class='flex flex-col'>
+															<div class='flex justify-between items-center'>
+																<span class='font-normal'>
+																	{distribution.name}
+																</span>
 															</div>
-														</div>  
+														</div>
 													</div>
-													<table class="table-fixed w-full text-sm">
+													<table class='table-fixed w-full text-sm'>
 														<tbody>
-															<tr class="border-b border-border-gray font-medium text-table-header-gray">
-																<td class="p-3 w-1/4">
-																	Title
-																</td>
-																<td class="p-3">
-																	Hours
-																</td>
-																<td class="p-3">
-																	Initial
-																</td>
-																<td class="p-3">
-																	Tips
-																</td>
-																<td class="p-3">
-																	Total
-																</td>
-																<td class="p-3">
-																	Offset
-																</td>
+															<tr class='border-b border-border-gray font-medium text-table-header-gray'>
+																<td class='p-3 w-1/4'>Title</td>
+																<td class='p-3'>Hours</td>
+																<td class='p-3'>Initial</td>
+																<td class='p-3'>Tips</td>
+																<td class='p-3'>Total</td>
+																<td class='p-3'>Offset</td>
 															</tr>
 															<tr>
-																<td class="p-3">
-																	{distribution.title}
-																</td>
-																<td class="p-3">
-																	{distribution.hours}
-																</td>
-																<td class="p-3">
-																	${distribution.initial}
-																</td>
-																<td class="p-3">
+																<td class='p-3'>{distribution.title}</td>
+																<td class='p-3'>{distribution.hours}</td>
+																<td class='p-3'>${distribution.initial}</td>
+																<td class='p-3'>
 																	${distribution.tips_received}
 																</td>
-																<td class="p-3">
-																	${distribution.total}
-																</td>
-																<td class="p-3">
-																	${distribution.offset}
-																</td>
+																<td class='p-3'>${distribution.total}</td>
+																<td class='p-3'>${distribution.offset}</td>
 															</tr>
 														</tbody>
 													</table>
-												</div>			
-											)}											
-										</For>					
+												</div>
+											)}
+										</For>
 									</div>
 								</div>
 							</div>
