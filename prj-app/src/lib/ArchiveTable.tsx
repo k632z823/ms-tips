@@ -798,100 +798,6 @@ const ArchiveTable: Component = () => {
 											</button>
 										</div>
 									</div>
-									{/* Old navigation bar */}
-									{/* <div class="flex flex-row justify-between items-center">
-										<button
-											class='py-1.5 px-3 inline-flex justify-between items-center border border-border-gray rounded-md hover:bg-border-gray text-sm'
-											onclick={() => {
-												setTableShown(true);
-												setPageButtonsShown(true);
-												setSortedEntryRows(selectedEntry(), (entry) => ({
-													...entry,
-													viewShown: false,
-												}));
-											}}
-										>
-											<svg
-												class="mr-4 fill-icon-gray stroke-icon-gray"
-												stroke-width="0"
-												xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 512 512"
-												height="1em"
-												width="1em"
-												style="overflow: visible; color: currentcolor;">
-												<path
-													class="stroke-icon-gray"
-													fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 160 48 224 112 288"></path>
-												<path
-													class="stroke-icon-gray"
-													fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M64 224h294c58.76 0 106 49.33 106 108v20"></path>
-											</svg>
-											Return
-										</button>
-										<div class="flex flex-row">
-											<button
-												class='mr-2 p-2 border border-border-gray rounded-md hover:bg-border-gray'
-												onClick={() => {
-													navigate("/Entries/" + entryRows[selectedEntry()].momentDate.format("MM-DD-YYYY"), {
-														replace: true,
-													});
-												}}
-											>
-												<svg
-													class="fill-white"
-													stroke-width="0"
-													xmlns="http://www.w3.org/2000/svg"
-													viewBox="0 0 1024 1024"
-													height="1em"
-													width="1em"
-													style="overflow: visible; color: currentcolor;">
-													<path
-														d="M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"></path>
-												</svg>
-											</button>
-											<button
-												class='p-2 border border-border-gray rounded-md hover:bg-border-gray'
-												onclick={() => {
-													setConfirmDeleteShown(true);
-													setEntry(
-														selectedEntry(),
-														(row) => ({
-															...row,
-															dropDownShown: false,
-														}),
-													);
-												}}
-											>
-												<svg
-													class="stroke-red"
-													fill="none"
-													stroke-width="2"
-													xmlns="http://www.w3.org/2000/svg"
-													stroke="currentcolor"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													viewBox="0 0 24 24"
-													height="1em"
-													width="1em"
-													style="overflow: visible; color: currentcolor;">
-													<path d="M3 6 5 6 21 6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M10 11 10 17"></path><path d="M14 11 14 17"></path>
-												</svg>
-											</button>
-										</div>
-									</div> */}
-									{/* Old date block */}
-									{/* <div class="mt-3 p-3 flex flex-col border border-border-gray rounded-md">
-										<div class='text-2xl font-bold text-white'>
-											{entryRows[selectedEntry()].momentDate
-												.format("L")
-												.toString()}
-										</div>
-										<div class="font-medium text-content-gray text-lg">
-											{entryRows[selectedEntry()].momentDate
-												.format("dddd, D MMMM YYYY")
-												.toString()}
-										</div>
-									</div> */}
 									<div class='inline-flex justify-between items-center mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm font-medium bg-menu-gray'>
 										Entry details
 										{/* <svg
@@ -970,29 +876,46 @@ const ArchiveTable: Component = () => {
 														<div class='font-medium text-table-header-gray'>
 															{index() + 1}
 														</div>
-														<div class='flex flex-col'>
-															<div class='flex justify-between items-center'>
-																<span class='font-normal'>
-																	{distribution.name}
-																</span>
+														<div class="flex flex-col">
+															<div class="flex justify-between">
+																<span class="font-normal">{distribution.name}</span>
+																<span class="font-medium text-content-gray">{distribution.title}</span>
 															</div>
 														</div>
 													</div>
 													<table class='table-fixed w-full text-sm'>
 														<tbody>
-															<tr class='border-b border-border-gray font-medium text-table-header-gray'>
-																<td class='p-3 w-1/4'>Title</td>
-																<td class='p-3'>Hours</td>
-																<td class='p-3'>Initial</td>
-																<td class='p-3'>Tips</td>
-																<td class='p-3'>Total</td>
-																<td class='p-3'>Offset</td>
+															<tr class="border-b border-border-gray font-medium text-table-header-gray">
+																{/* <td class="p-3 w-1/4">
+																	Title
+																</td> */}
+																<td class="p-3">
+																	Hours
+																</td>
+																<td class="p-3">
+																	Initial
+																</td>
+																<td class="p-3">
+																	Tips
+																</td>
+																<td class="p-3">
+																	Total
+																</td>
+																<td class="p-3">
+																	Offset
+																</td>
 															</tr>
 															<tr>
-																<td class='p-3'>{distribution.title}</td>
-																<td class='p-3'>{distribution.hours}</td>
-																<td class='p-3'>${distribution.initial}</td>
-																<td class='p-3'>
+																{/* <td class="p-3">
+																	{distribution.title}
+																</td> */}
+																<td class="p-3">
+																	{distribution.hours}
+																</td>
+																<td class="p-3">
+																	${distribution.initial}
+																</td>
+																<td class="p-3">
 																	${distribution.tips_received}
 																</td>
 																<td class='p-3'>${distribution.total}</td>
