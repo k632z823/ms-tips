@@ -119,6 +119,7 @@ const [events, setEvents] = createStore<Event[]>([]);
 const [inputEvent, setInputEvent] = createSignal<string>("");
 const [eventId, setEventId] = createSignal<number>(0);
 const [entryNo, setEntryNo] = createSignal<number>(0); //keeps track on what entry_no is currently selected
+const [showEntryDropdown, toggleEntryDropdown] = createSignal<boolean>(false);
 
 const [allTotals, setAllTotals] = createStore({
 	drawer: 0,
@@ -254,6 +255,19 @@ async function createNewEntry() {
 
 	setAllEntries((entries) => [...entries, newEntry]);
 	//console.log(allEntries);
+}
+
+function initializeEntry(index: number) {
+	setEntry("drawer", allEntries[index].drawer);
+	setEntry("tips", allEntries[index].tips);
+	setEntry("final", allEntries[index].final);
+	calcTotals(entry["drawer"]);
+	setAllTotals("drawer", total());
+	calcTotals(entry["tips"]);
+	setAllTotals("tips", total());
+	calcTotals(entry["final"]);
+	setAllTotals("final", total());
+	setEntryNo(index);
 }
 
 const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
@@ -429,8 +443,8 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 					class='px-5 jusitfy-center '
 					id='entry-select-input'
 				>
-					<div>
-						<label for='entry-select'>Select Entry </label>
+					{/* <div>
+						
 						<select
 							class='text-black'
 							name='entry-select'
@@ -442,28 +456,10 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 								if (currentValue === "add-new-entry") {
 									await createNewEntry();
 									let index = allEntries.length - 1;
-									setEntry("drawer", allEntries[index].drawer);
-									setEntry("tips", allEntries[index].tips);
-									setEntry("final", allEntries[index].final);
-									calcTotals(entry["drawer"]);
-									setAllTotals("drawer", total());
-									calcTotals(entry["tips"]);
-									setAllTotals("tips", total());
-									calcTotals(entry["final"]);
-									setAllTotals("final", total());
-									setEntryNo(index);
+									initializeEntry(index);
 								} else {
 									let index = parseInt(currentValue);
-									setEntry("drawer", allEntries[index].drawer);
-									setEntry("tips", allEntries[index].tips);
-									setEntry("final", allEntries[index].final);
-									calcTotals(entry["drawer"]);
-									setAllTotals("drawer", total());
-									calcTotals(entry["tips"]);
-									setAllTotals("tips", total());
-									calcTotals(entry["final"]);
-									setAllTotals("final", total());
-									setEntryNo(index);
+									initializeEntry(index);
 								}
 							}}
 						>
@@ -474,6 +470,60 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 							</For>
 							<option value='add-new-entry'>...Add Entry </option>
 						</select>
+					</div> */}
+
+					<div
+						id='entry-list'
+						class='text-white'
+					>
+						<ul>
+							<div class='d-flex'>
+								<div>Select Entry: </div>
+
+								<div
+									class='border border-white'
+									onClick={() => {
+										toggleEntryDropdown(!showEntryDropdown());
+									}}
+								>
+									Entry {entryNo() + 1}
+								</div>
+							</div>
+						</ul>
+
+						<Show when={showEntryDropdown()}>
+							<div class='drop-down-container'>
+								<For each={allEntries}>
+									{(entry, index) => (
+										<li
+											class={`entry-item ${
+												entryNo() === index() ? "selected" : ""
+											}`}
+											onClick={async () => {
+												if (entryNo() !== index()) {
+													initializeEntry(index());
+												}
+
+												toggleEntryDropdown(false);
+											}}
+										>
+											Entry {index() + 1}
+										</li>
+									)}
+								</For>
+								<li
+									class='entry-item add-entry'
+									onClick={async () => {
+										await createNewEntry();
+										let index = allEntries.length - 1;
+										initializeEntry(index);
+										toggleEntryDropdown(false);
+									}}
+								>
+									...Add Entry
+								</li>
+							</div>
+						</Show>
 					</div>
 					{/* This is the div that will show the tags*/}
 					<Show when={events.length > 0}>
