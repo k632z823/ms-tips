@@ -1,4 +1,4 @@
-import { Component, createSignal, onMount, Show } from "solid-js";
+import { Component, createSignal, onMount, Show, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { createStore } from "solid-js/store";
 import axios from "axios";
@@ -51,10 +51,6 @@ async function getRecentEntries() {
 	return entries;
 }
 
-let recentEntries: Entry[] = [];
-const [sixRecentEntries, setSixRecentEntries] =
-	createStore<Entry[]>(recentEntries);
-
 const OverviewEntries: Component = () => {
 	const [mostRecentEntry, setMostRecentEntry] = createStore<Entry>({
 		id: 0,
@@ -82,11 +78,18 @@ const OverviewEntries: Component = () => {
 
 	const [tabSwitch, setTabSwitch] = createSignal<boolean>(false);
 
+	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
+
+	// sixRecentEntries is the list/store that actually has the entries and is used in the rest of the code
+	let recentEntries: Entry[] = [];
+	const [sixRecentEntries, setSixRecentEntries] = createStore<Entry[]>(recentEntries);
+
 	onMount(async function () {
 		recentEntries = await getRecentEntries();
+		setSixRecentEntries(...[recentEntries]);
 		setTodaysEntry(await getTodaysEntry());
 		setShowCreateToday(todaysEntryExists(todaysEntry));
-		setSixRecentEntries(...[recentEntries]);
+		setTipDistributions(await getTipDistributions(sixRecentEntries[0].id))
 		setRendered(true);
 	});
 
@@ -408,154 +411,53 @@ const OverviewEntries: Component = () => {
 				</Show>
 				<Show when={tabSwitch()}>
 					<div class='mt-3 p-2.5 h-[453px] flex flex-col overflow-auto gap-2 border border-border-gray rounded-md'>
-						<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
-							<div class='font-medium text-table-header-gray'>1</div>
-							<div class='flex flex-col'>
-								<div class='flex justify-between items-center'>
-									<span class='font-medium'>Spongebob Squarepants</span>
-									<span class='px-2 bg-white rounded-md font-medium text-black'>
-										Cook
-									</span>
-								</div>
-								<div class='mt-6 grid grid-cols-4 items-center font-medium'>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Hours
-										</span>
-										<span>8</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Initital
-										</span>
-										<span>$30</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Tips
-										</span>
-										<span>$25</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Total
-										</span>
-										<span>$55</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
-							<div class='font-medium text-table-header-gray'>2</div>
-							<div class='flex flex-col'>
-								<div class='flex justify-between'>
-									<span class='font-medium'>Patrick Star</span>
-									<span class='px-2 bg-white rounded-md font-medium text-black'>
-										Dishwasher
-									</span>
-								</div>
-								<div class='mt-6 grid grid-cols-4 items-center font-medium'>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Hours
-										</span>
-										<span>8</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Initital
-										</span>
-										<span>$30</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Tips
-										</span>
-										<span>$25</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Total
-										</span>
-										<span>$55</span>
+						<For each={tipDistributions}>
+							{(distribution, index) => (
+								<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
+									<div class='font-medium text-table-header-gray'>{index() + 1}</div>
+									<div class='flex flex-col'>
+										<div class='flex justify-between items-center'>
+											<span class='font-medium'>{distribution.name}</span>
+											<span class='px-2 bg-white rounded-md font-medium text-black'>
+												{distribution.title}
+											</span>
+										</div>
+										<div class='mt-6 grid grid-cols-4 items-center font-medium'>
+											<div class='flex flex-col gap-2'>
+												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+													Hours
+												</span>
+												<span>{distribution.hours}</span>
+											</div>
+											<div class='flex flex-col gap-2'>
+												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+													Initital
+												</span>
+												<span>${distribution.initial}</span>
+											</div>
+											<div class='flex flex-col gap-2'>
+												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+													Tips
+												</span>
+												<span>${distribution.tips_received}</span>
+											</div>
+											<div class='flex flex-col gap-2'>
+												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+													Total
+												</span>
+												<span>${distribution.total}</span>
+											</div>
+											<div class='flex flex-col gap-2'>
+												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+													Offset
+												</span>
+												<span>${distribution.offset}</span>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
-							<div class='font-medium text-table-header-gray'>3</div>
-							<div class='flex flex-col'>
-								<div class='flex justify-between items-center'>
-									<span class='font-medium'>Squidward Tentacles</span>
-									<span class='px-2 bg-white rounded-md font-medium text-black'>
-										Server
-									</span>
-								</div>
-								<div class='mt-6 grid grid-cols-4 items-center font-medium'>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Hours
-										</span>
-										<span>8</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Initital
-										</span>
-										<span>$30</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Tips
-										</span>
-										<span>$25</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Total
-										</span>
-										<span>$55</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
-							<div class='font-medium text-table-header-gray'>4</div>
-							<div class='flex flex-col'>
-								<div class='flex justify-between items-center'>
-									<span class='font-medium'>Eugene Harold Krabs</span>
-									<span class='px-2 bg-white rounded-md font-medium text-black'>
-										Baker
-									</span>
-								</div>
-								<div class='mt-6 grid grid-cols-4 items-center font-medium'>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Hours
-										</span>
-										<span>8</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Initital
-										</span>
-										<span>$30</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Tips
-										</span>
-										<span>$25</span>
-									</div>
-									<div class='flex flex-col gap-2'>
-										<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-											Total
-										</span>
-										<span>$55</span>
-									</div>
-								</div>
-							</div>
-						</div>
+							)}
+						</For>
 					</div>
 				</Show>
 			</Show>

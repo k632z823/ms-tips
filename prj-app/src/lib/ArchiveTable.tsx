@@ -108,8 +108,7 @@ const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 
 let entryRows: EntryRow[] = []; //await getEntries();
 
-const [sortedEntryRows, setSortedEntryRows] =
-	createStore<EntryRow[]>(entryRows);
+const [sortedEntryRows, setSortedEntryRows] = createStore<EntryRow[]>(entryRows);
 
 // used in Export modal to add an averages row at the bottom of the CSV
 const calculateEntryRowsAverages = (entries: Entry[]) => {
@@ -145,7 +144,7 @@ let download = (config: any) => {
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = fileName; // Set the filename here
+		link.download = fileName; // set the filename here
 		link.click();
 		URL.revokeObjectURL(url);
 	};
@@ -204,16 +203,13 @@ const ArchiveTable: Component = () => {
 	const [descDateSortOrder, setDescDateSortOrder] = createSignal<boolean>(true);
 	const [tableShown, setTableShown] = createSignal<boolean>(true);
 	const [rendered, setRendered] = createSignal<boolean>(false);
-	const [confirmDeleteShown, setConfirmDeleteShown] =
-		createSignal<boolean>(false);
+	const [confirmDeleteShown, setConfirmDeleteShown] = createSignal<boolean>(false);
 	const [exportModalShown, setExportModalShown] = createSignal<boolean>(false);
 	const [fromDate, setFromDate] = createSignal<string>("");
 	const [toDate, setToDate] = createSignal<string>(moment().format("L"));
 	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
 	const [pageButtonsShown, setPageButtonsShown] = createSignal<boolean>(true);
-	const [tipDistributions, setTipDistributions] = createStore<
-		EmployeeTipDistribution[]
-	>([]);
+	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
 
 	const navigate = useNavigate();
 
