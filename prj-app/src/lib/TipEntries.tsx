@@ -489,41 +489,41 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									Entry {entryNo() + 1}
 								</div>
 							</div>
+
+							<Show when={showEntryDropdown()}>
+								<div class='drop-down-container'>
+									<For each={allEntries}>
+										{(entry, index) => (
+											<li
+												class={`entry-item ${
+													entryNo() === index() ? "selected" : ""
+												}`}
+												onClick={async () => {
+													if (entryNo() !== index()) {
+														initializeEntry(index());
+													}
+
+													toggleEntryDropdown(false);
+												}}
+											>
+												Entry {index() + 1}
+											</li>
+										)}
+									</For>
+									<li
+										class='entry-item add-entry'
+										onClick={async () => {
+											await createNewEntry();
+											let index = allEntries.length - 1;
+											initializeEntry(index);
+											toggleEntryDropdown(false);
+										}}
+									>
+										...Add Entry
+									</li>
+								</div>
+							</Show>
 						</ul>
-
-						<Show when={showEntryDropdown()}>
-							<div class='drop-down-container'>
-								<For each={allEntries}>
-									{(entry, index) => (
-										<li
-											class={`entry-item ${
-												entryNo() === index() ? "selected" : ""
-											}`}
-											onClick={async () => {
-												if (entryNo() !== index()) {
-													initializeEntry(index());
-												}
-
-												toggleEntryDropdown(false);
-											}}
-										>
-											Entry {index() + 1}
-										</li>
-									)}
-								</For>
-								<li
-									class='entry-item add-entry'
-									onClick={async () => {
-										await createNewEntry();
-										let index = allEntries.length - 1;
-										initializeEntry(index);
-										toggleEntryDropdown(false);
-									}}
-								>
-									...Add Entry
-								</li>
-							</div>
-						</Show>
 					</div>
 					{/* This is the div that will show the tags*/}
 					<Show when={events.length > 0}>
