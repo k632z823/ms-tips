@@ -316,7 +316,7 @@ let sling_api = new Sling();
   app.listen(process.env.HOST_PORT);
 
   async function getArchiveEntries() {
-    return await db.withSchema("public").from("archive_entries").select("*");
+    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "asc").orderBy("entry_no", "asc");
   }
 
   async function deleteEntry(idToDelete: number) {
@@ -503,7 +503,7 @@ let sling_api = new Sling();
   }
 
   async function getSixRecentEntries() {
-    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").limit(6);
+    return await db.withSchema("public").from("archive_entries").select("*").orderBy("date", "desc").orderBy("entry_no","desc").limit(6);
   }
   
   async function getEmployeeTipDistribution(archiveEntryId: number) {

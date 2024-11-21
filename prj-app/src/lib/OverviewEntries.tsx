@@ -3,6 +3,10 @@ import { useNavigate } from "@solidjs/router";
 import { createStore } from "solid-js/store";
 import axios from "axios";
 import moment from "moment";
+import {
+	EmployeeTipDistribution as EmployeeTipDistribution,
+	getTipDistributions as getTipDistributions,
+} from "./GetTipEntries";
 
 interface Entry {
 	id: number;
@@ -11,6 +15,7 @@ interface Entry {
 	tips: number;
 	final: number;
 	tipRate: number;
+	entry_no: number;
 }
 
 async function getTodaysEntry() {
@@ -19,6 +24,7 @@ async function getTodaysEntry() {
 	return responseData;
 }
 
+// return true if there is an archive_entry in the database for today
 const todaysEntryExists = (todaysEntry: Entry) => {
 	return todaysEntry.date == "";
 };
@@ -39,6 +45,7 @@ async function getRecentEntries() {
 			final: item.final,
 			tipRate: item.tipRate,
 			drawer: item.drawer,
+			entry_no: item.entry_no
 		});
 	}
 	return entries;
@@ -56,6 +63,7 @@ const OverviewEntries: Component = () => {
 		tips: 0,
 		final: 0,
 		tipRate: 0,
+		entry_no: 0
 	});
 
 	const [todaysEntry, setTodaysEntry] = createStore<Entry>({
@@ -65,6 +73,7 @@ const OverviewEntries: Component = () => {
 		tips: 0,
 		final: 0,
 		tipRate: 0,
+		entry_no: 0
 	});
 
 	const [rendered, setRendered] = createSignal<boolean>(false);
@@ -144,8 +153,8 @@ const OverviewEntries: Component = () => {
 						onClick={() => {
 							navigate(
 								"/Entries/" +
-									sixRecentEntries[0].date.format("MM-DD-YYYY") +
-									"/0",
+								sixRecentEntries[0].date.format("MM-DD-YYYY") +
+								"/0",
 								{
 									replace: true,
 								},
@@ -168,9 +177,8 @@ const OverviewEntries: Component = () => {
 				</div>
 				<div class='p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-lg font-semibold'>
 					<button
-						class={`py-1.5 px-3 items-center rounded-md ${
-							!tabSwitch() ? "bg-border-gray text-white" : ""
-						}`}
+						class={`py-1.5 px-3 items-center rounded-md ${!tabSwitch() ? "bg-border-gray text-white" : ""
+							}`}
 						onClick={() => {
 							if (tabSwitch()) setTabSwitch(false);
 						}}
@@ -178,9 +186,8 @@ const OverviewEntries: Component = () => {
 						Classifications
 					</button>
 					<button
-						class={`py-1.5 px-3 items-center rounded-md ${
-							tabSwitch() ? "bg-border-gray text-white" : ""
-						}`}
+						class={`py-1.5 px-3 items-center rounded-md ${tabSwitch() ? "bg-border-gray text-white" : ""
+							}`}
 						onClick={() => {
 							if (!tabSwitch()) setTabSwitch(true);
 						}}
