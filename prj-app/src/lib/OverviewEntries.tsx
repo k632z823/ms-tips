@@ -155,8 +155,8 @@ const OverviewEntries: Component = () => {
 									<div class='text-white text-sm font-bold'>
 										Create a new entry
 									</div>
-									<div class='mb-3 text-content-gray text-sm text-pretty font-medium'>
-										Select a date below to create a new entry.
+									<div class='mb-3 text-table-header-gray text-sm text-pretty font-medium'>
+										Select a date below to create or edit an entry.
 									</div>
 									<div class="flex flex-row gap-2">
 										<button
@@ -205,7 +205,7 @@ const OverviewEntries: Component = () => {
 										</button>
 										{/* Create new entry button for the date in the calendar select */}
 										<button
-											class='py-1.5 px-5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
+											class='py-1.5 px-5 border border-border-gray rounded-md font-medium text-center text-white bg-black hover:bg-border-gray'
 											onclick={() => {
 												navigate(
 													"/Entries/" +
@@ -214,7 +214,7 @@ const OverviewEntries: Component = () => {
 												)
 											}}
 										>
-											Create
+											Continue
 										</button>
 									</div>
 								</div>
@@ -298,7 +298,7 @@ const OverviewEntries: Component = () => {
 									${sixRecentEntries[0].drawer}
 								</span>
 							</div>
-							<div class='my-4 px-4 grid grid-cols-3 border-l border-border-gray'>
+							<div class='my-4 px-4 grid grid-cols-[40px_auto_auto] border-l border-border-gray'>
 								<div class='flex flex-col font-medium text-content-gray'>
 									{sixRecentEntries.slice(1, 5).map((entry) => (
 										<span>{entry.date.format("MM/DD")}</span>
@@ -349,7 +349,7 @@ const OverviewEntries: Component = () => {
 									${sixRecentEntries[0].tips}
 								</span>
 							</div>
-							<div class='my-4 px-4 grid grid-cols-3 border-l border-border-gray'>
+							<div class='my-4 px-4 grid grid-cols-[40px_auto_auto] border-l border-border-gray'>
 								<div class='flex flex-col font-medium text-content-gray'>
 									{sixRecentEntries.slice(1, 5).map((entry) => (
 										<span>{entry.date.format("MM/DD")}</span>
@@ -400,7 +400,7 @@ const OverviewEntries: Component = () => {
 									${sixRecentEntries[0].final}
 								</span>
 							</div>
-							<div class='my-4 px-4 grid grid-cols-3 border-l border-border-gray'>
+							<div class='my-4 px-4 grid grid-cols-[40px_auto_auto] border-l border-border-gray'>
 								<div class='flex flex-col font-medium text-content-gray'>
 									{sixRecentEntries.slice(1, 5).map((entry) => (
 										<span>{entry.date.format("MM/DD")}</span>
@@ -454,7 +454,7 @@ const OverviewEntries: Component = () => {
 									${sixRecentEntries[0].tipRate}
 								</span>
 							</div>
-							<div class='my-4 px-4 grid grid-cols-3 border-l border-border-gray'>
+							<div class='my-4 px-4 grid grid-cols-[40px_auto_auto] border-l border-border-gray'>
 								<div class='flex flex-col font-medium text-content-gray'>
 									{sixRecentEntries.slice(1, 5).map((entry) => (
 										<span>{entry.date.format("MM/DD")}</span>

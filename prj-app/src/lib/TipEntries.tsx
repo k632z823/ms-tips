@@ -332,7 +332,208 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 	return (
 		<>
 			<Show when={viewEntries()}>
-				<div
+				<div class='mx-5 p-5 border border-border-gray rounded-md'>
+					{/* TODO: this is the datepicker for the entries, format/move it however u want chief */}
+					<div class='mb-5 flex flex-col'>
+						<span class='font-semibold text-lg'>Entries</span>
+						<span class='font-medium text-table-header-gray text-sm'>Add or edit an existing entry.</span>
+					</div>
+					<div class='w-full flex flex-row gap-4'>
+						<div
+							class='font-semibold text-sm'
+							id='entry-date-picker'
+						>
+							<span>Date</span>
+							<div class='mt-2'>
+								<input
+									id='date-picker'
+									type='date'
+									value={moment(entryDate).format("YYYY-MM-DD")}
+									class='px-2.5 py-1.5 h-[34px] border border-border-gray rounded-md bg-black text-white font-medium text-sm appearance-none hover:bg-border-gray'
+									onchange={(e) => {
+										let date = moment(e.target.value);
+										// navigate(`/Entries/${date.format("MM-DD-YYYY")}`, {
+										// 	replace: true,
+										// });
+										window.location.href = `${date.format("MM-DD-YYYY")}`;
+									}}
+								/>
+							</div>
+						</div>
+						{/* <div>
+							<select
+								class='text-black'
+								name='entry-select'
+								id='entry-select'
+								value={entryNo() >= allEntries.length ? 0 : entryNo()} //if the entryNo exceeds what's available in all entries default it to 0 as it's just a issues with the url param
+								onChange={async (event) => {
+									let currentValue = event.target.value;
+									if (currentValue === "add-new-entry") {
+										await createNewEntry();
+										let index = allEntries.length - 1;
+										initializeEntry(index);
+									} else {
+										let index = parseInt(currentValue);
+										initializeEntry(index);
+									}
+								}}
+							>
+								<For each={allEntries}>
+									{(entry, index) => (
+										<option value={index()}>Entry {index() + 1}</option>
+									)}
+								</For>
+								<option value='add-new-entry'>...Add Entry </option>
+							</select>
+						</div> */}
+						{/* Select entry dropdown */}
+						<div
+							class='w-full font-medium text-white text-sm'
+							id='entry-list'
+						>
+							<span>Entry</span>
+							<div class='absolute w-[164px]'>
+								<ul>
+									<button
+										class='mt-2 mb-1.5 px-2.5 py-1.5 w-full inline-flex justify-between items-center border border-border-gray rounded-md bg-black hover:bg-border-gray'
+										onClick={() => {
+											toggleEntryDropdown(!showEntryDropdown());
+										}}
+									>
+										Entry {entryNo() + 1}
+										<svg
+											class='w-[0.6em] h-[0.6em]'
+											aria-hidden='true'
+											xmlns='http://www.w3.org/2000/svg'
+											fill='none'
+											viewBox='0 0 10 6'
+										>
+											<path
+												stroke='#505050'
+												stroke-linecap='round'
+												stroke-linejoin='round'
+												stroke-width='2'
+												d='m1 1 4 4 4-4'
+											/>
+										</svg>
+									</button>
+									<Show when={showEntryDropdown()}>
+										<div class='border border-border-gray rounded-md bg-black'>
+											<For each={allEntries}>
+												{(entry, index) => (
+													<div class='px-1 pt-1'>
+														<li
+															class={`px-3 py-2 rounded hover:bg-input-gray ${entryNo() === index() ? "selected" : ""
+																}`}
+															onClick={async () => {
+																if (entryNo() !== index()) {
+																	initializeEntry(index());
+																}
+																toggleEntryDropdown(false);
+															}}
+														>
+															Entry {index() + 1}
+														</li>
+													</div>
+												)}
+											</For>
+											<div class='mt-1 border-t border-border-gray'>
+												<div class='p-1'>
+													<li
+														class='px-3 py-2 w-full inline-flex items-center rounded hover:bg-input-gray'
+														onClick={async () => {
+															await createNewEntry();
+															let index = allEntries.length - 1;
+															initializeEntry(index);
+															toggleEntryDropdown(false);
+														}}
+													>
+														<svg
+															class="mr-2"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 512 512"
+															height="1.1em"
+															width="1.1em"
+															style="overflow: visible; color: currentcolor;">
+															<path class="stroke-white" stroke-linecap="square" stroke-linejoin="round" stroke-width="52" d="M256 112 256 400"></path>
+															<path class="stroke-white" stroke-linecap="square" stroke-linejoin="round" stroke-width="52" d="M400 256 112 256"></path>
+														</svg>
+														Add a new entry
+													</li>
+												</div>
+											</div>
+										</div>
+									</Show>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{/* Add events/tags */}
+					<div
+						class='mt-4 jusitfy-center font-medium text-white text-sm'
+						id='entry-event-input'
+					>
+						<span>Events</span>
+						<div class='mt-2 flex flex-row'>
+							<input
+								id='event-input'
+								type='text'
+								placeholder='e.g. Evening Event'
+								value={inputEvent()}
+								class='px-2.5 py-1.5 w-full border border-border-gray rounded-md placeholder-content-gray bg-black'
+								onInput={(e) => {
+									setInputEvent(e.currentTarget.value);
+								}}
+							/>
+							<button
+								class='ml-2 px-5 py-1.5 border border-border-gray rounded-md font-medium text-sm hover:bg-border-gray'
+								onClick={() => {
+									// if (events.length == 0) {
+									// 	setEvents([...events, {id: 0, event:inputEvent()}]);
+									// 	setInputEvent("");
+									// }
+									setEvents([...events, { id: eventId(), event: inputEvent() }]);
+									setInputEvent("");
+									setEventId(eventId() + 1);
+								}}
+							>
+								Add
+							</button>
+						</div>
+						{/* This is the div that will show the tags*/}
+						<Show when={events.length > 0}>
+							<div class='mt-2 p-1.5 flex flex-row gap-2 border border-border-gray rounded-md bg-black overflow-x-auto text-nowrap'>
+								<For each={events}>
+									{(event) => (
+										<div class='inline-flex items-center border border-border-gray rounded bg-black'>
+											<div class='mr-2 px-2 py-1'>{event.event}</div>
+											<button
+												class='m-1 p-1 rounded-md hover:bg-input-gray'
+												onclick={() => {
+													setEvents(events.filter((item) => item.id !== event.id));
+													//console.log([...allEvents.splice(index, 1)]);
+												}}
+											>
+												<svg
+													class="fill-icon-gray"
+													stroke-width="0"
+													xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 512 512"
+													height="1.2em"
+													width="1.2em"
+													style="overflow: visible; color: currentcolor;">
+													<path d="M400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
+												</svg>
+											</button>
+										</div>
+									)}
+								</For>
+							</div>
+						</Show>
+					</div>
+				</div>
+				{/* <div
 					class='px-5 flex justify-center text-sm'
 					id='entry-info'
 				>
@@ -340,7 +541,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 						<div class='flex flex-col w-full border border-border-gray rounded-md'>
 							<div class='p-2 flex justify-between items-center border-b border-border-gray'>
 								<span class='font-medium text-table-header-gray'>Drawer</span>
-								{/* <svg
+								<svg
 									class="fill-icon-gray stroke-icon-gray"
 									stroke-width="0"
 									xmlns="http://www.w3.org/2000/svg"
@@ -349,14 +550,14 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									width="1em"
 									style="overflow: visible; color: currentcolor;">
 									<path d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
-								</svg> */}
+								</svg>
 							</div>
 							<span class='p-2 font-semibold'>${allTotals.drawer}</span>
 						</div>
 						<div class='flex flex-col w-full border border-border-gray rounded-md'>
 							<div class='p-2 flex justify-between items-center border-b border-border-gray'>
 								<span class='font-medium text-table-header-gray'>Tips</span>
-								{/* <svg
+								<svg
 									class="fill-icon-gray stroke-icon-gray"
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
@@ -366,14 +567,14 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									style='overflow: visible; color: currentcolor;'
 								>
 									<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
-								</svg> */}
+								</svg>
 							</div>
 							<span class='p-2 font-semibold'>${allTotals.tips}</span>
 						</div>
 						<div class='flex flex-col w-full border border-border-gray rounded-md'>
 							<div class='p-2 flex justify-between items-center border-b border-border-gray'>
 								<span class='font-medium text-table-header-gray'>Final</span>
-								{/* <svg
+								<svg
 									class="fill-icon-gray stroke-icon-gray"
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
@@ -383,7 +584,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									style='overflow: visible; color: currentcolor;'
 								>
 									<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
-								</svg> */}
+								</svg>
 							</div>
 							<span class='p-2 font-semibold'>${allTotals.final}</span>
 						</div>
@@ -413,203 +614,99 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 								</tr>
 							</tbody>
 						</table>
-					</div> */}
-				</div>
-				{/* TODO: this is the datepicker for the entries, format/move it however u want chief */}
-				<div
-					class='px-5 flex jusitfy-center'
-					id='entry-date-picker'
-				>
-					<div>
-						<label for='date-picker'>Select Date of Entry: </label>
-						<input
-							id='date-picker'
-							type='date'
-							value={moment(entryDate).format("YYYY-MM-DD")}
-							class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none'
-							onchange={(e) => {
-								let date = moment(e.target.value);
-								// navigate(`/Entries/${date.format("MM-DD-YYYY")}`, {
-								// 	replace: true,
-								// });
-
-								window.location.href = `${date.format("MM-DD-YYYY")}`;
-							}}
-						/>
 					</div>
-				</div>
-
-				<div
-					class='px-5 jusitfy-center '
-					id='entry-select-input'
-				>
-					{/* <div>
-						
-						<select
-							class='text-black'
-							name='entry-select'
-							id='entry-select'
-							value={entryNo() >= allEntries.length ? 0 : entryNo()} //if the entryNo exceeds what's available in all entries default it to 0 as it's just a issues with the url param
-							onChange={async (event) => {
-								let currentValue = event.target.value;
-
-								if (currentValue === "add-new-entry") {
-									await createNewEntry();
-									let index = allEntries.length - 1;
-									initializeEntry(index);
-								} else {
-									let index = parseInt(currentValue);
-									initializeEntry(index);
-								}
-							}}
-						>
-							<For each={allEntries}>
-								{(entry, index) => (
-									<option value={index()}>Entry {index() + 1}</option>
-								)}
-							</For>
-							<option value='add-new-entry'>...Add Entry </option>
-						</select>
-					</div> */}
-
-					<div
-						id='entry-list'
-						class='text-white'
-					>
-						<ul>
-							<div class='d-flex'>
-								<div>Select Entry: </div>
-
-								<div
-									class='border border-white'
-									onClick={() => {
-										toggleEntryDropdown(!showEntryDropdown());
-									}}
-								>
-									Entry {entryNo() + 1}
-								</div>
-							</div>
-
-							<Show when={showEntryDropdown()}>
-								<div class='drop-down-container'>
-									<For each={allEntries}>
-										{(entry, index) => (
-											<li
-												class={`entry-item ${
-													entryNo() === index() ? "selected" : ""
-												}`}
-												onClick={async () => {
-													if (entryNo() !== index()) {
-														initializeEntry(index());
-													}
-
-													toggleEntryDropdown(false);
-												}}
-											>
-												Entry {index() + 1}
-											</li>
-										)}
-									</For>
-									<li
-										class='entry-item add-entry'
-										onClick={async () => {
-											await createNewEntry();
-											let index = allEntries.length - 1;
-											initializeEntry(index);
-											toggleEntryDropdown(false);
-										}}
-									>
-										...Add Entry
-									</li>
-								</div>
-							</Show>
-						</ul>
-					</div>
-					{/* This is the div that will show the tags*/}
-					<Show when={events.length > 0}>
-						<div class='flex'>
-							<For each={events}>
-								{(event) => (
-									<div
-										class='border border-green'
-										onclick={() => {
-											setEvents(events.filter((item) => item.id !== event.id));
-
-											//console.log([...allEvents.splice(index, 1)]);
-										}}
-									>
-										{event.event} x
-									</div>
-								)}
-							</For>
-						</div>
-					</Show>
-				</div>
-
-				{/* TODO: this is the event input for the entries
-i basically made it so whenever he adds an event it appends to an array, and those values appear beneath the input box as tags
-he can click on the tags and they will be deleted
-basically i did this so if he needs to add multiple events he can
-but format it, style it, whatever u feel looks best 
-
-*/}
-				<div
-					class='px-5 jusitfy-center'
-					id='entry-event-input'
-				>
-					<div>
-						<label for='event-input'>Add Event: </label>
-						<input
-							id='event-input'
-							type='text'
-							value={inputEvent()}
-							class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none'
-							onInput={(e) => {
-								setInputEvent(e.currentTarget.value);
-							}}
-						/>
-						<button
-							class='p-1.5 text-black font-medium rounded-md bg-white hover:bg-white/90'
-							onClick={() => {
-								// if (events.length == 0) {
-								// 	setEvents([...events, {id: 0, event:inputEvent()}]);
-								// 	setInputEvent("");
-								// }
-								setEvents([...events, { id: eventId(), event: inputEvent() }]);
-								setInputEvent("");
-								setEventId(eventId() + 1);
-							}}
-						>
-							+
-						</button>
-					</div>
-					{/* This is the div that will show the tags*/}
-					<Show when={events.length > 0}>
-						<div class='flex'>
-							<For each={events}>
-								{(event) => (
-									<div
-										class='border border-green'
-										onclick={() => {
-											setEvents(events.filter((item) => item.id !== event.id));
-
-											//console.log([...allEvents.splice(index, 1)]);
-										}}
-									>
-										{event.event} x
-									</div>
-								)}
-							</For>
-						</div>
-					</Show>
-				</div>
-
+				</div> */}
+				{/* Classification entry */}
 				<div class='flex justify-center px-5 pt-4 pb-5'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<div id='entry-select'>
 							<div class='flex justify-center'>
 								<div class='py-5 w-full relative grow text-sm font-normal'>
+									{/* Classification total count */}
 									<div class='px-5'>
+										<div
+											class='mb-5 flex justify-center text-sm'
+											id='entry-info'
+										>
+											<div class='w-full grid grid-cols-3 gap-2'>
+												<div class='flex flex-col w-full border border-border-gray rounded-md'>
+													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
+														<span class='font-medium text-table-header-gray'>Drawer</span>
+														{/* <svg
+															class="fill-icon-gray stroke-icon-gray"
+															stroke-width="0"
+															xmlns="http://www.w3.org/2000/svg"
+															viewBox="0 0 16 16"
+															height="1em"
+															width="1em"
+															style="overflow: visible; color: currentcolor;">
+															<path d="m15.89 10.188-4-5A.5.5 0 0 0 11.5 5h-7a.497.497 0 0 0-.39.188l-4 5A.5.5 0 0 0 0 10.5V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5a.497.497 0 0 0-.11-.312zM15 11h-3.5l-2 2h-3l-2-2H1v-.325L4.74 6h6.519l3.74 4.675V11z"></path>
+														</svg> */}
+													</div>
+													<span class='p-2 font-semibold'>${allTotals.drawer}</span>
+												</div>
+												<div class='flex flex-col w-full border border-border-gray rounded-md'>
+													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
+														<span class='font-medium text-table-header-gray'>Tips</span>
+														{/* <svg
+															class="fill-icon-gray stroke-icon-gray"
+															stroke-width='0'
+															xmlns='http://www.w3.org/2000/svg'
+															viewBox='0 0 640 512'
+															height='1.2em'
+															width='1.2em'
+															style='overflow: visible; color: currentcolor;'
+														>
+															<path d='M96 96v224c0 35.3 28.7 64 64 64h416c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H160c-35.3 0-64 28.7-64 64zm64 160c35.3 0 64 28.7 64 64h-64v-64zm64-160c0 35.3-28.7 64-64 64V96h64zm352 160v64h-64c0-35.3 28.7-64 64-64zM512 96h64v64c-35.3 0-64-28.7-64-64zM288 208a80 80 0 1 1 160 0 80 80 0 1 1-160 0zM48 120c0-13.3-10.7-24-24-24S0 106.7 0 120v240c0 66.3 53.7 120 120 120h400c13.3 0 24-10.7 24-24s-10.7-24-24-24H120c-39.8 0-72-32.2-72-72V120z'></path>
+														</svg> */}
+													</div>
+													<span class='p-2 font-semibold'>${allTotals.tips}</span>
+												</div>
+												<div class='flex flex-col w-full border border-border-gray rounded-md'>
+													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
+														<span class='font-medium text-table-header-gray'>Final</span>
+														{/* <svg
+															class="fill-icon-gray stroke-icon-gray"
+															stroke-width='0'
+															xmlns='http://www.w3.org/2000/svg'
+															viewBox='0 0 1024 1024'
+															height='1.2em'
+															width='1.2em'
+															style='overflow: visible; color: currentcolor;'
+														>
+															<path d='M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z'></path>
+														</svg> */}
+													</div>
+													<span class='p-2 font-semibold'>${allTotals.final}</span>
+												</div>
+											</div>
+											{/* <div class='border border-border-gray rounded-md w-full'>
+												<table class='table-auto w-full'>
+													<tbody>
+														<tr class='border-border-gray font-medium'>
+															<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
+																Drawer
+															</td>
+															<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
+																Tips
+															</td>
+															<td class='p-2 align-top text-xs text-mini-gray'>Final</td>
+														</tr>
+														<tr class='border-border-gray'>
+															<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
+																${allTotals.drawer}
+															</td>
+															<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
+																${allTotals.tips}
+															</td>
+															<td class='px-2 pb-2 w-1/3 text-l text-right'>
+																${allTotals.final}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div> */}
+										</div>
 										<button
 											id='dropdownDefaultButton'
 											data-dropdown-toggle='dropdown'
@@ -656,7 +753,7 @@ but format it, style it, whatever u feel looks best
 														class=''
 													>
 														<div class='pt-1 px-1'>
-															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
+															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																<div class='inline-flex gap-3'>
 																	<svg
 																		fill='currentColor'
@@ -685,7 +782,7 @@ but format it, style it, whatever u feel looks best
 														class=''
 													>
 														<div class='px-1'>
-															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
+															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																<div class='inline-flex items-center gap-3'>
 																	<svg
 																		fill='currentColor'
@@ -711,7 +808,7 @@ but format it, style it, whatever u feel looks best
 														class=''
 													>
 														<div class='pb-1 px-1'>
-															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded cursor-pointer'>
+															<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																<div class='inline-flex items-center gap-3'>
 																	<svg
 																		fill='currentColor'
@@ -751,31 +848,27 @@ but format it, style it, whatever u feel looks best
 												{(item) => (
 													<tr class='text-center'>
 														<td
-															class={`p-4 w-1/6 ${
-																item.id === 0
-																	? "rounded-tl-md border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-1/6 ${item.id === 0
+																? "rounded-tl-md border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "rounded-bl-md border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-r border-border-gray bg-input-gray`}
+																} border-r border-border-gray bg-menu-gray`}
 														>
 															{labels[item.id].bill_label}
 														</td>
 														<td
-															class={`p-2 w-2/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 w-2/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
-																class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
+																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
 																value={item.bill_amount}
 																onChange={(e) => {
 																	if (Number.isNaN(parseInt(e.target.value))) {
@@ -805,31 +898,27 @@ but format it, style it, whatever u feel looks best
 															></input>
 														</td>
 														<td
-															class={`p-4 w-1/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-1/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-x border-border-gray bg-input-gray`}
+																} border-x border-border-gray bg-menu-gray`}
 														>
 															{labels[item.id].change_label}
 														</td>
 														<td
-															class={`p-2 w-2/6 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 w-2/6 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
-																class='p-1 w-full rounded-md border border-border-gray bg-input-gray text-center text-content-gray'
+																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
 																value={item.change_amount}
 																onChange={(e) => {
 																	if (Number.isNaN(parseInt(e.target.value))) {
@@ -864,25 +953,25 @@ but format it, style it, whatever u feel looks best
 												)}
 											</For>
 											<tr class='text-center'>
-												<td class='p-3 border-r border-y border-border-gray bg-input-gray'>
+												<td class='p-3 border-r border-y border-border-gray bg-menu-gray'>
 													Bill
 												</td>
-												<td class='p-3 w-2/6 border-y border-border-gray text-content-gray'>
+												<td class='p-3 w-2/6 border-y border-border-gray text-white'>
 													${billTotal()}
 												</td>
-												<td class='p-3 border-x border-y  border-border-gray bg-input-gray'>
+												<td class='p-3 border-x border-y  border-border-gray bg-menu-gray'>
 													Coin
 												</td>
-												<td class='p-3 w-2/6 border-y border-border-gray text-content-gray'>
+												<td class='p-3 w-2/6 border-y border-border-gray text-white'>
 													${changeTotal()}
 												</td>
 											</tr>
 											<tr class='text-center'>
-												<td class='p-3 border-r border-border-gray rounded-bl-lg bg-input-gray'>
+												<td class='p-3 border-r border-border-gray rounded-bl-lg bg-menu-gray'>
 													Total
 												</td>
 												<td
-													class='p-3 text-content-gray'
+													class='p-3 text-white'
 													colspan={3}
 												>
 													${total()}
@@ -925,21 +1014,23 @@ but format it, style it, whatever u feel looks best
 									</button>
 								</div>
 							</div>
+							{/* TODO: could u center this button too thankss  */}
+							<Show when={allTotals.tips > 0 && tipsSubmitted()}>
+								<div class='mx-5 mb-5'>
+									<button
+										class='p-1.5 w-full text-black font-medium rounded-md text-sm bg-white hover:bg-white/90'
+										onClick={() => {
+											setViewEntries(false);
+											setViewConfig(true);
+										}}
+									>
+										Calculate Tip Distribution
+									</button>
+								</div>
+							</Show>
 						</div>
 					</div>
 				</div>
-				{/* TODO: could u center this button too thankss  */}
-				<Show when={allTotals.tips > 0 && tipsSubmitted()}>
-					<button
-						class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-						onClick={() => {
-							setViewEntries(false);
-							setViewConfig(true);
-						}}
-					>
-						Calculate Tip Distribution
-					</button>
-				</Show>
 			</Show>
 
 			<Show when={viewConfig()}>
@@ -955,7 +1046,7 @@ but format it, style it, whatever u feel looks best
 				</button>
 				<button
 					class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-					onClick={() => {}}
+					onClick={() => { }}
 				>
 					Override Tip Rate
 				</button>
