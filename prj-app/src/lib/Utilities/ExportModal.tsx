@@ -16,7 +16,7 @@ const ExportModal: Component<ModalProps> = (props) => {
             <Portal>
                 <div class='fixed top-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-[999]'>
                     <div class='flex justify-center'>
-                        <div class='w-[23rem] bg-black'>
+                        <div class='w-[23rem] bg-dialog-bg-gray'>
                             <div class='border border-border-gray rounded-md'>
                                 <div class='flex px-6 pt-6 font-semibold'>
                                     {header}

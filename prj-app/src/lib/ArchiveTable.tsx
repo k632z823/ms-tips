@@ -935,7 +935,7 @@ const ArchiveTable: Component = () => {
 					}
 					denyButton={
 						<button
-							class='w-full p-1.5 text-center border border-border-gray hover:bg-border-gray rounded-md'
+							class='w-full p-1.5 text-center border border-border-gray rounded-md bg-black hover:bg-border-gray'
 							onclick={() => setConfirmDeleteShown(false)}
 						>
 							Cancel
@@ -1078,7 +1078,7 @@ const ArchiveTable: Component = () => {
 					}
 					denyButton={
 						<button
-							class='py-1.5 px-6 w-full text-center border border-border-gray hover:bg-border-gray rounded-md'
+							class='py-1.5 px-6 w-full text-center border border-border-gray rounded-md bg-black hover:bg-border-gray'
 							onclick={() => {
 								setFromDate("");
 								setToDate(moment().format("YYYY-MM-DD"));

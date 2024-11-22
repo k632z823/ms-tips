@@ -151,7 +151,7 @@ const OverviewEntries: Component = () => {
 					<div
 						class='mb-3 flex justify-center'
 					>
-						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray bg-black'>
+						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray bg-menu-gray'>
 							<div class='w-full flex flex-col'>
 								<div class='flex flex-col'>
 									<div class='text-white text-sm font-bold'>
