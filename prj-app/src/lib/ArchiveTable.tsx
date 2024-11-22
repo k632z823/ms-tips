@@ -210,6 +210,8 @@ const ArchiveTable: Component = () => {
 	const [validDateRange, setValidDateRange] = createSignal<boolean>(false);
 	const [pageButtonsShown, setPageButtonsShown] = createSignal<boolean>(true);
 	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
+	const [invalidFromDateMsg, setInvalidFromDateMsg] = createSignal("");
+	const [invalidToDateMsg, setInvalidToDateMsg] = createSignal("");
 
 	const navigate = useNavigate();
 
@@ -396,14 +398,14 @@ const ArchiveTable: Component = () => {
 																				onClick={() => {
 																					navigate(
 																						"/Entries/" +
-																							entryRows[
-																								selectedEntry()
-																							].momentDate.format(
-																								"MM-DD-YYYY",
-																							) +
-																							"/" +
-																							entryRows[selectedEntry()].entry
-																								.entry_no,
+																						entryRows[
+																							selectedEntry()
+																						].momentDate.format(
+																							"MM-DD-YYYY",
+																						) +
+																						"/" +
+																						entryRows[selectedEntry()].entry
+																							.entry_no,
 																						{
 																							replace: true,
 																						},
@@ -489,9 +491,8 @@ const ArchiveTable: Component = () => {
 						<div class='space-x-2'>
 							{/* go to first page */}
 							<button
-								class={`p-2 border border-border-gray rounded-md ${
-									currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
-								}`}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
+									}`}
 								onClick={() => {
 									prevPage(true);
 									setEntry(selectedEntry(), (row) => ({
@@ -502,9 +503,8 @@ const ArchiveTable: Component = () => {
 								disabled={currentPage() === 1}
 							>
 								<svg
-									class={`${
-										currentPage() === 1 ? "fill-icon-gray" : "fill-white"
-									}`}
+									class={`${currentPage() === 1 ? "fill-icon-gray" : "fill-white"
+										}`}
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
 									viewBox='0 0 24 24'
@@ -517,9 +517,8 @@ const ArchiveTable: Component = () => {
 							</button>
 							{/* go to prev page */}
 							<button
-								class={`p-2 border border-border-gray rounded-md ${
-									currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
-								}`}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
+									}`}
 								onClick={() => {
 									prevPage();
 									setEntry(selectedEntry(), (row) => ({
@@ -530,9 +529,8 @@ const ArchiveTable: Component = () => {
 								disabled={currentPage() === 1}
 							>
 								<svg
-									class={`${
-										currentPage() === 1 ? "fill-icon-gray" : "fill-white"
-									}`}
+									class={`${currentPage() === 1 ? "fill-icon-gray" : "fill-white"
+										}`}
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
 									viewBox='0 0 24 24'
@@ -545,11 +543,10 @@ const ArchiveTable: Component = () => {
 							</button>
 							{/* go to next page */}
 							<button
-								class={`p-2 border border-border-gray rounded-md ${
-									currentPage() === Math.ceil(sortedEntryRows.length / 15)
-										? "bg-black"
-										: "hover:bg-border-gray"
-								}`}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+									? "bg-black"
+									: "hover:bg-border-gray"
+									}`}
 								onClick={() => {
 									nextPage();
 									setEntry(selectedEntry(), (row) => ({
@@ -562,11 +559,10 @@ const ArchiveTable: Component = () => {
 								}
 							>
 								<svg
-									class={`${
-										currentPage() === Math.ceil(sortedEntryRows.length / 15)
-											? "fill-icon-gray"
-											: "fill-white"
-									}`}
+									class={`${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? "fill-icon-gray"
+										: "fill-white"
+										}`}
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
 									viewBox='0 0 24 24'
@@ -579,11 +575,10 @@ const ArchiveTable: Component = () => {
 							</button>
 							{/* go to last page */}
 							<button
-								class={`p-2 border border-border-gray rounded-md ${
-									currentPage() === Math.ceil(sortedEntryRows.length / 15)
-										? "bg-black"
-										: "hover:bg-border-gray"
-								}`}
+								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+									? "bg-black"
+									: "hover:bg-border-gray"
+									}`}
 								onClick={() => {
 									nextPage(true);
 									setEntry(selectedEntry(), (row) => ({
@@ -596,11 +591,10 @@ const ArchiveTable: Component = () => {
 								}
 							>
 								<svg
-									class={`${
-										currentPage() === Math.ceil(sortedEntryRows.length / 15)
-											? "fill-icon-gray"
-											: "fill-white"
-									}`}
+									class={`${currentPage() === Math.ceil(sortedEntryRows.length / 15)
+										? "fill-icon-gray"
+										: "fill-white"
+										}`}
 									stroke-width='0'
 									xmlns='http://www.w3.org/2000/svg'
 									viewBox='0 0 24 24'
@@ -652,9 +646,8 @@ const ArchiveTable: Component = () => {
 										<div class='justify-self-center inline-flex items-center rounded-md '>
 											{/* button to go to previous date's entry in view portal*/}
 											<button
-												class={`mr-1 p-2 rounded-md ${
-													selectedEntry() == 0 ? "" : "hover:bg-border-gray"
-												}`}
+												class={`mr-1 p-2 rounded-md ${selectedEntry() == 0 ? "" : "hover:bg-border-gray"
+													}`}
 												onclick={async function () {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
@@ -674,11 +667,10 @@ const ArchiveTable: Component = () => {
 												disabled={selectedEntry() == 0}
 											>
 												<svg
-													class={`${
-														selectedEntry() == 0
-															? "fill-icon-gray"
-															: "fill-white"
-													}`}
+													class={`${selectedEntry() == 0
+														? "fill-icon-gray"
+														: "fill-white"
+														}`}
 													stroke-width='0'
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 24 24'
@@ -696,11 +688,10 @@ const ArchiveTable: Component = () => {
 											</span>
 											{/* button to go to next date's entry in view portal*/}
 											<button
-												class={`ml-1 p-2 rounded-md ${
-													selectedEntry() == sortedEntryRows.length - 1
-														? ""
-														: "hover:bg-border-gray"
-												}`}
+												class={`ml-1 p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1
+													? ""
+													: "hover:bg-border-gray"
+													}`}
 												onclick={async function () {
 													setSortedEntryRows(selectedEntry(), (entry) => ({
 														...entry,
@@ -720,11 +711,10 @@ const ArchiveTable: Component = () => {
 												disabled={selectedEntry() == sortedEntryRows.length - 1}
 											>
 												<svg
-													class={`${
-														selectedEntry() == sortedEntryRows.length - 1
-															? "fill-icon-gray"
-															: "fill-white"
-													}`}
+													class={`${selectedEntry() == sortedEntryRows.length - 1
+														? "fill-icon-gray"
+														: "fill-white"
+														}`}
 													stroke-width='0'
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 24 24'
@@ -743,11 +733,11 @@ const ArchiveTable: Component = () => {
 												onClick={() => {
 													navigate(
 														"/Entries/" +
-															entryRows[selectedEntry()].momentDate.format(
-																"MM-DD-YYYY",
-															) +
-															"/0" +
-															entryRows[selectedEntry()].entry.entry_no,
+														entryRows[selectedEntry()].momentDate.format(
+															"MM-DD-YYYY",
+														) +
+														"/0" +
+														entryRows[selectedEntry()].entry.entry_no,
 														{
 															replace: true,
 														},
@@ -976,27 +966,28 @@ const ArchiveTable: Component = () => {
 					header='Export entries'
 					body={
 						<div class='w-full'>
-							Select the start and end dates to export data within a specific
-							range.
+							<span class="text-table-header-gray">Select the start and end dates to export data within a specific range.</span>
 							<div class='flex flex-row justify-between items-center pt-5'>
 								<input
 									id='from-date'
 									type='date'
-									class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none'
+									class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none hover:bg-border-gray'
 									onchange={(e) => {
-										let invalidFromDateMsg =
-											document.getElementById("invalid-from-date");
+										// let invalidFromDateMsg =
+										// 	document.getElementById("invalid-from-date");
 										if (moment(e.target.value).isAfter(moment(toDate()))) {
 											setFromDate("");
 											e.target.value = "";
 											//@ts-ignore
-											invalidFromDateMsg.innerHTML = "Invalid date";
+											// invalidFromDateMsg.innerHTML = "Invalid from date.";
+											setInvalidFromDateMsg("Invalid from date.");
 											setValidDateRange(false);
 										} else {
 											setFromDate(e.target.value);
 											//@ts-ignore
-											invalidFromDateMsg.innerHTML = "";
+											// invalidFromDateMsg.innerHTML = "";
 											setValidDateRange(true);
+											setInvalidFromDateMsg("");
 											if (toDate() != "") {
 												setValidDateRange(true);
 											}
@@ -1017,21 +1008,23 @@ const ArchiveTable: Component = () => {
 								<input
 									id='to-date'
 									type='date'
-									class='border border-border-gray rounded-md bg-black text-white px-2 py-1'
+									class='px-2 py-1 border border-border-gray rounded-md bg-black text-white appearance-none hover:bg-border-gray'
 									value={moment().format("YYYY-MM-DD")}
 									onchange={(e) => {
-										let invalidToDateMsg =
-											document.getElementById("invalid-to-date");
+										// let invalidToDateMsg =
+										// 	document.getElementById("invalid-to-date");
 										if (moment(e.target.value).isBefore(moment(fromDate()))) {
 											setToDate("");
 											e.target.value = "";
 											//@ts-ignore
-											invalidToDateMsg.innerHTML = "Invalid date";
+											// invalidToDateMsg.innerHTML = "Invalid to date.";
 											setValidDateRange(false);
+											setInvalidToDateMsg("Invalid to date.");
 										} else {
 											setToDate(e.target.value);
 											//@ts-ignore
-											invalidToDateMsg.innerHTML = "";
+											// invalidToDateMsg.innerHTML = "";
+											setInvalidToDateMsg("");
 											if (fromDate() != "") {
 												setValidDateRange(true);
 											}
@@ -1039,8 +1032,48 @@ const ArchiveTable: Component = () => {
 									}}
 								/>
 							</div>
-							<div id='invalid-from-date'></div>
-							<div id='invalid-to-date'></div>
+							<div
+								class={`${invalidFromDateMsg() ? "mt-2 p-2 flex flex-row items-center text-center border border-red rounded-md bg-select-red text-red" : ""}`}
+							>
+								{invalidFromDateMsg() && (
+									<>
+										<svg
+											class="ml-1 mr-3 fill-red"
+											stroke-width="0"
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 16 16"
+											height="1.2em"
+											width="1.2em"
+											style="overflow: visible; color: currentcolor;"
+										>
+											<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"></path>
+											<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"></path>
+										</svg>
+										{invalidFromDateMsg()}
+									</>
+								)}
+							</div>
+							<div
+								class={`${invalidToDateMsg() ? "mt-2 p-2 flex flex-row items-center text-center border border-red rounded-md bg-select-red text-red" : ""}`}
+							>
+								{invalidToDateMsg() && (
+									<>
+										<svg
+											class="ml-1 mr-3 fill-red"
+											stroke-width="0"
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 16 16"
+											height="1.2em"
+											width="1.2em"
+											style="overflow: visible; color: currentcolor;"
+										>
+											<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"></path>
+											<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"></path>
+										</svg>
+										{invalidToDateMsg()}
+									</>
+								)}
+							</div>
 						</div>
 					}
 					denyButton={

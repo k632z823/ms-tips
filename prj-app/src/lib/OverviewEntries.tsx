@@ -98,13 +98,13 @@ const OverviewEntries: Component = () => {
 	return (
 		<div class='px-5 flex flex-col justify-center'>
 			<Show when={rendered()}>
-				<div class='mt-2 mb-7 flex flex-col'>
+				<div class='mt-2 mb-6 flex flex-col'>
 					<div class='font-bold text-2xl'>Welcome, Mustard Seed</div>
 					<div class='font-medium text-table-header-gray text-lg'>
 						Here's an overview of your most recent entry
 					</div>
 				</div>
-				<Show when={showCreateToday()}>
+				{/* <Show when={showCreateToday()}>
 					<button
 						class='mb-3 flex justify-center'
 						onClick={() => {
@@ -146,6 +146,70 @@ const OverviewEntries: Component = () => {
 							</div>
 						</div>
 					</button>
+				</Show> */}
+				<Show when={showCreateToday()}>
+					<div
+						class='mb-3 flex justify-center'
+					>
+						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray bg-black'>
+							<div class='w-full flex flex-col'>
+								<div class='flex flex-col'>
+									<div class='text-white text-sm font-bold'>
+										Create a new entry
+									</div>
+									<div class='mb-3 text-content-gray text-sm text-pretty font-medium'>
+										Select a date below to create a new entry.
+									</div>
+									<div class="flex flex-row gap-2">
+										<button
+											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+										>
+											<svg
+												class="fill-white"
+												stroke-width='0'
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 24 24'
+												height='1em'
+												width='1em'
+												style='overflow: visible; color: currentcolor;'
+											>
+												<path d='m10.828 12 4.95 4.95-1.414 1.415L8 12l6.364-6.364 1.414 1.414-4.95 4.95Z'></path>
+											</svg>
+										</button>
+										<input
+											id='from-date'
+											type='date'
+											class='px-2 py-1 w-full border border-border-gray rounded-md bg-black font-medium text-white appearance-none hover:bg-border-gray'
+										/>
+										<button
+											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+										>
+											<svg
+												class="fill-white"
+												stroke-width='0'
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 24 24'
+												height='1em'
+												width='1em'
+												style='overflow: visible; color: currentcolor;'
+											>
+												<path d='m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z'></path>
+											</svg>
+										</button>
+										<button
+											class='py-1.5 px-5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
+											onclick={() => {
+											}}
+										>
+											Create
+										</button>
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
 				</Show>
 				<div class='mb-3 p-1 flex justify-between items-center bg-menu-gray border border-border-gray rounded-md'>
 					<span class='pl-2 font-normal'>
@@ -413,46 +477,48 @@ const OverviewEntries: Component = () => {
 					<div class='mt-3 p-2.5 h-[453px] flex flex-col overflow-auto gap-2 border border-border-gray rounded-md'>
 						<For each={tipDistributions}>
 							{(distribution, index) => (
-								<div class='p-4 grid grid-cols-[30px_auto] border border-border-gray rounded-md'>
-									<div class='font-medium text-table-header-gray'>{index() + 1}</div>
-									<div class='flex flex-col'>
-										<div class='flex justify-between items-center'>
-											<span class='font-medium'>{distribution.name}</span>
-											<span class='px-2 bg-white rounded-md font-medium text-black'>
-												{distribution.title}
-											</span>
+								<div class='p-4 border border-border-gray rounded-md'>
+									<div class="grid grid-cols-[25px_auto]">
+										<div class='font-medium text-table-header-gray'>{index() + 1}</div>
+										<div class='flex flex-col'>
+											<div class='flex justify-between items-center'>
+												<span class='font-medium'>{distribution.name}</span>
+												<span class='px-2 bg-white rounded-md font-medium text-black'>
+													{distribution.title}
+												</span>
+											</div>
 										</div>
-										<div class='mt-6 grid grid-cols-4 items-center font-medium'>
-											<div class='flex flex-col gap-2'>
-												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-													Hours
-												</span>
-												<span>{distribution.hours}</span>
-											</div>
-											<div class='flex flex-col gap-2'>
-												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-													Initital
-												</span>
-												<span>${distribution.initial}</span>
-											</div>
-											<div class='flex flex-col gap-2'>
-												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-													Tips
-												</span>
-												<span>${distribution.tips_received}</span>
-											</div>
-											<div class='flex flex-col gap-2'>
-												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-													Total
-												</span>
-												<span>${distribution.total}</span>
-											</div>
-											<div class='flex flex-col gap-2'>
-												<span class='pb-2 text-table-header-gray border-b border-border-gray'>
-													Offset
-												</span>
-												<span>${distribution.offset}</span>
-											</div>
+									</div>
+									<div class='mt-6 grid grid-cols-[66.5px_66.5px_66.5px_66.5px_55px] items-center font-medium'>
+										<div class='flex flex-col gap-2'>
+											<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+												Hours
+											</span>
+											<span>{distribution.hours}</span>
+										</div>
+										<div class='flex flex-col gap-2'>
+											<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+												Initital
+											</span>
+											<span>${distribution.initial}</span>
+										</div>
+										<div class='flex flex-col gap-2'>
+											<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+												Tips
+											</span>
+											<span>${distribution.tips_received}</span>
+										</div>
+										<div class='flex flex-col gap-2'>
+											<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+												Total
+											</span>
+											<span>${distribution.total}</span>
+										</div>
+										<div class='flex flex-col gap-2'>
+											<span class='pb-2 text-table-header-gray border-b border-border-gray'>
+												Offset
+											</span>
+											<span>${distribution.offset}</span>
 										</div>
 									</div>
 								</div>
