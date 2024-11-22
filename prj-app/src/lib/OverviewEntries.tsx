@@ -73,12 +73,10 @@ const OverviewEntries: Component = () => {
 	});
 
 	const [rendered, setRendered] = createSignal<boolean>(false);
-
 	const [showCreateToday, setShowCreateToday] = createSignal<boolean>(true);
-
 	const [tabSwitch, setTabSwitch] = createSignal<boolean>(false);
-
 	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
+	const [calendarDate, setCalendarDate] = createSignal<string>(moment().format("YYYY-MM-DD"));
 
 	// sixRecentEntries is the list/store that actually has the entries and is used in the rest of the code
 	let recentEntries: Entry[] = [];
@@ -163,6 +161,9 @@ const OverviewEntries: Component = () => {
 									<div class="flex flex-row gap-2">
 										<button
 											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+											onclick={() => {
+												setCalendarDate(moment(calendarDate()).subtract(1, "days").format("YYYY-MM-DD"));
+											}}
 										>
 											<svg
 												class="fill-white"
@@ -176,13 +177,19 @@ const OverviewEntries: Component = () => {
 												<path d='m10.828 12 4.95 4.95-1.414 1.415L8 12l6.364-6.364 1.414 1.414-4.95 4.95Z'></path>
 											</svg>
 										</button>
+										{/* Calendar date select */}
 										<input
 											id='from-date'
 											type='date'
 											class='px-2 py-1 w-full border border-border-gray rounded-md bg-black font-medium text-white appearance-none hover:bg-border-gray'
+											value={calendarDate()}
+											onInput={(e) => setCalendarDate(e.currentTarget.value)}
 										/>
 										<button
 											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+											onclick={() => {
+												setCalendarDate(moment(calendarDate()).add(1, "days").format("YYYY-MM-DD"));
+											}}
 										>
 											<svg
 												class="fill-white"
@@ -196,9 +203,15 @@ const OverviewEntries: Component = () => {
 												<path d='m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z'></path>
 											</svg>
 										</button>
+										{/* Create new entry button for the date in the calendar select */}
 										<button
 											class='py-1.5 px-5 text-center text-black font-medium rounded-md bg-white hover:bg-white/90'
 											onclick={() => {
+												navigate(
+													"/Entries/" +
+													calendarDate() +
+													"/0"
+												)
 											}}
 										>
 											Create
