@@ -187,6 +187,8 @@ async function requestEntryData(date: string) {
 	setAllEntries(entries);
 	//console.log(allEntries);
 
+	console.log(allEntries);
+
 	//selects the first entry to display by default
 	setEntry("drawer", entries[entryNo()].drawer);
 	setEntry("tips", entries[entryNo()].tips);
@@ -277,7 +279,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 	let { entryDate, entryNoProp } = props;
 	let entries;
 
-	console.log(entryNoProp);
+	setViewConfig(false);
 
 	setEntryNo(parseInt(entryNoProp));
 
@@ -336,7 +338,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 					{/* TODO: this is the datepicker for the entries, format/move it however u want chief */}
 					<div class='mb-5 flex flex-col'>
 						<span class='font-semibold text-lg'>Entries</span>
-						<span class='font-medium text-table-header-gray text-sm'>Add or edit an existing entry.</span>
+						<span class='font-medium text-table-header-gray text-sm'>
+							Add or edit an existing entry.
+						</span>
 					</div>
 					<div class='w-full flex flex-row gap-4'>
 						<div
@@ -423,8 +427,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(entry, index) => (
 													<div class='px-1 pt-1'>
 														<li
-															class={`px-3 py-2 rounded hover:bg-input-gray ${entryNo() === index() ? "selected" : ""
-																}`}
+															class={`px-3 py-2 rounded hover:bg-input-gray ${
+																entryNo() === index() ? "selected" : ""
+															}`}
 															onClick={async () => {
 																if (entryNo() !== index()) {
 																	initializeEntry(index());
@@ -449,15 +454,28 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 														}}
 													>
 														<svg
-															class="mr-2"
-															stroke-width="0"
-															xmlns="http://www.w3.org/2000/svg"
-															viewBox="0 0 512 512"
-															height="1.1em"
-															width="1.1em"
-															style="overflow: visible; color: currentcolor;">
-															<path class="stroke-white" stroke-linecap="square" stroke-linejoin="round" stroke-width="52" d="M256 112 256 400"></path>
-															<path class="stroke-white" stroke-linecap="square" stroke-linejoin="round" stroke-width="52" d="M400 256 112 256"></path>
+															class='mr-2'
+															stroke-width='0'
+															xmlns='http://www.w3.org/2000/svg'
+															viewBox='0 0 512 512'
+															height='1.1em'
+															width='1.1em'
+															style='overflow: visible; color: currentcolor;'
+														>
+															<path
+																class='stroke-white'
+																stroke-linecap='square'
+																stroke-linejoin='round'
+																stroke-width='52'
+																d='M256 112 256 400'
+															></path>
+															<path
+																class='stroke-white'
+																stroke-linecap='square'
+																stroke-linejoin='round'
+																stroke-width='52'
+																d='M400 256 112 256'
+															></path>
 														</svg>
 														Add a new entry
 													</li>
@@ -493,7 +511,10 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									// 	setEvents([...events, {id: 0, event:inputEvent()}]);
 									// 	setInputEvent("");
 									// }
-									setEvents([...events, { id: eventId(), event: inputEvent() }]);
+									setEvents([
+										...events,
+										{ id: eventId(), event: inputEvent() },
+									]);
 									setInputEvent("");
 									setEventId(eventId() + 1);
 								}}
@@ -511,19 +532,22 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 											<button
 												class='m-1 p-1 rounded-md hover:bg-input-gray'
 												onclick={() => {
-													setEvents(events.filter((item) => item.id !== event.id));
+													setEvents(
+														events.filter((item) => item.id !== event.id),
+													);
 													//console.log([...allEvents.splice(index, 1)]);
 												}}
 											>
 												<svg
-													class="fill-icon-gray"
-													stroke-width="0"
-													xmlns="http://www.w3.org/2000/svg"
-													viewBox="0 0 512 512"
-													height="1.2em"
-													width="1.2em"
-													style="overflow: visible; color: currentcolor;">
-													<path d="M400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z"></path>
+													class='fill-icon-gray'
+													stroke-width='0'
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 512 512'
+													height='1.2em'
+													width='1.2em'
+													style='overflow: visible; color: currentcolor;'
+												>
+													<path d='M400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z'></path>
 												</svg>
 											</button>
 										</div>
@@ -631,7 +655,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 											<div class='w-full grid grid-cols-3 gap-2'>
 												<div class='flex flex-col w-full border border-border-gray rounded-md'>
 													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
-														<span class='font-medium text-table-header-gray'>Drawer</span>
+														<span class='font-medium text-table-header-gray'>
+															Drawer
+														</span>
 														{/* <svg
 															class="fill-icon-gray stroke-icon-gray"
 															stroke-width="0"
@@ -647,7 +673,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												</div>
 												<div class='flex flex-col w-full border border-border-gray rounded-md'>
 													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
-														<span class='font-medium text-table-header-gray'>Tips</span>
+														<span class='font-medium text-table-header-gray'>
+															Tips
+														</span>
 														{/* <svg
 															class="fill-icon-gray stroke-icon-gray"
 															stroke-width='0'
@@ -664,7 +692,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												</div>
 												<div class='flex flex-col w-full border border-border-gray rounded-md'>
 													<div class='p-2 flex justify-between items-center border-b border-border-gray'>
-														<span class='font-medium text-table-header-gray'>Final</span>
+														<span class='font-medium text-table-header-gray'>
+															Final
+														</span>
 														{/* <svg
 															class="fill-icon-gray stroke-icon-gray"
 															stroke-width='0'
@@ -848,24 +878,28 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(item) => (
 													<tr class='text-center'>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
-																? "rounded-tl-md border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
+																item.id === 0
+																	? "rounded-tl-md border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "rounded-bl-md border-t border-border-gray"
 																	: "border-b border-border-gray"
-																} border-r border-border-gray`}
+															} border-r border-border-gray`}
 														>
 															{labels[item.id].bill_label}
 														</td>
 														<td
-															class={`p-2 ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-2 ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																}`}
+															}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -898,24 +932,28 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 															></input>
 														</td>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																} border-x border-border-gray`}
+															} border-x border-border-gray`}
 														>
 															{labels[item.id].change_label}
 														</td>
 														<td
-															class={`p-2 ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-2 ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																}`}
+															}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -1046,7 +1084,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 				</button>
 				<button
 					class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-					onClick={() => { }}
+					onClick={() => {}}
 				>
 					Override Tip Rate
 				</button>
