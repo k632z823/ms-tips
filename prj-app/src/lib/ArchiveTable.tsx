@@ -363,7 +363,7 @@ const ArchiveTable: Component = () => {
 														<div class='flex justify-end'>
 															<div class='mt-8 py-1 z-50 w-[7rem] absolute'>
 																<div class='bg-black border border-border-gray rounded-md text-white'>
-																	<ul class='font-normal'>
+																	<ul class='font-medium'>
 																		<div class='px-1 pt-1'>
 																			<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																				<button

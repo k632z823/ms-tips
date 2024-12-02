@@ -8,7 +8,7 @@ const App: Component = (props: any) => {
 			<div class='select-none'>
 				<Nav />
 			</div>
-			<div class='py-[4.5rem]'>
+			<div class='pt-[4.5rem]'>
 				{props.children}
 			</div>
 		</>
