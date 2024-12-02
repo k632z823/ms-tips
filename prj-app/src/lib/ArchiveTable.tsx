@@ -221,7 +221,7 @@ const ArchiveTable: Component = () => {
 				<div class='px-5 pb-4 text-sm'>
 					<div class='flex'>
 						<button
-							class='py-1.5 px-3 inline-flex items-center justify-between text-center bg-black border border-border-gray rounded-md hover:bg-border-gray font-normal'
+							class='py-1.5 px-3 inline-flex items-center justify-between text-center bg-black border border-border-gray rounded-md hover:bg-border-gray font-medium'
 							onclick={() => {
 								setExportModalShown(true);
 								setEntry(selectedEntry(), (row) => ({
@@ -307,7 +307,7 @@ const ArchiveTable: Component = () => {
 								{/* <For each={sortedEntryRows}> */}
 								<For each={getCurrentPageRows()}>
 									{(entryRow) => (
-										<tr class='border-t border-border-gray text-white hover:bg-menu-gray'>
+										<tr class='border-t border-border-gray text-white font-medium hover:bg-menu-gray'>
 											{/* <td class='p-3 text-center'>
 												{sortedEntryRows.indexOf(entryRow) + 1}
 											</td> */}
@@ -867,15 +867,15 @@ const ArchiveTable: Component = () => {
 															{index() + 1}
 														</div>
 														<div class="flex flex-col">
-															<div class="flex justify-between">
-																<span class="font-normal">{distribution.name}</span>
-																<span class="font-medium text-content-gray">{distribution.title}</span>
+															<div class="flex justify-between font-medium">
+																<span>{distribution.name}</span>
+																<span class="text-content-gray">{distribution.title}</span>
 															</div>
 														</div>
 													</div>
-													<table class='table-fixed w-full text-sm'>
+													<table class='table-fixed w-full text-sm font-medium'>
 														<tbody>
-															<tr class="border-b border-border-gray font-medium text-table-header-gray">
+															<tr class="border-b border-border-gray text-table-header-gray">
 																{/* <td class="p-3 w-1/4">
 																	Title
 																</td> */}

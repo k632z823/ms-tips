@@ -149,7 +149,7 @@ const OverviewEntries: Component = () => {
 					<div
 						class='mb-3 flex justify-center'
 					>
-						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray bg-menu-gray'>
+						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray'>
 							<div class='w-full flex flex-col'>
 								<div class='flex flex-col'>
 									<div class='text-white text-sm font-bold'>
@@ -218,14 +218,12 @@ const OverviewEntries: Component = () => {
 										</button>
 									</div>
 								</div>
-
-
 							</div>
 						</div>
 					</div>
 				</Show>
-				<div class='mb-3 p-1 flex justify-between items-center bg-menu-gray border border-border-gray rounded-md'>
-					<span class='pl-2 font-normal'>
+				<div class='mb-3 p-1 flex justify-between items-center border border-border-gray rounded-md'>
+					<span class='pl-2 font-medium'>
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}
 					</span>
 					<button
