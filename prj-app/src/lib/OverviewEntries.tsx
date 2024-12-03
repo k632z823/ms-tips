@@ -222,12 +222,12 @@ const OverviewEntries: Component = () => {
 						</div>
 					</div>
 				</Show>
-				<div class='mb-3 p-1 flex justify-between items-center border border-border-gray rounded-md'>
-					<span class='pl-2 font-medium'>
+				<div class='mb-3 p-1 flex justify-between items-center border border-border-gray rounded-md font-medium'>
+					<span class='pl-2'>
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}
 					</span>
 					<button
-						class='py-1.5 px-3 inline-flex justify-between items-center rounded-md hover:bg-border-gray font-normal'
+						class='py-1.5 px-3 inline-flex justify-between items-center rounded-md hover:bg-border-gray'
 						onClick={() => {
 							navigate(
 								"/Entries/" +

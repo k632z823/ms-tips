@@ -427,9 +427,8 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(entry, index) => (
 													<div class='px-1 pt-1'>
 														<li
-															class={`px-3 py-2 rounded hover:bg-input-gray ${
-																entryNo() === index() ? "selected" : ""
-															}`}
+															class={`px-3 py-2 rounded hover:bg-input-gray ${entryNo() === index() ? "selected" : ""
+																}`}
 															onClick={async () => {
 																if (entryNo() !== index()) {
 																	initializeEntry(index());
@@ -477,7 +476,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 																d='M400 256 112 256'
 															></path>
 														</svg>
-														Add a new entry
+														Add new entry
 													</li>
 												</div>
 											</div>
@@ -878,28 +877,24 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(item) => (
 													<tr class='text-center'>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
-																item.id === 0
-																	? "rounded-tl-md border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
+																? "rounded-tl-md border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "rounded-bl-md border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-r border-border-gray`}
+																} border-r border-border-gray`}
 														>
 															{labels[item.id].bill_label}
 														</td>
 														<td
-															class={`p-2 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -932,28 +927,24 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 															></input>
 														</td>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															} border-x border-border-gray`}
+																} border-x border-border-gray`}
 														>
 															{labels[item.id].change_label}
 														</td>
 														<td
-															class={`p-2 ${
-																item.id === 0
-																	? "border-b border-border-gray"
-																	: ""
-															} ${
-																item.id === 5
+															class={`p-2 ${item.id === 0
+																? "border-b border-border-gray"
+																: ""
+																} ${item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-															}`}
+																}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -1073,21 +1064,71 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 
 			<Show when={viewConfig()}>
 				{/* TODO: maybe just like a task bar ?? edit entries takes u back to the entries page with drawer amounts, and override is for the tip offset  */}
-				<button
-					class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-					onClick={() => {
-						setViewEntries(true);
-						setViewConfig(false);
-					}}
-				>
-					Edit Entries
-				</button>
-				<button
-					class='text-black font-medium rounded-md bg-green hover:bg-white/90'
-					onClick={() => {}}
-				>
-					Override Tip Rate
-				</button>
+				<div class='mx-5 p-1.5 grid grid-cols-3 items-center border border-border-gray rounded-md'>
+					<div class='justify-self-start text-sm'>
+						<button
+							class='p-2 inline-flex justify-between items-center rounded-md hover:bg-border-gray'
+							onClick={() => {
+								setViewEntries(true);
+								setViewConfig(false);
+							}}
+						>
+							<svg
+								class='fill-white'
+								stroke-width='0'
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 384 512'
+								height='1em'
+								width='1em'
+								style='overflow: visible; color: currentcolor; transform: rotate(-90deg);'
+							>
+								<path d='M32 448c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c53 0 96-43 96-96V109.3l73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l73.3-73.4V416c0 17.7-14.3 32-32 32H32z'></path>
+							</svg>
+						</button>
+					</div>
+					<div class='justify-self-center inline-flex items-center rounded-md'>
+						<span class='w-[10rem] text-center font-medium text-sm'>
+							{/* {moment(entryDate, 'MM-DD-YYYY').format('MM/DD/YYYY')} */}
+							Tip Config
+						</span>
+					</div>
+					<div class='justify-self-end border-l border-border-gray text-sm'>
+						<button
+							class='ml-1.5 pl-1.5 pr-2.5 py-1 inline-flex justify-between items-center rounded-md hover:bg-border-gray'
+							onClick={() => { }}
+						>
+							<svg
+								class='mr-3 fill-icon-gray'
+								stroke-width="0"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 512 512"
+								height="1.1em"
+								width="1.1em"
+								style="overflow: visible; color: currentcolor;">
+								<path class='fill-none stroke-icon-gray' stroke-linecap="square" stroke-miterlimit="10" stroke-width="59" d="M320 146s24.36-12-64-12a160 160 0 1 0 160 160"></path><path class='fill-none stroke-icon-gray' stroke-linecap="square" stroke-miterlimit="10" stroke-width="59" d="M256 58 336 138 256 218"></path>
+							</svg>
+							Override
+						</button>
+					</div>
+				</div>
+
+				{/* <div class='mx-5 flex flex-row gap-4 text-sm'>
+					<button
+						class='px-5 p-1.5 border border-border-gray rounded-md font-medium hover:bg-border-gray'
+						onClick={() => {
+							setViewEntries(true);
+							setViewConfig(false);
+						}}
+					>
+						Return
+					</button>
+					<button
+						class='px-5 p-1.5 border border-border-gray rounded-md font-medium hover:bg-border-gray'
+						onClick={() => { }}
+					>
+						Save Offset
+					</button>
+				</div> */}
 				<TipConfig
 					tip_total={tipTotal()}
 					date={entryDate}

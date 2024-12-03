@@ -9,32 +9,22 @@ const TipConfigBar: Component<TipConfigProps> = (props: TipConfigProps) => {
 	return (
 		<>
 			<div
-				class='flex justify-center px-5'
+				class='px-5 mt-4 w-full flex justify-center text-sm font-medium '
 				id='tip-config-bar'
 			>
-				<div class='border border-border-gray rounded-md w-full'>
-					<table class='table-auto w-full'>
-						<tbody>
-							<tr class='border-border-gray'>
-								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
-									Total Tip Amount
-								</td>
-								<td class='p-2 align-top border-r border-border-gray text-xs text-mini-gray'>
-									Tip Rate
-								</td>
-							</tr>
-							<tr class='border-border-gray'>
-								<td class='px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right'>
-									${props.tip_total}
-								</td>
-								<td
-									class={`px-2 pb-2 w-1/3 border-r border-border-gray text-l text-right `}
-								>
-									${props.tip_rate}
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class='w-full grid grid-cols-2 border border-border-gray rounded-md'>
+					<div class='p-3 inline-flex justify-between items-center border-r border-border-gray'>
+						<span class='text-table-header-gray'>
+							Tip Pool
+						</span>
+						<span class='mr-1'>${props.tip_total}</span>
+					</div>
+					<div class='p-3 inline-flex justify-between items-centerr'>
+						<span class='text-table-header-gray'>
+							Tip Rate
+						</span>
+						<span class='mr-1'>${props.tip_rate}</span>
+					</div>
 				</div>
 			</div>
 			{/* <Show when={props.offset_total !== 0}>
