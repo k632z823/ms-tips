@@ -1,4 +1,4 @@
-import { For, Component, createSignal, onMount, Show, from } from "solid-js";
+import { For, Component, createSignal, onMount, Show, from, createEffect, onCleanup } from "solid-js";
 import { createStore } from "solid-js/store";
 import moment from "moment";
 import axios from "axios";
@@ -215,6 +215,35 @@ const ArchiveTable: Component = () => {
 
 	const navigate = useNavigate();
 
+	// closes the row dropdowns (View, Edit, Delete) when clicking outside of it 
+	let buttonRef: any;
+	let dropdownRef: any;
+	createEffect(() => {
+	  const handleClickOutside = (e: any) => {
+		if (
+		  buttonRef &&
+		  !buttonRef.contains(e.target) &&
+		  dropdownRef &&
+		  !dropdownRef.contains(e.target)
+		) {
+		  // console.log("clicked outside the dropdown");
+		  setEntry(selectedEntry(), (row) => ({
+			...row,
+			dropDownShown: false,
+		  }));
+		}
+	  };
+  
+	  // re-add the event listener to the document when a dropdown is opened
+	  if (selectedEntry() != null && entry[selectedEntry()]?.dropDownShown) {
+		document.addEventListener("click", handleClickOutside);
+	  }
+  
+	  onCleanup(() => {
+		document.removeEventListener("click", handleClickOutside);
+	  });
+	});
+
 	return (
 		<>
 			<Show when={tableShown()}>
@@ -326,6 +355,7 @@ const ArchiveTable: Component = () => {
 											</td> */}
 											<td class='text-center font-normal'>
 												<button
+													ref={buttonRef}
 													class='m-1 rounded-md items-center hover:bg-border-gray'
 													onClick={async function () {
 														if (selectedEntry() != entryRow.number) {
@@ -360,7 +390,7 @@ const ArchiveTable: Component = () => {
 															entry[selectedEntry()].dropDownShown
 														}
 													>
-														<div class='flex justify-end'>
+														<div ref={dropdownRef} class='flex justify-end'>
 															<div class='mt-8 py-1 z-50 w-[7rem] absolute'>
 																<div class='bg-black border border-border-gray rounded-md text-white'>
 																	<ul class='font-medium'>
