@@ -958,6 +958,7 @@ const ArchiveTable: Component = () => {
 							Continue
 						</button>
 					}
+					onClose={() => setConfirmDeleteShown(false)}
 				></Modal>
 			</Show>
 			{/* export modal, appears when export button is clicked */}
@@ -1112,6 +1113,7 @@ const ArchiveTable: Component = () => {
 							Export
 						</button>
 					}
+					onClose={() => setExportModalShown(false)}
 				></ExportModal>
 			</Show>
 		</>

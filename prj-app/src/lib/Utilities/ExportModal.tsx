@@ -6,15 +6,26 @@ interface ModalProps {
     body: JSX.Element;
     denyButton: JSX.Element;
     confirmButton: JSX.Element;
+    onClose: () => void;
 }
 
 const ExportModal: Component<ModalProps> = (props) => {
-    const { header, body, denyButton, confirmButton} = props;
+    const { header, body, denyButton, confirmButton, onClose } = props;
+
+        // close the modal by changing the show signal of the modal to false when click outside of modal
+        const handleOverlayClick = (e: MouseEvent) => {
+            if (e.target === e.currentTarget) {
+                onClose();
+            }
+        };
 
     return (
         <>
             <Portal>
-                <div class='fixed top-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-[999]'>
+                <div 
+                    class='fixed top-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-[999]'
+                    onclick={handleOverlayClick}
+                >
                     <div class='flex justify-center'>
                         <div class='w-[23rem] bg-dialog-bg-gray'>
                             <div class='border border-border-gray rounded-md'>
