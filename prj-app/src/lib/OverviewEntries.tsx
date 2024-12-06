@@ -19,7 +19,9 @@ interface Entry {
 }
 
 async function getTodaysEntry() {
-	let response = await axios.get("http://localhost:3001/get-todays-entry");
+	let response = await axios.get(
+		import.meta.env.VITE_API_URL + "get-todays-entry",
+	);
 	let responseData: Entry = response.data.todaysEntry;
 	return responseData;
 }
@@ -33,7 +35,7 @@ const todaysEntryExists = (todaysEntry: Entry) => {
 // the most recent entry is in the main display and the other four are on the right side
 async function getRecentEntries() {
 	let response = await axios.get(
-		"http://localhost:3001/get-six-recent-entries",
+		import.meta.env.VITE_API_URL + "get-six-recent-entries",
 	);
 	let responseData = response.data.entries;
 	let entries: Entry[] = [];
@@ -45,7 +47,7 @@ async function getRecentEntries() {
 			final: item.final,
 			tipRate: item.tipRate,
 			drawer: item.drawer,
-			entry_no: item.entry_no
+			entry_no: item.entry_no,
 		});
 	}
 	return entries;
@@ -59,7 +61,7 @@ const OverviewEntries: Component = () => {
 		tips: 0,
 		final: 0,
 		tipRate: 0,
-		entry_no: 0
+		entry_no: 0,
 	});
 
 	const [todaysEntry, setTodaysEntry] = createStore<Entry>({
@@ -69,25 +71,30 @@ const OverviewEntries: Component = () => {
 		tips: 0,
 		final: 0,
 		tipRate: 0,
-		entry_no: 0
+		entry_no: 0,
 	});
 
 	const [rendered, setRendered] = createSignal<boolean>(false);
 	const [showCreateToday, setShowCreateToday] = createSignal<boolean>(true);
 	const [tabSwitch, setTabSwitch] = createSignal<boolean>(false);
-	const [tipDistributions, setTipDistributions] = createStore<EmployeeTipDistribution[]>([]);
-	const [calendarDate, setCalendarDate] = createSignal<string>(moment().format("YYYY-MM-DD"));
+	const [tipDistributions, setTipDistributions] = createStore<
+		EmployeeTipDistribution[]
+	>([]);
+	const [calendarDate, setCalendarDate] = createSignal<string>(
+		moment().format("YYYY-MM-DD"),
+	);
 
 	// sixRecentEntries is the list/store that actually has the entries and is used in the rest of the code
 	let recentEntries: Entry[] = [];
-	const [sixRecentEntries, setSixRecentEntries] = createStore<Entry[]>(recentEntries);
+	const [sixRecentEntries, setSixRecentEntries] =
+		createStore<Entry[]>(recentEntries);
 
 	onMount(async function () {
 		recentEntries = await getRecentEntries();
 		setSixRecentEntries(...[recentEntries]);
 		setTodaysEntry(await getTodaysEntry());
 		setShowCreateToday(todaysEntryExists(todaysEntry));
-		setTipDistributions(await getTipDistributions(sixRecentEntries[0].id))
+		setTipDistributions(await getTipDistributions(sixRecentEntries[0].id));
 		setRendered(true);
 	});
 
@@ -146,9 +153,7 @@ const OverviewEntries: Component = () => {
 					</button>
 				</Show> */}
 				<Show when={showCreateToday()}>
-					<div
-						class='mb-3 flex justify-center'
-					>
+					<div class='mb-3 flex justify-center'>
 						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray'>
 							<div class='w-full flex flex-col'>
 								<div class='flex flex-col'>
@@ -158,15 +163,19 @@ const OverviewEntries: Component = () => {
 									<div class='mb-3 text-table-header-gray text-sm text-pretty font-medium'>
 										Select a date below to create or edit an entry.
 									</div>
-									<div class="flex flex-row gap-2">
+									<div class='flex flex-row gap-2'>
 										<button
-											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+											class='p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray'
 											onclick={() => {
-												setCalendarDate(moment(calendarDate()).subtract(1, "days").format("YYYY-MM-DD"));
+												setCalendarDate(
+													moment(calendarDate())
+														.subtract(1, "days")
+														.format("YYYY-MM-DD"),
+												);
 											}}
 										>
 											<svg
-												class="fill-white"
+												class='fill-white'
 												stroke-width='0'
 												xmlns='http://www.w3.org/2000/svg'
 												viewBox='0 0 24 24'
@@ -186,13 +195,17 @@ const OverviewEntries: Component = () => {
 											onInput={(e) => setCalendarDate(e.currentTarget.value)}
 										/>
 										<button
-											class="p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray"
+											class='p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray'
 											onclick={() => {
-												setCalendarDate(moment(calendarDate()).add(1, "days").format("YYYY-MM-DD"));
+												setCalendarDate(
+													moment(calendarDate())
+														.add(1, "days")
+														.format("YYYY-MM-DD"),
+												);
 											}}
 										>
 											<svg
-												class="fill-white"
+												class='fill-white'
 												stroke-width='0'
 												xmlns='http://www.w3.org/2000/svg'
 												viewBox='0 0 24 24'
@@ -207,11 +220,7 @@ const OverviewEntries: Component = () => {
 										<button
 											class='py-1.5 px-5 border border-border-gray rounded-md font-medium text-center text-white bg-black hover:bg-border-gray'
 											onclick={() => {
-												navigate(
-													"/Entries/" +
-													calendarDate() +
-													"/0"
-												)
+												navigate("/Entries/" + calendarDate() + "/0");
 											}}
 										>
 											Continue
@@ -231,8 +240,8 @@ const OverviewEntries: Component = () => {
 						onClick={() => {
 							navigate(
 								"/Entries/" +
-								sixRecentEntries[0].date.format("MM-DD-YYYY") +
-								"/0",
+									sixRecentEntries[0].date.format("MM-DD-YYYY") +
+									"/0",
 								{
 									replace: true,
 								},
@@ -255,8 +264,9 @@ const OverviewEntries: Component = () => {
 				</div>
 				<div class='p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-lg font-semibold'>
 					<button
-						class={`py-1.5 px-3 items-center rounded-md ${!tabSwitch() ? "bg-border-gray text-white" : ""
-							}`}
+						class={`py-1.5 px-3 items-center rounded-md ${
+							!tabSwitch() ? "bg-border-gray text-white" : ""
+						}`}
 						onClick={() => {
 							if (tabSwitch()) setTabSwitch(false);
 						}}
@@ -264,8 +274,9 @@ const OverviewEntries: Component = () => {
 						Classifications
 					</button>
 					<button
-						class={`py-1.5 px-3 items-center rounded-md ${tabSwitch() ? "bg-border-gray text-white" : ""
-							}`}
+						class={`py-1.5 px-3 items-center rounded-md ${
+							tabSwitch() ? "bg-border-gray text-white" : ""
+						}`}
 						onClick={() => {
 							if (!tabSwitch()) setTabSwitch(true);
 						}}
@@ -489,8 +500,10 @@ const OverviewEntries: Component = () => {
 						<For each={tipDistributions}>
 							{(distribution, index) => (
 								<div class='p-4 border border-border-gray rounded-md'>
-									<div class="grid grid-cols-[25px_auto]">
-										<div class='font-medium text-table-header-gray'>{index() + 1}</div>
+									<div class='grid grid-cols-[25px_auto]'>
+										<div class='font-medium text-table-header-gray'>
+											{index() + 1}
+										</div>
 										<div class='flex flex-col'>
 											<div class='flex justify-between items-center'>
 												<span class='font-medium'>{distribution.name}</span>

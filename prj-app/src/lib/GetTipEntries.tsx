@@ -1,21 +1,24 @@
 import axios from "axios";
 
 export interface EmployeeTipDistribution {
-    hours: number;
-    initial: number;
-    tips_received: number;
-    total: number;
-    offset: number;
-    name: string;
-    title: string; 
+	hours: number;
+	initial: number;
+	tips_received: number;
+	total: number;
+	offset: number;
+	name: string;
+	title: string;
 }
 
- export async function getTipDistributions(archiveEntryId: number) {
-	let response = await axios.get("http://localhost:3001/get-employee-tip-distribution/", {
-		params: {
-			archiveEntryId: archiveEntryId
-		}
-	});
+export async function getTipDistributions(archiveEntryId: number) {
+	let response = await axios.get(
+		import.meta.env.VITE_API_URL + "get-employee-tip-distribution/",
+		{
+			params: {
+				archiveEntryId: archiveEntryId,
+			},
+		},
+	);
 	let responseData = response.data.tipDistributions;
 
 	let tipDistributions: EmployeeTipDistribution[] = [];
@@ -27,8 +30,8 @@ export interface EmployeeTipDistribution {
 			total: item.total,
 			offset: item.offset,
 			name: item.name,
-			title: item.title
-		})
+			title: item.title,
+		});
 	}
 
 	return tipDistributions;

@@ -66,7 +66,9 @@ export interface Tip_Distribution_Entry {
 
 export async function pullSlingEmployeeData(date: string) {
 	let data = await axios
-		.get("http://localhost:3001/get-shift-summary", { params: { date: date } })
+		.get(import.meta.env.VITE_API_URL + "get-shift-summary", {
+			params: { date: date },
+		})
 		.then(function (response) {
 			return response.data.shift_data;
 		});
