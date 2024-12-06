@@ -1,0 +1,6 @@
+{
+    "name": "tippy-api",
+    "script": "node ./dist/index.js",
+    "cwd": "/home/tippy/api",
+    "watch": true
+}
