@@ -176,7 +176,7 @@ async function requestEntryData(date: string) {
 	//pulls all entries from the entries table in the db entries
 	//will hold all inputed bill and change amounts for all input types ie (drawer, tips, final)
 	let entries = await axios
-		.get("http://localhost:3001/get-entries", {
+		.get(import.meta.env.VITE_API_URL + "get-entries", {
 			params: { date: date },
 		})
 		.then(async function (response) {
@@ -198,7 +198,7 @@ async function requestEntryData(date: string) {
 async function saveEntry(entryDate: string) {
 	let date = entryDate == "default" ? moment().format("L") : entryDate;
 
-	await axios.post("http://localhost:3001/add-archive-entry", {
+	await axios.post(import.meta.env.VITE_API_URL + "add-archive-entry", {
 		date: entryDate,
 		entry_no: entryNo(),
 		entry: {
@@ -212,7 +212,7 @@ async function saveEntry(entryDate: string) {
 		},
 	});
 
-	await axios.post("http://localhost:3001/update-entry", {
+	await axios.post(import.meta.env.VITE_API_URL + "update-entry", {
 		entry_no: entryNo(),
 		entry: {
 			entry_date: date,
@@ -250,7 +250,7 @@ async function saveEntry(entryDate: string) {
 
 async function createNewEntry() {
 	let newEntry: EntryProps = await axios
-		.get("http://localhost:3001/new-entry")
+		.get(import.meta.env.VITE_API_URL + "new-entry")
 		.then(async function (response) {
 			return await response.data.entry;
 		});
@@ -356,10 +356,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									class='px-2.5 py-1.5 h-[34px] border border-border-gray rounded-md bg-black text-white font-medium text-sm appearance-none hover:bg-border-gray'
 									onchange={(e) => {
 										let date = moment(e.target.value);
-										// navigate(`/Entries/${date.format("MM-DD-YYYY")}`, {
-										// 	replace: true,
-										// });
-										window.location.href = `${date.format("MM-DD-YYYY")}`;
+										window.location.href = `/Entries/${date.format(
+											"MM-DD-YYYY",
+										)}/0`;
 									}}
 								/>
 							</div>
@@ -427,8 +426,9 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(entry, index) => (
 													<div class='px-1 pt-1'>
 														<li
-															class={`px-3 py-2 rounded hover:bg-input-gray ${entryNo() === index() ? "selected" : ""
-																}`}
+															class={`px-3 py-2 rounded hover:bg-input-gray ${
+																entryNo() === index() ? "selected" : ""
+															}`}
 															onClick={async () => {
 																if (entryNo() !== index()) {
 																	initializeEntry(index());
@@ -877,24 +877,28 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 												{(item) => (
 													<tr class='text-center'>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
-																? "rounded-tl-md border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
+																item.id === 0
+																	? "rounded-tl-md border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "rounded-bl-md border-t border-border-gray"
 																	: "border-b border-border-gray"
-																} border-r border-border-gray`}
+															} border-r border-border-gray`}
 														>
 															{labels[item.id].bill_label}
 														</td>
 														<td
-															class={`p-2 ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-2 ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																}`}
+															}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -927,24 +931,28 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 															></input>
 														</td>
 														<td
-															class={`p-4 w-[5rem] text-table-header-gray font-medium ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-4 w-[5rem] text-table-header-gray font-medium ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																} border-x border-border-gray`}
+															} border-x border-border-gray`}
 														>
 															{labels[item.id].change_label}
 														</td>
 														<td
-															class={`p-2 ${item.id === 0
-																? "border-b border-border-gray"
-																: ""
-																} ${item.id === 5
+															class={`p-2 ${
+																item.id === 0
+																	? "border-b border-border-gray"
+																	: ""
+															} ${
+																item.id === 5
 																	? "border-t border-border-gray"
 																	: "border-b border-border-gray"
-																}`}
+															}`}
 														>
 															<input
 																class='p-1 w-full rounded-md border border-border-gray bg-black text-center text-white'
@@ -1049,6 +1057,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 									<button
 										class='p-1.5 w-full text-black font-medium rounded-md text-sm bg-white hover:bg-white/90'
 										onClick={() => {
+											//if (moment().isAfter('15:30', ''))
 											setViewEntries(false);
 											setViewConfig(true);
 										}}
@@ -1095,17 +1104,31 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 					<div class='justify-self-end border-l border-border-gray text-sm'>
 						<button
 							class='ml-1.5 pl-1.5 pr-2.5 py-1 inline-flex justify-between items-center rounded-md hover:bg-border-gray'
-							onClick={() => { }}
+							onClick={() => {}}
 						>
 							<svg
 								class='mr-3 fill-icon-gray'
-								stroke-width="0"
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 512 512"
-								height="1.1em"
-								width="1.1em"
-								style="overflow: visible; color: currentcolor;">
-								<path class='fill-none stroke-icon-gray' stroke-linecap="square" stroke-miterlimit="10" stroke-width="59" d="M320 146s24.36-12-64-12a160 160 0 1 0 160 160"></path><path class='fill-none stroke-icon-gray' stroke-linecap="square" stroke-miterlimit="10" stroke-width="59" d="M256 58 336 138 256 218"></path>
+								stroke-width='0'
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 512 512'
+								height='1.1em'
+								width='1.1em'
+								style='overflow: visible; color: currentcolor;'
+							>
+								<path
+									class='fill-none stroke-icon-gray'
+									stroke-linecap='square'
+									stroke-miterlimit='10'
+									stroke-width='59'
+									d='M320 146s24.36-12-64-12a160 160 0 1 0 160 160'
+								></path>
+								<path
+									class='fill-none stroke-icon-gray'
+									stroke-linecap='square'
+									stroke-miterlimit='10'
+									stroke-width='59'
+									d='M256 58 336 138 256 218'
+								></path>
 							</svg>
 							Override
 						</button>
