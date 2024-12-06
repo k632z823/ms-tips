@@ -93,6 +93,23 @@ function calculateTipDistribution(emps: ShiftData[]) {
 	}
 }
 
+function offsetTipCalcultion() {
+	let postiveOffset: ShiftData[] = [];
+	let negativeOffset: ShiftData[] = [];
+
+	let totalOffset: number = 0;
+
+	for (let employee of employees) {
+		if (employee.offset > 0) {
+			postiveOffset.push(employee);
+			totalOffset += Math.abs(employee.offset);
+		} else if (employee.offset < 0) {
+			negativeOffset.push(employee);
+			totalOffset += Math.abs(employee.offset);
+		}
+	}
+}
+
 async function addTipDistribution(date: string) {
 	//let date = entryDate == "default" ? moment().format("L") : entryDate;
 	let tip_distribution: Tip_Distribution_Entry[] = [];
@@ -110,10 +127,13 @@ async function addTipDistribution(date: string) {
 		});
 	}
 
-	await axios.post("http://localhost:3001/add-tip-distribtion-records", {
-		date: date,
-		tip_distribution: tip_distribution,
-	});
+	await axios.post(
+		import.meta.env.VITE_API_URL + "add-tip-distribtion-records",
+		{
+			date: date,
+			tip_distribution: tip_distribution,
+		},
+	);
 }
 
 const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
@@ -155,9 +175,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 					<table class='w-full table-fixed font-medium text-sm'>
 						<thead>
 							<tr class='text-start text-table-header-gray hover:bg-menu-gray'>
-								<td class='py-2.5 px-4 w-[2.5rem]'>
-									#
-								</td>
+								<td class='py-2.5 px-4 w-[2.5rem]'>#</td>
 								<td class='py-2.5 px-2 w-[7rem]'>Name</td>
 								{/* <td class='p-3 w-[6.5rem] border-r border-border-gray'>
 									Position
@@ -189,21 +207,19 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 							</tr>
 						</thead>
 					</table>
-					<div class="h-[36.5rem] overflow-y-auto">
-						<table class="w-full table-fixed font-medium text-sm">
+					<div class='h-[36.5rem] overflow-y-auto'>
+						<table class='w-full table-fixed font-medium text-sm'>
 							<tbody>
 								<For each={employees}>
 									{(entry, index) => (
 										<>
 											<tr
-												class={`border-t border-border-gray font-medium hover:bg-menu-gray ${index() === employees.length - 1 ? 'border-b' : ''
-													}`}>
-												<td class='px-4 py-2 w-[2.5rem]'>
-													{index() + 1}
-												</td>
-												<td class='p-2 w-[7rem]'>
-													{entry.name}
-												</td>
+												class={`border-t border-border-gray font-medium hover:bg-menu-gray ${
+													index() === employees.length - 1 ? "border-b" : ""
+												}`}
+											>
+												<td class='px-4 py-2 w-[2.5rem]'>{index() + 1}</td>
+												<td class='p-2 w-[7rem]'>{entry.name}</td>
 												{/* <td class='p-3 border-r border-border-gray'>
 												{entry.position}
 											</td>
@@ -216,9 +232,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 											<td class='p-3 border-r border-border-gray'>
 												{entry.tips}
 											</td> */}
-												<td class='p-2 w-[5rem]'>
-													${entry.total}
-												</td>
+												<td class='p-2 w-[5rem]'>${entry.total}</td>
 												<td class='py-2 pl-2 w-[4rem]'>
 													<input
 														class='rounded-md border border-border-gray bg-black text-center p-1 w-full'
@@ -233,11 +247,13 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																if (parseInt(e.target.value) == 0) {
 																	console.log(
 																		offsetTotal() -
-																		employees[employees.indexOf(entry)].offset,
+																			employees[employees.indexOf(entry)]
+																				.offset,
 																	);
 																	setOffsetTotal(
 																		offsetTotal() -
-																		employees[employees.indexOf(entry)].offset,
+																			employees[employees.indexOf(entry)]
+																				.offset,
 																	);
 
 																	editEmployees(
@@ -318,8 +334,11 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 												</td>
 											</tr>
 											{expandedRow() === index() && (
-												<tr class={`w-full border-t border-border-gray ${index() === employees.length - 1 ? 'border-b' : ''
-													}`}>
+												<tr
+													class={`w-full border-t border-border-gray ${
+														index() === employees.length - 1 ? "border-b" : ""
+													}`}
+												>
 													<td class='p-2 flex flex-col'>
 														<div class='p-2 flex flex-col'>
 															<div class='flex flex-row items-center'>
@@ -334,7 +353,9 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																>
 																	<path d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z'></path>
 																</svg>
-																<div class='font-medium text-table-header-gray'>Position</div>
+																<div class='font-medium text-table-header-gray'>
+																	Position
+																</div>
 															</div>
 															<div class='ml-[30px] text-white font-medium'>
 																{entry.position}
@@ -361,7 +382,9 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																	<path d='M9.5 3h5a1.5 1.5 0 0 1 1.5 1.5a3.5 3.5 0 0 1 -3.5 3.5h-1a3.5 3.5 0 0 1 -3.5 -3.5a1.5 1.5 0 0 1 1.5 -1.5z'></path>
 																	<path d='M4 17v-1a8 8 0 1 1 16 0v1a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z'></path>
 																</svg>
-																<div class='font-medium text-table-header-gray'>Initial</div>
+																<div class='font-medium text-table-header-gray'>
+																	Initial
+																</div>
 															</div>
 															<div class='ml-[30px] text-white font-medium'>
 																${entry.initial_tip}
@@ -384,7 +407,9 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																	<path d='M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z'></path>
 																	<path d='M686.7 638.6 544.1 535.5V288c0-4.4-3.6-8-8-8H488c-4.4 0-8 3.6-8 8v275.4c0 2.6 1.2 5 3.3 6.5l165.4 120.6c3.6 2.6 8.6 1.8 11.2-1.7l28.6-39c2.6-3.7 1.8-8.7-1.8-11.2z'></path>
 																</svg>
-																<div class='font-medium text-table-header-gray'>Hours</div>
+																<div class='font-medium text-table-header-gray'>
+																	Hours
+																</div>
 															</div>
 															<div class='ml-[30px] text-white font-medium'>
 																{entry.hours_worked}
@@ -403,7 +428,9 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 																>
 																	<path d='M64 64C28.7 64 0 92.7 0 128v256c0 35.3 28.7 64 64 64h448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H64zm64 320H64v-64c35.3 0 64 28.7 64 64zM64 192v-64h64c0 35.3-28.7 64-64 64zm384 192c0-35.3 28.7-64 64-64v64h-64zm64-192c-35.3 0-64-28.7-64-64h64v64zm-224-32a96 96 0 1 1 0 192 96 96 0 1 1 0-192z'></path>
 																</svg>
-																<div class='font-medium text-table-header-gray'>Tips received</div>
+																<div class='font-medium text-table-header-gray'>
+																	Tips received
+																</div>
 															</div>
 															<div class='ml-[30px] text-white font-medium'>
 																${entry.tips}
