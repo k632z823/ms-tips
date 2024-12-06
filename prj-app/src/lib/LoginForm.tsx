@@ -14,7 +14,7 @@ const Login = () => {
 
 		try {
 			const response = await axios
-				.post("http://localhost:3001/login", {
+				.post(import.meta.env.VITE_API_URL+ "login", {
 					username: username(),
 					password: password(),
 				})

@@ -33,7 +33,9 @@ interface EntryRow {
 }
 
 async function getEntries() {
-	let response = await axios.get("http://localhost:3001/get-archive-entries");
+	let response = await axios.get(
+		import.meta.env.VITE_API_URL + "get-archive-entries"
+	);
 	let responseData = response.data.entries;
 	let archiveEntries: EntryRow[] = [];
 	for (let item of responseData) {
@@ -66,7 +68,8 @@ async function getEntries() {
 }
 
 async function deleteEntry(idToDelete: number) {
-	let response = await axios.delete("http://localhost:3001/delete-entry", {
+	let response = await axios.delete(
+		import.meta.env.VITE_API_URL + "delete-entry", {
 		params: {
 			id: idToDelete,
 		},
@@ -74,7 +77,8 @@ async function deleteEntry(idToDelete: number) {
 }
 
 async function getExportEntries(fromDate: string, toDate: string) {
-	let response = await axios.get("http://localhost:3001/get-export-entries", {
+	let response = await axios.get(
+		import.meta.env.VITE_API_URL + "get-export-entries", {
 		params: {
 			fromDate: fromDate,
 			toDate: toDate,
