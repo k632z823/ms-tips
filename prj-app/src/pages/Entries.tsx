@@ -9,10 +9,12 @@ const Entries: Component = () => {
 
 	return (
 		<>
-			<EntryDisplay
-				entryDate={params.date}
-				entryNoProp={params.entry_no}
-			></EntryDisplay>
+			<div class='pb-[1.5rem]'>
+				<EntryDisplay
+					entryDate={params.date}
+					entryNoProp={params.entry_no}
+				></EntryDisplay>
+			</div>
 		</>
 	);
 };

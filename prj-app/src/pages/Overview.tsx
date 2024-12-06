@@ -6,7 +6,7 @@ import OverviewEntries from "../lib/OverviewEntries";
 const Overview: Component = () => {
 	return (
 		<>
-			<div class='text-sm font-light'>
+			<div class='pb-[1.5rem] text-sm font-light'>
 				<OverviewEntries/>
 			</div>
 		</>

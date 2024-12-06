@@ -640,7 +640,7 @@ const EntryDisplay: Component<{ entryDate: string; entryNoProp: string }> = (
 					</div>
 				</div> */}
 				{/* Classification entry */}
-				<div class='flex justify-center px-5 pt-4 pb-5'>
+				<div class='px-5 pt-4 flex justify-center'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<div id='entry-select'>
 							<div class='flex justify-center'>

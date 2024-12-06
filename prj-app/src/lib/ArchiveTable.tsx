@@ -290,9 +290,9 @@ const ArchiveTable: Component = () => {
 									{/* <td class='p-3 w-[44.5px] text-center rounded-tl-md'>
 										#
 									</td> */}
-									<td class='pl-1 pr-3 w-[7rem]'>
+									<td class='pl-1 pr-3 w-[6.2rem]'>
 										<button
-											class='inline-flex items-center justify-between w-full h-[2.2rem] rounded-md hover:bg-border-gray hover:text-white'
+											class='inline-flex items-center justify-between w-full h-[2rem] rounded hover:bg-border-gray hover:text-white'
 											onClick={() => {
 												setDescDateSortOrder(!descDateSortOrder());
 												sortDate(sortedEntryRows, descDateSortOrder());
@@ -327,9 +327,9 @@ const ArchiveTable: Component = () => {
 											</Show>
 										</button>
 									</td>
-									<td class='p-3 w-[4.5rem]'>Drawer</td>
-									<td class='p-3 w-[4.5rem]'>Tips</td>
-									<td class='p-3 w-[4.5rem]'>Final</td>
+									<td class='p-3 w-[4rem]'>Drawer</td>
+									<td class='p-3 w-[4rem]'>Tips</td>
+									<td class='p-3 w-[4rem]'>Final</td>
 									{/* <td class='p-3 border-r border-border-gray'>Tip Rate</td> */}
 									{/* <th>Base</th> */}
 									{/* <td class='p-3'>Tags</td> */}
@@ -648,7 +648,7 @@ const ArchiveTable: Component = () => {
 				<Show when={rendered()}>
 					<Show when={sortedEntryRows[selectedEntry()].viewShown}>
 						<Portal>
-							<div class='fixed top-[4.5rem] w-full'>
+							<div class='pb-[1.5rem] absolute top-[4.5rem] w-full z-50'>
 								<div class='flex flex-col justify-center px-5'>
 									{/* New navigation bar */}
 									<div class='p-1.5 grid grid-cols-3 items-center border border-border-gray rounded-md'>
@@ -977,7 +977,7 @@ const ArchiveTable: Component = () => {
 					}
 					confirmButton={
 						<button
-							class='w-full p-1.5 text-center text-red font-medium border border-border-red rounded-md bg-select-red hover:bg-border-red hover:text-white'
+							class='w-full p-1.5 text-center text-red font-medium border border-red rounded-md bg-select-red hover:bg-red hover:text-white'
 							onclick={async function () {
 								await deleteEntry(entryRows[selectedEntry()].entry.id);
 								setRendered(false);

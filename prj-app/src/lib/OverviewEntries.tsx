@@ -152,7 +152,7 @@ const OverviewEntries: Component = () => {
 						</div>
 					</button>
 				</Show> */}
-				<Show when={showCreateToday()}>
+				{/* <Show when={showCreateToday()}> */}
 					<div class='mb-3 flex justify-center'>
 						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray'>
 							<div class='w-full flex flex-col'>
@@ -230,7 +230,7 @@ const OverviewEntries: Component = () => {
 							</div>
 						</div>
 					</div>
-				</Show>
+				{/* </Show> */}
 				<div class='mb-3 p-1 flex justify-between items-center border border-border-gray rounded-md font-medium'>
 					<span class='pl-2'>
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}

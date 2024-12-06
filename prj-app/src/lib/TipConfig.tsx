@@ -447,7 +447,7 @@ const TipConfig: Component<TipConfigProps> = (props: TipConfigProps) => {
 					</div>
 					<div class='flex flex-row justify-between items-center border-t border-border-gray text-sm'>
 						<span class='ml-3 my-2 text-content-gray text-center font-semibold'>
-							Total employees: {employees.length}
+							Employees: {employees.length}
 						</span>
 						<div class='m-2 pl-2 flex gap-2 border-l border-border-gray'>
 							<button

@@ -5,7 +5,9 @@ import ArchiveTable from "../lib/ArchiveTable";
 const Archive: Component = () => {
 	return (
 		<>
-			<ArchiveTable></ArchiveTable>
+			<div class='pb-[1.5rem]'>
+				<ArchiveTable></ArchiveTable>
+			</div>
 		</>
 	);
 };
