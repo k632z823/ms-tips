@@ -22,11 +22,11 @@ const db = Knex({
     pool: { min: 0, max: 30 },
 });
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true,
-  optionSuccessStatus: 200
-}
+// const corsOptions = {
+//   origin: "http://localhost:3000",
+//   credentials: true,
+//   optionSuccessStatus: 200
+// }
 
 console.log("Initiating Express Api Script...");
 
@@ -35,7 +35,7 @@ let sling_api = new Sling();
   const app = express();
 
   app.use(bodyParser.json());
-  app.use(cors(corsOptions));
+  //app.use(cors(corsOptions));
 
   app.post("/login", (req, res) => {
     const { username, password } = req.body;
@@ -52,17 +52,25 @@ let sling_api = new Sling();
 
   app.get("/get-entries", async function(request, response) {
 
-    let date = request.query.date;
-    let entries;
+    
 
-    if (date == "default") {
-      entries = await getEntries(moment().format("L"));
+    let date = request.query.date;
+    console.log(date);
+    if (date !== null) {
+      let entries;
+
+      if (date == "default") {
+        entries = await getEntries(moment().format("L"));
+      } else {
+        // @ts-ignore
+        entries = await getEntries(date);
+      }
+     
+     response.json({success: true, entries: entries})
     } else {
-      // @ts-ignore
-      entries = await getEntries(date);
+      response.status(404).json('Malformed request - missing/incorrect parameter(s)');
     }
-   
-   response.json({success: true, entries: entries})
+    
 
   });
 
@@ -215,22 +223,28 @@ let sling_api = new Sling();
   // get the tip distrubtions for a shift
   app.get("/get-employee-tip-distribution", async function(request, response) {
     let archiveEntryId = request.query.archiveEntryId;
-    // @ts-ignore
-    let data = await getEmployeeTipDistribution(parseInt(archiveEntryId));
-    let tipDistributions: EmployeeTipDistribution[] = [];
 
-    for (let item of data) {
-      tipDistributions.push({
-        hours: item.hours,
-        initial: item.initial,
-        tips_received: item.tips_received,
-        total: item.total,
-        offset: item.offset,
-        name: item.user_name,
-        title: item.group_name
-      })
-    }
+    if (archiveEntryId !== null) {
+      // @ts-ignore
+      let data = await getEmployeeTipDistribution(parseInt(archiveEntryId));
+      let tipDistributions: EmployeeTipDistribution[] = [];
+
+      for (let item of data) {
+        tipDistributions.push({
+          hours: item.hours,
+          initial: item.initial,
+          tips_received: item.tips_received,
+          total: item.total,
+          offset: item.offset,
+          name: item.user_name,
+          title: item.group_name
+        })
+      }
     response.json({success: true, tipDistributions: tipDistributions});
+    } else {
+      response.status(404).json('Malformed request - missing/incorrect parameter(s)');
+    }
+    
   })
 
   app.get("/get-export-entries", async function(request, response) {
@@ -278,6 +292,7 @@ let sling_api = new Sling();
   })
 
   app.post("/add-archive-entry", async function(request, response) {
+    if (request.body === null ) response.status(404).json('Malformed request - missing/incorrect parameter(s)');
     console.log("Request Recieved: INSERT record for archive_entries on " + request.body.date);
     let entry = request.body.entry;
     await addArchiveEntry(entry, request.body.entry_no);
@@ -285,6 +300,7 @@ let sling_api = new Sling();
   })
 
   app.post("/add-tip-distribtion-records", async function(request, response) {
+    if (request.body === null ) response.status(404).json('Malformed request - missing/incorrect parameter(s)');
     console.log("Request Recieved: UPSERT record for tip_distribution_records on " + request.body.date);
     let tip_distribution = request.body.tip_distribution;
     await addTipDistributionEntry(tip_distribution);
@@ -292,6 +308,7 @@ let sling_api = new Sling();
   })
 
   app.delete("/delete-entry", async function(request, response) {
+    if (request.query.id === null ) response.status(404).json('Malformed request - missing/incorrect parameter(s)');
     let id = request.query.id;
     console.log('Request Recieved: DELETE row from archive_entries on id ' + id);
     // @ts-ignore
@@ -302,6 +319,7 @@ let sling_api = new Sling();
   //gets all the employees that worked for the day
   app.get("/get-shift-summary", async function (request, response) {
     console.log('Request Recieved: GET shift summary');
+    if (request.query.date === null ) response.status(404).json('Malformed request - missing/incorrect parameter(s)');
 
     //@ts-ignore
     let date = request.query.date === 'default' ? moment().format("YYYY-MM-DD") : moment(request.query.date).format("YYYY-MM-DD");
