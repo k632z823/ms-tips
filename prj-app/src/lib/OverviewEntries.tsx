@@ -18,21 +18,8 @@ interface Entry {
 	entry_no: number;
 }
 
-async function getTodaysEntry() {
-	let response = await axios.get(
-		import.meta.env.VITE_API_URL + "get-todays-entry",
-	);
-	let responseData: Entry = response.data.todaysEntry;
-	return responseData;
-}
-
-// return true if there is an archive_entry in the database for today
-const todaysEntryExists = (todaysEntry: Entry) => {
-	return todaysEntry.date == "";
-};
-
-// will display the five most recent entries on this page
-// the most recent entry is in the main display and the other four are on the right side
+// gets the six most recent entries on this page
+// the most recent entry is in the main display and then the four previous entries are displayed to the right
 async function getRecentEntries() {
 	let response = await axios.get(
 		import.meta.env.VITE_API_URL + "get-six-recent-entries",
@@ -54,37 +41,21 @@ async function getRecentEntries() {
 }
 
 const OverviewEntries: Component = () => {
-	const [mostRecentEntry, setMostRecentEntry] = createStore<Entry>({
-		id: 0,
-		date: "",
-		drawer: 0,
-		tips: 0,
-		final: 0,
-		tipRate: 0,
-		entry_no: 0,
-	});
-
-	const [todaysEntry, setTodaysEntry] = createStore<Entry>({
-		id: 0,
-		date: "",
-		drawer: 0,
-		tips: 0,
-		final: 0,
-		tipRate: 0,
-		entry_no: 0,
-	});
 
 	const [rendered, setRendered] = createSignal<boolean>(false);
-	const [showCreateToday, setShowCreateToday] = createSignal<boolean>(true);
+
+	// used to switch between Classifications and Employees
 	const [tabSwitch, setTabSwitch] = createSignal<boolean>(false);
+
 	const [tipDistributions, setTipDistributions] = createStore<
 		EmployeeTipDistribution[]
 	>([]);
+
+	// the date that is used in the Create new entry window
 	const [calendarDate, setCalendarDate] = createSignal<string>(
 		moment().format("YYYY-MM-DD"),
 	);
 
-	// sixRecentEntries is the list/store that actually has the entries and is used in the rest of the code
 	let recentEntries: Entry[] = [];
 	const [sixRecentEntries, setSixRecentEntries] =
 		createStore<Entry[]>(recentEntries);
@@ -92,8 +63,6 @@ const OverviewEntries: Component = () => {
 	onMount(async function () {
 		recentEntries = await getRecentEntries();
 		setSixRecentEntries(...[recentEntries]);
-		setTodaysEntry(await getTodaysEntry());
-		setShowCreateToday(todaysEntryExists(todaysEntry));
 		setTipDistributions(await getTipDistributions(sixRecentEntries[0].id));
 		setRendered(true);
 	});
@@ -109,52 +78,9 @@ const OverviewEntries: Component = () => {
 						Here's an overview of your most recent entry
 					</div>
 				</div>
-				{/* <Show when={showCreateToday()}>
-					<button
-						class='mb-3 flex justify-center'
-						onClick={() => {
-							navigate(`/Entries/${moment().format("MM-DD-YYYY")}/0`, {
-								replace: true,
-							});
-						}}
-					>
-						<div class='p-2 w-full flex flex-row rounded-md border border-dashed border-border-gray bg-dialog-bg-gray hover:bg-border-gray'>
-							<div class='flex flex-col'>
-								<div class='flex flex-row items-center'>
-									<svg
-										class='mr-3 ml-1 mt-1 fill-white'
-										stroke-width='0'
-										xmlns='http://www.w3.org/2000/svg'
-										viewBox='0 0 512 512'
-										height='1.2em'
-										width='1.2em'
-										style='overflow: visible; color: currentcolor;'
-									>
-										<path
-											fill='none'
-											stroke='currentColor'
-											stroke-linecap='round'
-											stroke-linejoin='round'
-											stroke-width='32'
-											d='M384 224v184a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V168a40 40 0 0 1 40-40h167.48'
-										></path>
-										<path d='M459.94 53.25a16.06 16.06 0 0 0-23.22-.56L424.35 65a8 8 0 0 0 0 11.31l11.34 11.32a8 8 0 0 0 11.34 0l12.06-12c6.1-6.09 6.67-16.01.85-22.38ZM399.34 90 218.82 270.2a9 9 0 0 0-2.31 3.93L208.16 299a3.91 3.91 0 0 0 4.86 4.86l24.85-8.35a9 9 0 0 0 3.93-2.31L422 112.66a9 9 0 0 0 0-12.66l-9.95-10a9 9 0 0 0-12.71 0Z'></path>
-									</svg>
-									<div class='text-white text-sm font-bold'>
-										Create today's entry
-									</div>
-								</div>
-								<div class='ml-[32.5px] pb-[2px] text-left text-content-gray text-sm text-pretty font-medium'>
-									An entry for today has not been made yet. Click here to create
-									one.
-								</div>
-							</div>
-						</div>
-					</button>
-				</Show> */}
-				{/* <Show when={showCreateToday()}> */}
 					<div class='mb-3 flex justify-center'>
 						<div class='p-3 w-full flex flex-row rounded-md border border-border-gray'>
+							{/* start of Create new entry box */}
 							<div class='w-full flex flex-col'>
 								<div class='flex flex-col'>
 									<div class='text-white text-sm font-bold'>
@@ -164,6 +90,7 @@ const OverviewEntries: Component = () => {
 										Select a date below to create or edit an entry.
 									</div>
 									<div class='flex flex-row gap-2'>
+										{/* go back one day button */}
 										<button
 											class='p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray'
 											onclick={() => {
@@ -194,6 +121,7 @@ const OverviewEntries: Component = () => {
 											value={calendarDate()}
 											onInput={(e) => setCalendarDate(e.currentTarget.value)}
 										/>
+										{/* go foward one day button */}
 										<button
 											class='p-2 border border-border-gray rounded-md bg-black hover:bg-border-gray'
 											onclick={() => {
@@ -216,7 +144,7 @@ const OverviewEntries: Component = () => {
 												<path d='m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z'></path>
 											</svg>
 										</button>
-										{/* Create new entry button for the date in the calendar select */}
+										{/* Continue button*/}
 										<button
 											class='py-1.5 px-5 border border-border-gray rounded-md font-medium text-center text-white bg-black hover:bg-border-gray'
 											onclick={() => {
@@ -227,10 +155,12 @@ const OverviewEntries: Component = () => {
 										</button>
 									</div>
 								</div>
+								{/* end of Create new entry box */}
 							</div>
 						</div>
 					</div>
 				{/* </Show> */}
+				{/* start of the edit the most recent entry box */}
 				<div class='mb-3 p-1 flex justify-between items-center border border-border-gray rounded-md font-medium'>
 					<span class='pl-2'>
 						{sixRecentEntries[0].date.format("MMMM D, YYYY")}
@@ -262,6 +192,8 @@ const OverviewEntries: Component = () => {
 						Edit entry
 					</button>
 				</div>
+				{/* end of the edit the most recent entry box */}
+				{/* start of Classifications and Employees buttons */}
 				<div class='p-1.5 grid grid-cols-2 gap-1 items-center border border-border-gray rounded-lg font-semibold'>
 					<button
 						class={`py-1.5 px-3 items-center rounded-md ${
@@ -284,11 +216,13 @@ const OverviewEntries: Component = () => {
 						Employees
 					</button>
 				</div>
+				{/* end of Classifications and Employees buttons */}
 				<Show when={!tabSwitch()}>
-					<div class='mt-3 border border-border-gray rounded-md'>
-						{/* display of recent drawer values */}
+					{/* start of the Classifications */}
+					<div class='mt-3 border border-border-gray rounded-md'>			
+						{/* start of the Drawer values for each entry */}			
 						<div class='grid grid-cols-[200px_auto] border-b border-border-gray'>
-							<div class='flex flex-col p-6 w-full'>
+							<div class='flex flex-col p-6 w-full'>								
 								<div class='flex justify-between items-center w-full'>
 									<span class='font-medium'>Drawer</span>
 									<svg
@@ -337,7 +271,8 @@ const OverviewEntries: Component = () => {
 								</div>
 							</div>
 						</div>
-						{/* display of recent tips */}
+						{/* end of the Drawer values for each entry */}	
+						{/* start of the Tips values for each entry */}	
 						<div class='grid grid-cols-[200px_auto] border-b border-border-gray'>
 							<div class='flex flex-col p-6 w-full'>
 								<div class='flex justify-between items-center w-full'>
@@ -388,7 +323,8 @@ const OverviewEntries: Component = () => {
 								</div>
 							</div>
 						</div>
-						{/* display of recent final values*/}
+						{/* end of the Tips values for each entry */}	
+						{/* start of the Final values for each entry */}	
 						<div class='grid grid-cols-[200px_auto] border-b border-border-gray'>
 							<div class='flex flex-col p-6 w-full'>
 								<div class='flex justify-between items-center w-full'>
@@ -439,7 +375,8 @@ const OverviewEntries: Component = () => {
 								</div>
 							</div>
 						</div>
-						{/* display of recent tip rates */}
+						{/* end of the Final values for each entry */}	
+						{/* start of the Tip Rate values for each entry */}	
 						<div class='grid grid-cols-[200px_auto]'>
 							<div class='flex flex-col p-6 w-full'>
 								<div class='flex justify-between items-center w-full'>
@@ -493,9 +430,12 @@ const OverviewEntries: Component = () => {
 								</div>
 							</div>
 						</div>
+						{/* end of the Tip Rate values for each entry */}	
 					</div>
+					{/* end of the Classifications */}
 				</Show>
 				<Show when={tabSwitch()}>
+					{/* start of the Employees tab to show tip distributions */}
 					<div class='mt-3 p-2.5 h-[453px] flex flex-col overflow-auto gap-2 border border-border-gray rounded-md'>
 						<For each={tipDistributions}>
 							{(distribution, index) => (
@@ -549,6 +489,7 @@ const OverviewEntries: Component = () => {
 							)}
 						</For>
 					</div>
+					{/* end of the Employees tab to show tip distributions */}
 				</Show>
 			</Show>
 		</div>

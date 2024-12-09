@@ -13,6 +13,7 @@ import {
 	getTipDistributions as getTipDistributions,
 } from "./GetTipEntries";
 
+// interface for entries pulled from the archive_entries table
 interface Entry {
 	id: number;
 	date: string;
@@ -24,14 +25,16 @@ interface Entry {
 	entry_no: number;
 }
 
+// interface for the rows in the table for each entry
 interface EntryRow {
 	entry: Entry;
 	number: number;
 	momentDate: any;
-	dropDownShown: boolean;
-	viewShown: boolean;
+	dropDownShown: boolean;  // the dropdown opened by clicking the three dots at the end of each row, provides actions
+	viewShown: boolean;      // after clicking View from that action dropdown, extra info about that entry will be displayed
 }
 
+// pulls every entry from the archive_entries table
 async function getEntries() {
 	let response = await axios.get(
 		import.meta.env.VITE_API_URL + "get-archive-entries"
@@ -67,6 +70,7 @@ async function getEntries() {
 	return archiveEntries;
 }
 
+// deletes an entry from the database, removing rows in the archive_entries, tip_distribution_records, and entries tables
 async function deleteEntry(idToDelete: number) {
 	let response = await axios.delete(
 		import.meta.env.VITE_API_URL + "delete-entry", {
@@ -76,6 +80,7 @@ async function deleteEntry(idToDelete: number) {
 	});
 }
 
+// pulls entries with in a date range to be exported in a spreadsheet
 async function getExportEntries(fromDate: string, toDate: string) {
 	let response = await axios.get(
 		import.meta.env.VITE_API_URL + "get-export-entries", {
@@ -88,6 +93,7 @@ async function getExportEntries(fromDate: string, toDate: string) {
 	return entries;
 }
 
+// switches the sorting of entry rows between ascending and descending by date
 const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	let copyEntryRowsToSort: EntryRow[] = [...entryRowsToSort];
 
@@ -110,11 +116,13 @@ const sortDate = (entryRowsToSort: EntryRow[], sortByDesc: boolean) => {
 	setSortedEntryRows((rows) => (rows = [...copyEntryRowsToSort]));
 };
 
-let entryRows: EntryRow[] = []; //await getEntries();
+// initializes the list to hold every entry pulled to an empty array
+let entryRows: EntryRow[] = []; 
 
+// this array contains all those rows pulled but sorted by date, the rows that are populating the table on this page
 const [sortedEntryRows, setSortedEntryRows] = createStore<EntryRow[]>(entryRows);
 
-// used in Export modal to add an averages row at the bottom of the CSV
+// function used in Export modal to add an averages row at the bottom of the CSV
 const calculateEntryRowsAverages = (entries: Entry[]) => {
 	let sums: { tips: number; final: number; drawer: number } = {
 		tips: 0,
@@ -141,22 +149,23 @@ const calculateEntryRowsAverages = (entries: Entry[]) => {
 	return averages;
 };
 
-// used to export/download and name CSV files
+// function to export/download and name CSV files
 let download = (config: any) => {
 	return function (csvContent: any, fileName: string) {
 		const blob = new Blob([csvContent], { type: "text/csv" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = fileName; // set the filename here
+		link.download = fileName;
 		link.click();
 		URL.revokeObjectURL(url);
 	};
 };
 
-// let sortedEntryRows: entryRow[] = [...entryRows];
+// tracks the current page of the table
 const [currentPage, setCurrentPage] = createSignal<number>(1);
 
+// function to get the rows that should show depending on the current table page
 const getCurrentPageRows = () => {
 	let rowsPerPage: number = 15;
 	let pages: number = Math.ceil(sortedEntryRows.length / rowsPerPage);
@@ -167,6 +176,7 @@ const getCurrentPageRows = () => {
 	return sortedEntryRows.slice(startEntryIndex, endEntryIndex);
 };
 
+// function to go to the previous table page or first page
 const prevPage = (toFirstPage?: boolean) => {
 	let firstPage: number = 1;
 	if (currentPage() != firstPage && toFirstPage) {
@@ -177,6 +187,7 @@ const prevPage = (toFirstPage?: boolean) => {
 	}
 };
 
+// function to go to the next table page or last page
 const nextPage = (toLastPage?: boolean) => {
 	let lastPage: number = Math.ceil(sortedEntryRows.length / 15);
 	if (currentPage() != lastPage && toLastPage) {
@@ -188,6 +199,7 @@ const nextPage = (toLastPage?: boolean) => {
 };
 
 const ArchiveTable: Component = () => {
+	// on mount the entries are pulled and sorted by descending order
 	onMount(async function () {
 		entryRows = await getEntries();
 		setSortedEntryRows(...[entryRows]);
@@ -219,7 +231,7 @@ const ArchiveTable: Component = () => {
 
 	const navigate = useNavigate();
 
-	// closes the row dropdowns (View, Edit, Delete) when clicking outside of it 
+	// this createEffect is used only for closing the dropDown when clicking anywhere else on the page
 	let buttonRef: any;
 	let dropdownRef: any;
 	createEffect(() => {
@@ -230,7 +242,6 @@ const ArchiveTable: Component = () => {
 		  dropdownRef &&
 		  !dropdownRef.contains(e.target)
 		) {
-		  // console.log("clicked outside the dropdown");
 		  setEntry(selectedEntry(), (row) => ({
 			...row,
 			dropDownShown: false,
@@ -251,7 +262,8 @@ const ArchiveTable: Component = () => {
 	return (
 		<>
 			<Show when={tableShown()}>
-				<div class='px-5 pb-4 text-sm'>
+				{/* start of the div containg the Export button */}
+				<div class='px-5 pb-4 text-sm'>					
 					<div class='flex'>
 						<button
 							class='py-1.5 px-3 inline-flex items-center justify-between text-center bg-black border border-border-gray rounded-md hover:bg-border-gray font-medium'
@@ -279,20 +291,17 @@ const ArchiveTable: Component = () => {
 						</button>
 					</div>
 				</div>
-				{/* <div class='pb-5 px-5 flex items-center'>
-						<div class='flex-grow border-t border-border-gray'></div>
-				</div> */}
+				{/* end of the div containg the Export button */}
 				<div class='flex justify-center px-5'>
 					<div class='border border-border-gray rounded-md w-full'>
 						<table class='table-fixed text-sm font-normal w-full'>
 							<thead>
+								{/* start of the header row of the table */}
 								<tr class='text-table-header-gray text-start font-medium hover:bg-menu-gray'>
-									{/* <td class='p-3 w-[44.5px] text-center rounded-tl-md'>
-										#
-									</td> */}
 									<td class='pl-1 pr-3 w-[6.2rem]'>
 										<button
 											class='inline-flex items-center justify-between w-full h-[2rem] rounded hover:bg-border-gray hover:text-white'
+											// switch between descending and ascending date by clicking
 											onClick={() => {
 												setDescDateSortOrder(!descDateSortOrder());
 												sortDate(sortedEntryRows, descDateSortOrder());
@@ -330,38 +339,31 @@ const ArchiveTable: Component = () => {
 									<td class='p-3 w-[4rem]'>Drawer</td>
 									<td class='p-3 w-[4rem]'>Tips</td>
 									<td class='p-3 w-[4rem]'>Final</td>
-									{/* <td class='p-3 border-r border-border-gray'>Tip Rate</td> */}
-									{/* <th>Base</th> */}
-									{/* <td class='p-3'>Tags</td> */}
 									<td class='p-3 w-[2.5rem]'></td>
 								</tr>
+								{/* end of the header row of the table */}
 							</thead>
 							<tbody>
-								{/* <For each={sortedEntryRows}> */}
+								{/* start of displaying each row for that current page */}
 								<For each={getCurrentPageRows()}>
 									{(entryRow) => (
 										<tr class='border-t border-border-gray text-white font-medium hover:bg-menu-gray'>
-											{/* <td class='p-3 text-center'>
-												{sortedEntryRows.indexOf(entryRow) + 1}
-											</td> */}
+											{/* the first four columns values for each row */}
 											<td class='p-3'>
 												{moment(entryRow.momentDate).format("L")}
 											</td>
 											<td class='p-3'>${entryRow.entry.drawer}</td>
 											<td class='p-3'>${entryRow.entry.tips}</td>
 											<td class='p-3'>${entryRow.entry.final}</td>
-											{/* <td class='p-3 border-r border-border-gray'>{entry.tipRate}</td> */}
-											{/* <td>{entry.base}</td> */}
-											{/* <td class='p-3'>
-												<div class='text-nowrap overflow-x-auto'>
-													{entryRow.entry.tags.toString()}
-												</div>
-											</td> */}
+											{/* start of the three dots button */}
 											<td class='text-center font-normal'>
 												<button
 													ref={buttonRef}
 													class='m-1 rounded-md items-center hover:bg-border-gray'
 													onClick={async function () {
+														// when clicking on the three dots, selectedEntry, a number, is set to the entry of that row's number,
+														// if that selectedEntry number does not equal the current entryRow's number, that means a new row was clicked on,
+														// then set dropDownShown for the new row to true and set the old row's to false									
 														if (selectedEntry() != entryRow.number) {
 															setEntry(selectedEntry(), (row) => ({
 																...row,
@@ -369,25 +371,20 @@ const ArchiveTable: Component = () => {
 															}));
 															setSelectedEntry(entryRow.number);
 															setConfirmDeleteShown(false);
-															// get the tip distributions based on the selected row's ID in the database
+
+															// get the tip distributions of the selected row based on the selected row's ID in the database
 															setTipDistributions(
 																await getTipDistributions(entryRow.entry.id),
 															);
 														}
-
+															
 														setEntry(selectedEntry(), (row) => ({
 															...row,
 															dropDownShown: !row.dropDownShown,
 														}));
-
-														// for (let item of sortedEntryRows) {
-														//     setSortedEntryRows(sortedEntryRows.indexOf(item), (entry) => ({
-														//         ...entry,viewShown: false,
-														//     }));
-														// }
 													}}
 												>
-													{/* row action list */}
+													{/* start of the row action options, the actual dropdown element*/}
 													<Show
 														when={
 															selectedEntry() == entryRow.number &&
@@ -398,6 +395,7 @@ const ArchiveTable: Component = () => {
 															<div class='mt-8 py-1 z-50 w-[7rem] absolute'>
 																<div class='bg-black border border-border-gray rounded-md text-white'>
 																	<ul class='font-medium'>
+																		{/* start of the view button */}
 																		<div class='px-1 pt-1'>
 																			<li class='block px-3 py-2 hover:bg-input-gray hover:rounded'>
 																				<button
@@ -426,10 +424,13 @@ const ArchiveTable: Component = () => {
 																				</button>
 																			</li>
 																		</div>
+																		{/* end of the view button */}
+																		{/* start of the edit button */}
 																		<div class='px-1 pb-1'>
 																			<li
 																				class='flex justify-start px-3 py-2 hover:bg-input-gray hover:rounded'
 																				onClick={() => {
+																					// go to the create entry page with this entry's data loaded for editing
 																					navigate(
 																						"/Entries/" +
 																						entryRows[
@@ -449,6 +450,8 @@ const ArchiveTable: Component = () => {
 																				Edit
 																			</li>
 																		</div>
+																		{/* end of the edit button */}
+																		{/* start of the delete button */}
 																		<div class='border-t border-border-gray'>
 																			<div class='p-1'>
 																				<li class='block px-3 py-2 hover:bg-select-red hover:rounded text-red'>
@@ -488,11 +491,13 @@ const ArchiveTable: Component = () => {
 																				</li>
 																			</div>
 																		</div>
+																		{/* end of the delete button */}
 																	</ul>
 																</div>
 															</div>
 														</div>
 													</Show>
+													{/* end of the row action options, the actual dropdown element*/}
 													<svg
 														class='p-1.5 fill-white w-full h-full'
 														stroke-width='0'
@@ -506,24 +511,26 @@ const ArchiveTable: Component = () => {
 													</svg>
 												</button>
 											</td>
+											{/* end of the three dots drop down */}
 										</tr>
 									)}
 								</For>
+								{/* end of displaying each row for that current page */}
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</Show>
-			{/* page buttons */}
+			{/* start of the buttons to navigate the table pages*/}
 			<Show when={pageButtonsShown()}>
 				<div>
 					<div class='px-5 pt-4 flex justify-between items-center'>
-						{/* current page */}
+						{/* current page display*/}
 						<div class='font-semibold text-content-gray text-sm'>
 							Page {currentPage()} of {Math.ceil(sortedEntryRows.length / 15)}
 						</div>
 						<div class='space-x-2'>
-							{/* go to first page */}
+							{/* start of go to first page button*/}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
 									}`}
@@ -549,7 +556,8 @@ const ArchiveTable: Component = () => {
 									<path d='m16.293 17.707 1.414-1.414L13.414 12l4.293-4.293-1.414-1.414L10.586 12zM7 6h2v12H7z'></path>
 								</svg>
 							</button>
-							{/* go to prev page */}
+							{/* end of go to first page button*/}
+							{/* start of go to prev page button */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === 1 ? "bg-black" : "hover:bg-border-gray"
 									}`}
@@ -575,7 +583,8 @@ const ArchiveTable: Component = () => {
 									<path d='m10.828 12 4.95 4.95-1.414 1.415L8 12l6.364-6.364 1.414 1.414-4.95 4.95Z'></path>
 								</svg>
 							</button>
-							{/* go to next page */}
+							{/* end of go to prev page button */}
+							{/* start of go to next page button */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
 									? "bg-black"
@@ -607,7 +616,8 @@ const ArchiveTable: Component = () => {
 									<path d='m13.171 12-4.95-4.95 1.415-1.413L16 12l-6.364 6.364-1.414-1.415 4.95-4.95Z'></path>
 								</svg>
 							</button>
-							{/* go to last page */}
+							{/* end of go to next page button */}
+							{/* start of go to last page button */}
 							<button
 								class={`p-2 border border-border-gray rounded-md ${currentPage() === Math.ceil(sortedEntryRows.length / 15)
 									? "bg-black"
@@ -639,12 +649,14 @@ const ArchiveTable: Component = () => {
 									<path d='M7.707 17.707 13.414 12 7.707 6.293 6.293 7.707 10.586 12l-4.293 4.293zM15 6h2v12h-2z'></path>
 								</svg>
 							</button>
+							{/* end of go to last page button */}
 						</div>
 					</div>
 				</div>
 			</Show>
+			{/* end of the buttons to navigate the table pages*/}
 			<div>
-				{/* VIEW ENTRY WINDOW, APEPARS AFTER CLICKING VIEW */}
+				{/* start of the view window for an entry, hides table and opens up the view window when clicking View in the dropdown for a row */}
 				<Show when={rendered()}>
 					<Show when={sortedEntryRows[selectedEntry()].viewShown}>
 						<Portal>
@@ -652,6 +664,7 @@ const ArchiveTable: Component = () => {
 								<div class='flex flex-col justify-center px-5'>
 									{/* New navigation bar */}
 									<div class='p-1.5 grid grid-cols-3 items-center border border-border-gray rounded-md'>
+										{/* start of button to close view window and return to the table */}
 										<div class='justify-self-start'>
 											<button
 												class='p-2 inline-flex justify-between items-center rounded-md hover:bg-border-gray text-sm'
@@ -677,8 +690,9 @@ const ArchiveTable: Component = () => {
 												</svg>
 											</button>
 										</div>
+										{/* end of button to close view window and return to the table */}
 										<div class='justify-self-center inline-flex items-center rounded-md '>
-											{/* button to go to previous date's entry in view portal*/}
+											{/* start button to go to previous date's entry in view portal*/}
 											<button
 												class={`mr-1 p-2 rounded-md ${selectedEntry() == 0 ? "" : "hover:bg-border-gray"
 													}`}
@@ -715,12 +729,13 @@ const ArchiveTable: Component = () => {
 													<path d='M13.939 4.939 6.879 12l7.06 7.061 2.122-2.122L11.121 12l4.94-4.939z'></path>
 												</svg>
 											</button>
+											{/* end button to go to previous date's entry in view portal*/}
 											<span class='w-[6rem] text-center'>
 												{entryRows[selectedEntry()].momentDate
 													.format("L")
 													.toString()}
 											</span>
-											{/* button to go to next date's entry in view portal*/}
+											{/* start of button to go to next date's entry in view portal*/}
 											<button
 												class={`ml-1 p-2 rounded-md ${selectedEntry() == sortedEntryRows.length - 1
 													? ""
@@ -759,9 +774,10 @@ const ArchiveTable: Component = () => {
 													<path d='M10.061 19.061 17.121 12l-7.06-7.061-2.122 2.122L12.879 12l-4.94 4.939z'></path>
 												</svg>
 											</button>
+											{/* end of button to go to next date's entry in view portal*/}
 										</div>
 										<div class='justify-self-end'>
-											{/* PENCIL - EDIT BUTTON */}
+											{/* start of PENCIL - EDIT ENTRY BUTTON */}
 											<button
 												class='mr-1 p-2 rounded-md hover:bg-border-gray'
 												onClick={() => {
@@ -790,7 +806,8 @@ const ArchiveTable: Component = () => {
 													<path d='M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z'></path>
 												</svg>
 											</button>
-											{/* TRASH CAN - DELETE BUTTON */}
+											{/* end of PENCIL - EDIT ENTRY BUTTON */}
+											{/* start of TRASH CAN - DELETE ENTRY BUTTON */}
 											<button
 												class='p-2 rounded-md hover:bg-select-red'
 												onclick={() => {
@@ -820,6 +837,7 @@ const ArchiveTable: Component = () => {
 													<path d='M14 11 14 17'></path>
 												</svg>
 											</button>
+											{/* end of TRASH CAN - DELETE ENTRY BUTTON */}
 										</div>
 									</div>
 									<div class='inline-flex justify-between items-center mt-3 py-2 px-3 border-x border-t border-border-gray rounded-t-md text-sm font-medium bg-menu-gray'>
@@ -835,6 +853,7 @@ const ArchiveTable: Component = () => {
 											<path class="fill-none stroke-border-gray" stroke-linejoin="round" stroke-width="40" d="M416 221.25V416a48 48 0 0 1-48 48H144a48 48 0 0 1-48-48V96a48 48 0 0 1 48-48h98.75a32 32 0 0 1 22.62 9.37l141.26 141.26a32 32 0 0 1 9.37 22.62Z"></path><path class="fill-none stroke-border-gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="40" d="M256 56v120a32 32 0 0 0 32 32h120"></path>
 										</svg> */}
 									</div>
+									{/* start of entry's info display */}
 									<div class='border border-border-gray rounded-b-md'>
 										<table class='table-fixed w-full text-sm'>
 											<tbody>
@@ -879,18 +898,10 @@ const ArchiveTable: Component = () => {
 											</tbody>
 										</table>
 									</div>
+									{/* end of entry's info display */}
+									{/* start of employee tip distributions list */}
 									<div class='mt-3 py-2 px-3 inline-flex justify-between items-center border-x border-t border-border-gray rounded-t-md text-sm font-medium bg-menu-gray'>
 										Employee details
-										{/* <svg
-											class="fill-border-gray"
-											stroke-width="0"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 16 16"
-											height="1.4em"
-											width="1.4em"
-											style="overflow: visible; color: currentcolor;">
-											<path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z"></path>
-										</svg> */}
 									</div>
 									<div class='h-[405px] flex flex-col overflow-y-scroll border border-border-gray rounded-b-md text-sm'>
 										<For each={tipDistributions}>
@@ -951,13 +962,15 @@ const ArchiveTable: Component = () => {
 											)}
 										</For>
 									</div>
+									{/* end of employee tip distributions list */}
 								</div>
 							</div>
 						</Portal>
 					</Show>
 				</Show>
+				{/* end of the view window for an entry, hides table and opens up the view window when clicking View in the dropdown for a row */}
 			</div>
-			{/* delete modal */}
+			{/* start of the delete modal, appears after clicking the delete from the dropdown or the trashcan button */}
 			<Show when={confirmDeleteShown()}>
 				<Modal
 					header={"Are you sure?"}
@@ -995,7 +1008,8 @@ const ArchiveTable: Component = () => {
 					onClose={() => setConfirmDeleteShown(false)}
 				></Modal>
 			</Show>
-			{/* export modal, appears when export button is clicked */}
+			{/* end of the delete modal */}
+			{/* start of the export modal */}
 			<Show when={exportModalShown()}>
 				<ExportModal
 					header='Export entries'
@@ -1150,6 +1164,7 @@ const ArchiveTable: Component = () => {
 					onClose={() => setExportModalShown(false)}
 				></ExportModal>
 			</Show>
+			{/* end of the export modal */}
 		</>
 	);
 };

@@ -10,6 +10,7 @@ export interface EmployeeTipDistribution {
 	title: string;
 }
 
+// gets the tip distributions from the tip_distrubtions table
 export async function getTipDistributions(archiveEntryId: number) {
 	let response = await axios.get(
 		import.meta.env.VITE_API_URL + "get-employee-tip-distribution/",
